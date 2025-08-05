@@ -20,6 +20,8 @@ You can then connect with your webbrowser to `http://localhost:8080/`. There are
 * **adm** - who can do user and role administration
 * **su** - the superuser has all permissions.
 
+They all have the same password: _testkode_.
+
 ## Installation
 
 When installing directly in the operating system it is a prerequisite to have either MySQL or MariaDB running.
