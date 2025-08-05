@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions" method="get" action="producers-add.html" th:action="@{/producers/addform}">
+        <button type="submit">Ny producent</button>
+      </form>
+      <h2>Producenter</h2>
+      <form action="producers.html" th:action="@{/producers}">
+          <input type="text" id="query" name="q" value="" th:value="${q}"/>
+          <input type="submit" value="Filtrer"/>
+      </form>
+      <ul th:remove="all-but-first">
+      <li th:each="producer : ${producers}">
+        <div>
+          <a href="producers-view.html"
+          th:href="@{/producers/view/{id}(id=${producer.producerid})}" th:text="${producer.title}">ACT Computers Ltd.</a>
+        </div>
+        <div th:text="${#strings.abbreviate(producer.description, 400)}">Applied Computer Techniques" (ACT) skiftede senere navn til Apricot Computers</div>
+      </li>
+      <li>
+        <div>
+          <a href="producers-view.html">Addo</a>
+        </div>
+        <div>Addo AB et svensk firma der senere blev fusioneret med Facit</div>
+      </li>
+      <li>
+        <div>
+          <a href="producers-view.html">Bogika Data-Systemer</a>
+        </div>
+        <div></div>
+      </li>
+      </ul>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

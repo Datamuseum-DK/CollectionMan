@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions" method="get" action="subjects-add.html" th:action="@{/subjects/addform}">
+        <button type="submit">Nyt emne</button>
+      </form>
+      <h2>Emnegrupper</h2>
+      <ul th:remove="all-but-first">
+        <li th:each="subject : ${subjects}">
+          <div><a href="subjects-view.html" th:href="@{/subjects/view/{id}(id=${subject.subjectid})}" th:text="${subject.title}">Elektroniske regnemaskiner</a>
+          (<span th:text="${subject.totalItems}">9</span>)
+        </div>
+          <div th:text="${#strings.abbreviate(subject.description, 400)}">Bordregnemaskiner, lommeregnere</div>
+        </li>
+        <li>
+          <div>
+            <a href="subjects-view.html">Manualer</a>
+          </div>
+          <div/>
+        </li>
+        <li>
+          <div>
+            <a href="subjects-view.html">Printere</a>
+          </div>
+          <div/>
+        </li>
+      </ul>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}" />
+  </head>
+  <body>
+<header th:insert="~{layout :: bannerFragment}">
+  <h1><a href="index.html">DDHF mobilregistrering</a></h1>
+</header>
+<section id="content">
+<script>
+function nysaml() {
+//<![CDATA[
+  s = document.getElementById('samling')
+  s.readOnly = false;
+  today = new Date().toISOString().slice(0, 16)
+  s.value = "Sag " + today;
+}
+//]]>
+</script>
+<h2>Opret genstand</h2>
+<form action="items-view.html" method="post" th:object="${item}">
+<!--
+<p>
+  <label>Opret ny sag:</label>
+  <input type="checkbox" id="ny" name="ny" value="ny" onchange="nysaml()" /><label for="ny">Ja</label>
+</p>
+-->
+        <p>
+          <label>Type:</label>
+          <span th:each="type : ${types}">
+            <input type="radio" value="1" id="type1" name="klasse"
+                  th:selected="${type.id==1}"
+                  th:id="${#ids.seq('typeId')}" th:value="${type.id}" th:name="klasse"/>
+            <label for="type1" th:for="${#ids.prev('typeId')}" th:text="${type.name}">Flyttekasse</label>
+          </span>
+          <span th:remove="all">
+            <input type="radio" id="flyttekasse" name="klasse" value="flyttekasse" checked="checked"/>
+            <label for="flyttekasse">Flyttekasse</label>
+            <input type="radio" id="palle" name="klasse" value="palle"/>
+            <label for="palle">Palle</label>
+          </span>
+        </p>
+<p>
+  <label class="head" for="file">Museumssag:</label>
+        <select th:field="*{fileid}" id="file" th:remove="all-but-first">
+          <option value="15"
+              th:each="c : ${files}"
+              th:value="${c.id}" th:text="${c.title}">ALCATEL effekter</option>
+          <option value="61">Carl Christian Danielsen (2021-2022 donation)</option>
+          <option value="29">Dataco udstyr fra DSB Informatik</option>
+        </select>
+</p>
+<p>
+          <label for="lokation">Lokation:</label>
+          <select id="lokation" th:field="*{placementid}" onchange="pallevalg.style.display='block'" th:remove="all-but-first">
+            <option value="0" th:value="${location.id}" th:text="${location.headline}"
+               th:each="location: ${locations}">Sandby</option>
+            <option value="1">Nordrup</option>
+            <option value="2">Udlånt</option>
+          </select>
+</p>
+<p id="pallevalg" style="display: none">
+  <label for="paller">Palle:</label>
+ <select id="paller">
+ <option value="">Ingen</option>
+  <option value="110022">Palle 232</option>
+ </select>
+</p>
+<p>
+  <label class="head" for="id">Betegnelse:</label>
+  <input type="text" id="id" name="id" value="" class="fullwidth" />
+</p>
+<p>
+  <label class="head" for="description">Beskrivelse:</label>
+  <textarea id="description" class="fullwidth" name="description" rows="5" cols="40" th:remove="body">Dummy indhold</textarea>
+</p>
+<p>
+  <input type="submit" value="Opret" />
+</p>
+</form> 
+</section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment (webtitle=${picture.title})}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <div id="actions">
+        <button onclick="rotateit(90)" title="Roter højre">↻</button>
+        <button onclick="rotateit(-90)" title="Roter venstre">↺</button>
+      </div>
+      <h2 th:text="${picture.title}">Billede titel</h2>
+      <p>
+        <a th:href="@{/media/{p}(p=${picture.original})}">
+          <img id="mainpicture" src="../../../test/resources/static/testpicture1.jpg" th:src="@{/media/{p}(p=${picture.medium})}"/>
+        </a>
+      </p>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+    <script>//<![CDATA[
+    let currDeg = 0;
+    function rotateit(deg) {
+      currDeg += deg;
+      if (currDeg >= 360) currDeg -= 360;
+      if (currDeg < 0) currDeg += 360;
+      mp = document.getElementById("mainpicture");
+      mp.style.transform = 'rotate(' + currDeg + 'deg)';
+    }
+    // ]]></script>
+  </body>
+</html>

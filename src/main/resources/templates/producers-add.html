@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form method="post" action="producers-view.html" th:object="${producer}" th:action="@{addproducer}">
+        <h2>Opret producent</h2>
+        <div>
+          <label class="head">Navn</label>
+          <input type="text" th:field="*{title}" value="ACT Computers Ltd."/>
+          <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Field is mandatory</span>
+        </div>
+        <div>
+          <label class="head">Beskrivelse</label>
+          <textarea th:field="*{description}">En beskrivelse her.
+En beskrivelse her.
+En beskrivelse her.</textarea>
+          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Field is mandatory</span>
+        </div>
+        <input type="submit" value="Opret"/>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

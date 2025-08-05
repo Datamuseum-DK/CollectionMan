@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Roler')}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Roler</h2>
+      <table class="datatable">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Navn</th>
+          </tr>
+        </thead>
+        <tbody th:remove="all-but-first">
+          <tr th:each="role : ${roles}">
+            <td class="number">
+              <a href="roles-view.html" th:href="@{/roles/view/{id}(id=${role.id})}" th:text="${role.id}">1</a>
+            </td>
+            <td th:text="${role.name}">Administrator</td>
+          </tr>
+          <tr>
+            <td class="number">3</td>
+            <td>Genstandsvedligeholder</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header>
+      <h1 th:insert="~{layout :: bannerFragment}">
+        <a href="index.html">Forside</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Hovedmenu</h2>
+      <ul class="menu">
+        <li sec:authorize="hasAuthority('VIEW_ITEMS')">
+          <a href="items.html" th:href="@{items}">Genstande</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_ITEMS')">
+          <a href="locations.html" th:href="@{locations}">Magasiner / lokationer</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_ITEMS')">
+          <a href="scanqr.html" th:href="@{scanqr}">Scanne QR</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_FILES')">
+          <a href="files.html" th:href="@{files}">Museumssager</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_DONATORS')">
+          <a href="donors.html" th:href="@{donors}">Donatorer</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_SUBJECTS')">
+          <a href="subjects.html" th:href="@{subjects}">Emnegrupper</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_PRODUCERS')">
+          <a href="producers.html" th:href="@{producers}">Producenter</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_STED')">
+          <a href="places.html" th:href="@{places}">Brugssteder</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_USER')">
+          <a href="administration.html" th:href="@{administration}">Brugeradministration</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a href="userprofile.html" th:href="@{userprofile}">Brugerprofil</a>
+        </li>
+        <li sec:authorize="not isAuthenticated()">
+          <a th:href="@{/login}" href="login.html">Log ind</a>
+        </li>
+        <li>
+          <a href="about.html" th:href="@{about}">Brugervejledning</a>
+        </li>
+      </ul>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

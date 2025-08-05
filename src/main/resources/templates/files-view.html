@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle=${caseFile.title})}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions">
+        <button id="search" type="submit" form="actions" formaction="files.html" th:formaction="@{/files}">Liste</button>
+        <button sec:authorize="hasAuthority('CHANGE_FILES')" id="rediger" type="submit" form="actions" formaction="files-edit.html" th:formaction="@{/files/edit/{id}(id=${caseFile.id})}">Rediger</button>
+        <button type="submit" name="fileid" th:value="${caseFile.id}" formaction="item-add-form.html" th:formaction="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')" th:if="${caseFile.status}">Opret genstand</button>
+        <button sec:authorize="hasAuthority('DELETE_FILES')" id="delete" th:if="${caseFile.totalItems} == 0" type="submit" form="actions" formaction="files.html" th:formaction="@{/files/delete/{id}(id=${caseFile.id})}">Slet</button>
+      </form>
+      <h2 th:text="${caseFile.title}">Donation fra Skatteministeriet</h2>
+      <dl class="factsheet">
+        <dt>Sag nr.</dt>
+        <dd th:text="${caseFile.id}">11</dd>
+        <dt>Titel</dt>
+        <dd th:text="${caseFile.title}">Donation fra Skatteministeriet</dd>
+        <dt>Beskrivelse</dt>
+        <dd class="multiline" th:text="${caseFile.description}">En beskrivelse her.
+En beskrivelse her.
+En beskrivelse her.
+</dd>
+        <dt>Aktiv</dt>
+        <dd th:text="${caseFile.status}">True</dd>
+        <dt>Dateringsperiode</dt>
+        <dd><span th:text="${caseFile.datingfrom}">1956-06-09</span> - 
+                  <span th:text="${caseFile.datingto}">1980-01-01</span>
+              </dd>
+        <dt>Oprettet</dt>
+        <dd th:text="${#temporals.format(caseFile.created,'YYYY-MM-dd HH:mm')}">2012-05-06</dd>
+        <dt>Oprettet af</dt>
+        <dd th:text="${caseFile.creator}">User id</dd>
+        <dt>Sidst ændret</dt>
+        <dd th:text="${#temporals.format(caseFile.lastmodified,'YYYY-MM-dd HH:mm')}">2025-01-09T15:46:50</dd>
+      </dl>
+      <h3>Genstande</h3>
+      <dl>
+        <div th:remove="tag" th:each="item : ${items}">
+          <dt>
+            <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}" th:text="${item.headline}">Flyttekasse 38</a>
+          </dt>
+          <dd th:text="${#strings.defaultString(#strings.abbreviate(item.description, 160), 'Ingen beskrivelse')}">
+3 stk DDE710 tastaturer (Facit A3400) 1 stk PC-tastatur
+</dd>
+        </div>
+      </dl>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

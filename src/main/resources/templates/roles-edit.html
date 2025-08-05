@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form method="post" action="roles-view.html" th:object="${role}" th:action="@{/roles/update/{id}(id=${role.id})}">
+        <h2>Redigere rolle <span th:text="*{id}">11</span></h2>
+        <input type="hidden" value="937" th:field="*{id}"/>
+        <div>
+          <label class="head">Navn</label>
+          <input type="text" th:field="*{name}" value="auditor"/>
+          <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fielderror">Error</span>
+        </div>
+        <div>
+           <label class="leader" for="id_permissions">Rettigheder</label>
+            <select th:field="*{permissions}" id="id_permissions" multiple="multiple">
+              <option value="237" th:each="p : ${allPermissions}" th:value="${p.id}" th:text="${#strings.toUpperCase(p.codename)}">ADD_GROUP</option>
+            </select>
+        </div>
+        <input type="submit" value="Gem"/>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

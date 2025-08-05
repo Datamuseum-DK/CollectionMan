@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Genstande:'+${q})}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="search" action="items.html" method="get" th:action="@{/items}">
+        <p>
+          <input type="text" id="query" name="q" value="" th:value="${q}"/>
+          <input type="submit" value="Filtrer"/>
+        </p>
+      </form>
+      <div id="actions">
+        <form action="item-addform.html" th:action="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')">
+          <input type="hidden" name="fileid" value="26"/>
+          <input type="hidden" name="itemClass" value="5"/>
+          <input type="hidden" name="headline" value="Flyttekasse "/>
+          <button type="submit" sec:authorize="hasAuthority('ADD_ITEMS')">Opret flyttekasse</button>
+        </form>
+        <form action="item-addform.html" th:action="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')">
+          <input type="hidden" name="itemClass" value="1"/>
+          <button type="submit">Opret artefakt</button>
+        </form>
+      </div>
+      <table>
+        <tbody th:remove="all-but-first">
+          <tr th:each="item : ${items}">
+            <td>
+              <div>
+                <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}" th:text="${item.headline}">Flyttekasse RC34</a>
+              </div>
+              <div th:text="${#strings.abbreviate(item.description, 400)}">RC manualer med bl.a.: - RC4000 technical manuals - Friden Flexowriter</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">Flyttekasse RM10</a>
+              </div>
+              <div>Flyttekasse med lommeregnere, bl.a.: - TI 59 programmer - bøger om TI 59 programmer
+ - HP67 - Pgm blade 1980 - P.77 blade 1980 - TI Programmable 59 med PC-100B printer
+ - TI PC-100A i original emballage - HP82104A - div. bøger bl.a. vedr. HP25
+ og Friden fully automatic Calculator - div. guides vedr. HP og TI lommeregnere</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">Friden EC-132 regnemaskine</a>
+              </div>
+              <div>Friden EC-132 regnemaskine med tilhørende styreboks og udlæsning via en lille CRT skærm. Har kvadratrods funktion.</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">Friden Flexowriter</a>
+              </div>
+              <div>Friden Flexowriter elektromekanisk skrivemaskine med bord. Har indbygget strimmellæser og strimmelhuller.</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">Friden regnemaskine</a>
+              </div>
+              <div>Friden regnemaskine model 1152</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">ICL 1501 intelligent terminal</a>
+              </div>
+              <div>ICL 1501 intelligent terminal</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+          <a th:replace="~{paging :: paging(1, '&lt;&lt;', 'Første Side')}">&lt;&lt;</a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+          <a th:replace="~{paging :: paging(${currentPage - 1}, 'Forr', 'Forrige Side')}">Forr</a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
+          <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
+          <a th:replace="~{paging :: paging(${page}, ${page}, 'Side ' + ${page})}">#</a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
+          <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+          <a th:replace="~{paging :: paging(${currentPage + 1},'Næste', 'Næste Side')}">Næste</a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+          <a th:replace="~{paging :: paging(${totalPages}, '&gt;&gt;', 'Sidste Side')}">&gt;&gt;</a>
+        </li>
+      </ul>
+    </nav>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

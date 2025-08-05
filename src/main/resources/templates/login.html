@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header>
+      <h1 th:insert="~{layout :: bannerFragment}">
+        <a href="index.html">Forside</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Login</h2>
+      <p>
+        <a href="/oauth2/authorization/google">Log ind med Google</a>
+      </p>
+      <p>
+        <a href="/oauth2/authorization/github">Log ind med GitHb</a>
+      </p>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+   </footer>
+  </body>
+</html>

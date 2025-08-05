@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Brugervejledning</h2>
+      <p>
+Formålet med denne app er kunne lave registrering af genstande på den
+mest direkte måde. Dvs. man skal kunne bruge sin mobiltelefon og skanne
+så meget som muligt.
+</p>
+      <p>
+Mobilregistreringen dækker kun det mest nødvendige for at få så
+mange artefakter ind i databasen så hurtigt som muligt. Man kan derefter
+lægge yderligere metadata på via sin PC. Som f.eks. informationer om
+donationen, kategorier, genstanden osv.
+</p>
+      <h2>Operationer</h2>
+      <details>
+        <summary>Finde en genstand</summary>
+        <p>
+Du kan finde en genstand i databasen ved at søge på dens genstandsnr., betegnelse eller beskrivelse. Du kan scanne dens QR kode, eller bladre via sag, producent eller emnegruppe.
+</p>
+      </details>
+      <details>
+        <summary>Oprette genstand</summary>
+        <p>
+Man opretter en genstand med mobilen ved at:
+</p>
+        <ol>
+          <li>Sætte en ubrugt QR etiket på, og derefter skanne den. Programmet giver derefter mulighed for at
+oprette en genstand med det nummer.</li>
+          <li>Hvis man ikke har etiketter, oprette genstanden manuelt. Det tildeler et genstandsnr. man
+kan printe ud senere og påsætte genstanden. Indtil da, så som minimum tilføje et foto.
+</li>
+        </ol>
+      </details>
+      <details>
+        <summary>Flytte genstand</summary>
+        <p>
+Når man er på genstandens factsheet kan man klikke på <kbd>Flyt</kbd>. Derefter søger man det magasin, palle osv.,
+genstanden skal flyttes til ved at scanne containerens QR kode, eller søge efter den.
+</p>
+      </details>
+      <details>
+        <summary>Udskille genstand</summary>
+        <p>
+I tilfælde af at f.eks. en flyttekasse indeholder flere artefakter, og man ønsker at registrere en af dem særskilt,
+opretter man den normalt, og tildeler den en placering i flyttekassen.
+</p>
+      </details>
+      <h2>Teknologi</h2>
+      <p>
+Appen er udviklet i Spring Boot med Thymeleaf skabeloner og Liquibase database refactoring.
+På demo-siten kører den på et Kubernetes cluster som en <a href="https://helm.sh/">Helm</a> deployment.
+Container image ligger på <a href="https://hub.docker.com/r/sorenroug/mobilereg">https://hub.docker.com/r/sorenroug/mobilereg</a>.
+</p>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+</footer>
+  </body>
+</html>

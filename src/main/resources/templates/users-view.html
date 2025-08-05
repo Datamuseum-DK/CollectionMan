@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle=${user.username})}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions">
+        <button id="search" type="submit" form="actions" formaction="users.html" th:formaction="@{/users}">Liste</button>
+        <button id="rediger" sec:authorize="hasAuthority('CHANGE_USER')" type="submit" form="actions" formaction="users-edit.html" th:formaction="@{/users/edit/{id}(id=${user.id})}">Rediger</button>
+        <button sec:authorize="hasAuthority('DELETE_USER')" id="delete" type="submit" form="actions" formaction="users.html" th:formaction="@{/users/delete/{id}(id=${user.id})}">Slet</button>
+      </form>
+      <h2 th:text="${user.fullName}">Michael Henriksen</h2>
+      <dl class="factsheet">
+        <dt>Bruger nr.</dt>
+        <dd th:text="${user.id}">11</dd>
+        <dt>Brugernavn</dt>
+        <dd th:text="${user.username}">michen</dd>
+        <dt>Fornavn</dt>
+        <dd th:text="${user.firstName}">Michael</dd>
+        <dt>Efternavn</dt>
+        <dd th:text="${user.lastName}">Henriksen</dd>
+        <dt>Email</dt>
+        <dd th:text="${user.email}">micahel.henriksen@example.com</dd>
+        <dt>Oprettet</dt>
+        <dd th:text="${#temporals.format(user.dateJoined,'YYYY-MM-dd HH:mm')}">2012-05-06</dd>
+        <dt>Sidste login</dt>
+        <dd th:text="${#temporals.format(user.lastLogin,'YYYY-MM-dd HH:mm')}">2025-01-09T15:46:50</dd>
+        <dt>Aktiv</dt>
+        <dd th:text="${user.active}">true</dd>
+        <dt>Staff</dt>
+        <dd th:text="${user.staff}">true</dd>
+        <dt>Superbruger</dt>
+        <dd th:text="${user.superuser}">false</dd>
+      </dl>
+      <h3>Roller</h3>
+      <ul th:remove="all-but-first">
+        <li th:each="role : ${user.roles}">
+          <a href="roles-view.html" th:href="@{/roles/view/{id}(id=${role.id})}" th:text="${role.name}">Brugeradmin</a>
+        </li>
+      </ul>
+      <h3>Rettigheder</h3>
+      <ul th:remove="all-but-first">
+        <li th:each="permission : ${user.permissions}" th:text="${permission.name}">Can add groups</li>
+        <li>Can delete groups</li>
+      </ul>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Donatorer')}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions" method="get" action="donors-add.html" th:action="@{/donors/addform}">
+        <button type="submit">Ny donator</button>
+      </form>
+      <h2 class="my-5">Donatorer</h2>
+      <form action="donors.html" th:action="@{/donors}">
+        <input type="text" id="query" name="q" value="" th:value="${q}"/>
+        <input type="submit" value="Filtrer"/>
+      </form>
+      <table class="datatable">
+        <thead>
+          <tr>
+            <th scope="col">Navn</th>
+            <th scope="col">Institution</th>
+            <th scope="col">Oprettet</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="donor : ${donors}">
+            <td>
+              <a href="donors-view.html" th:href="@{/donors/view/{id}(id=${donor.id})}" th:text="${#strings.defaultString(donor.name, '(mangler)')}">Arne Lindvig Hansen</a>
+            </td>
+            <td th:text="${donor.institution}">TDC Erhverv</td>
+            <td th:text="${#temporals.format(donor.created,'YYYY-MM-dd')}">2012-05-06</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

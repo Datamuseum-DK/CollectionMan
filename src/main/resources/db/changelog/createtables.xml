@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <!-- Existing tables created as is
+       See src/ddhf_data/models.py -->
+  
+  <changeSet author="roug" id="auth01" context="createdjangodb">
+    <comment>Create the Django Auth DB</comment>
+    <createTable tableName="auth_group">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="name" type="VARCHAR(150)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+    </createTable>
+    <createTable tableName="auth_group_permissions">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="group_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="permission_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createTable tableName="auth_permission">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="content_type_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="codename" type="VARCHAR(100)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createTable tableName="auth_user">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="password" type="VARCHAR(128)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_login" type="datetime"/>
+      <column name="is_superuser" type="TINYINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="username" type="VARCHAR(150)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="first_name" type="VARCHAR(150)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_name" type="VARCHAR(150)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="email" type="VARCHAR(254)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_staff" type="TINYINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_active" type="TINYINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="date_joined" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createTable tableName="auth_user_groups">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="user_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="group_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createTable tableName="auth_user_user_permissions">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="user_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="permission_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="roug" id="ddl01" context="createdjangodb">
+    <comment>Create the Django DB</comment>
+
+    <createTable tableName="donators">
+      <column name="donatorid" type="INT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="creator" type="VARCHAR(12)">
+        <constraints nullable="false" />
+      </column>
+      <column name="created" type="DATETIME">
+        <constraints nullable="false" />
+      </column>
+      <column name="lastmodified" type="DATETIME">
+        <constraints nullable="false" />
+      </column>
+      <column name="donatorinstitution" type="VARCHAR(255)"/>
+      <column name="donatorposition" type="VARCHAR(255)"/>
+      <column name="donatorname" type="VARCHAR(255)">
+        <constraints nullable="false" />
+      </column>
+      <column name="donatoraddress" type="VARCHAR(255)"/>
+      <column name="donatorphone" type="VARCHAR(255)"/>
+      <column name="donatoremail" type="VARCHAR(255)"/>
+    </createTable>
+
+    <createIndex indexName="donators_donatorinstitution_23a2f388" tableName="donators">
+        <column name="donatorinstitution"/>
+    </createIndex>
+
+    <createIndex indexName="donators_donatorname_27a83aec" tableName="donators">
+        <column name="donatorname"/>
+    </createIndex>
+
+    <createTable tableName="files">
+      <column name="fileid" type="INT" autoIncrement="true" startWith="67">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="creator" type="VARCHAR(12)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created" type="DATETIME">
+        <constraints nullable="false"/>
+      </column>
+      <column name="lastmodified" type="DATETIME">
+        <constraints nullable="false"/>
+      </column>
+      <column name="filetitle" type="VARCHAR(255)"/>
+      <column name="filedescription" type="LONGTEXT"/>
+      <column name="datingfrom" type="DATE"/>
+      <column name="datingto" type="DATE"/>
+    </createTable>
+
+    <createTable tableName="pictures_dj">
+      <column name="pictureid" type="INT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="picturetext" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="pictureregisteredby" type="VARCHAR(12)"/>
+      <column name="pictureregistered" type="DATETIME">
+          <constraints nullable="false"/>
+      </column>
+      <column name="lastmodified" type="DATETIME">
+          <constraints nullable="false"/>
+      </column>
+      <column name="pictureoriginal" type="VARCHAR(100)">
+          <constraints nullable="false"/>
+      </column>
+      <column name="picturemedium" type="VARCHAR(100)">
+          <constraints nullable="false"/>
+      </column>
+      <column name="picturelow" type="VARCHAR(100)">
+          <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="subjects">
+      <column name="subjectid" type="INT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="creator" type="VARCHAR(12)">
+        <constraints nullable="true" />
+      </column>
+      <column name="created" type="DATETIME">
+        <constraints nullable="false"/>
+      </column>
+      <column name="lastmodified" type="DATETIME">
+          <constraints nullable="false"/>
+      </column>
+      <column name="subjecttitle" type="VARCHAR(255)"/>
+      <column name="subjectdescription" type="LONGTEXT"/>
+    </createTable>
+
+    <createTable tableName="producers">
+      <column name="producerid" type="INT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="creator" type="VARCHAR(12)">
+        <constraints nullable="true" />
+      </column>
+      <column name="created" type="DATETIME">
+        <constraints nullable="false" />
+      </column>
+      <column name="lastmodified" type="DATETIME">
+        <constraints nullable="false" />
+      </column>
+      <column name="producertitle" type="VARCHAR(255)"/>
+      <column name="producerdescription" type="LONGTEXT"/>
+    </createTable>
+
+    <createTable tableName="sted">
+      <column name="id" type="BIGINT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="stednavn" type="VARCHAR(60)"/>
+    </createTable>
+
+    <createTable tableName="items">
+      <column name="itemid" type="INT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="itemtemporary" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="olditemid" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemdeleted" type="INT"/>
+      <column name="itemheadline" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemdescription" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemsize" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemweight" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemmodeltype" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemserialno" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemdatingfrom" type="DATE"/>
+      <column name="itemdatingto" type="DATE"/>
+      <column name="itemacquiretype" type="INT"/>
+      <column name="itemdepositeduntil" type="DATE"/>
+      <column name="itemoutdated" type="INT"/>
+      <column name="itemborroweduntil" type="DATE"/>
+      <column name="itemreceived" type="DATE"/>
+      <column name="itemreceivedby" type="VARCHAR(12)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemregistered" type="DATE"/>
+      <column name="itemregisteredby" type="VARCHAR(12)"/>
+      <column name="lastmodified" type="DATETIME"/>
+      <column name="itemthanksletter" type="DATE"/>
+      <column name="placementid" type="INT"/>
+      <column name="itemlocation" type="LONGTEXT"/>
+      <column name="itemusedby" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemusedfor" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemusedwhere" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemusedfrom" type="DATE"/>
+      <column name="itemusedto" type="DATE"/>
+      <column name="itemusedendfrom" type="DATE"/>
+      <column name="itemusedendto" type="DATE"/>
+      <column name="itemextrainfo" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemrestoration" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemreferences" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="itemremarks" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="iteminternal" type="INT" defaultValueNumeric="0">
+        <constraints nullable="false"/>
+      </column>
+      <column name="donatorid" type="INT">
+        <constraints foreignKeyName="items_donatorid_260b430f_fk_donators_donatorid"
+            referencedTableName="donators" referencedColumnNames="donatorid" />
+      </column>
+      <column name="fileid" type="INT">
+        <constraints nullable="false" foreignKeyName="items_fileid_1033a2a3_fk_files_fileid"
+                referencedTableName="files" referencedColumnNames="fileid"/>
+      </column>
+      <column name="itemusedwhereid" type="BIGINT">
+        <constraints
+                foreignKeyName="items_itemusedwhereid_dc456417_fk_sted_id"
+                referencedTableName="sted" referencedColumnNames="id"
+                nullable="true"/>
+      </column>
+      <column name="producerid" type="INT">
+        <constraints foreignKeyName="items_producerid_d9b140a4_fk_producers_producerid"
+                referencedTableName="producers" referencedColumnNames="producerid"/>
+      </column>
+    </createTable>
+
+    <createIndex indexName="items_itemheadline_ddc64f39" tableName="items">
+        <column name="itemheadline"/>
+    </createIndex>
+ 
+    <createTable tableName="items_itemsubject">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="items_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="subjects_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addUniqueConstraint tableName="items_itemsubject"
+       constraintName="items_itemsubject_items_id_subjects_id_94e9c4fd_uniq"
+       columnNames="items_id,subjects_id"/>
+
+   <addForeignKeyConstraint constraintName="items_itemsubject_items_id_db071cc8_fk_items_itemid"
+       baseTableName="items_itemsubject" baseColumnNames="items_id"
+       referencedTableName="items" referencedColumnNames="itemid"
+       onUpdate="RESTRICT" onDelete="RESTRICT"/>
+
+   <addForeignKeyConstraint constraintName="items_itemsubject_subjects_id_a8fa221d_fk_subjects_subjectid"
+       baseTableName="items_itemsubject" baseColumnNames="subjects_id"
+       referencedTableName="subjects" referencedColumnNames="subjectid"
+       onUpdate="RESTRICT" onDelete="RESTRICT"/>
+
+
+    <createTable tableName="items_itempicture">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="items_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="pictures_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addUniqueConstraint columnNames="items_id, pictures_id"
+         constraintName="items_itempicture_items_id_pictures_id_d8c638c0_uniq" tableName="items_itempicture"/>
+
+   <addForeignKeyConstraint constraintName="items_itempicture_items_id_2545c9eb_fk_items_itemid"
+       baseTableName="items_itempicture" baseColumnNames="items_id"
+       referencedTableName="items" referencedColumnNames="itemid"
+       onDelete="RESTRICT" onUpdate="RESTRICT"/>
+
+   <addForeignKeyConstraint constraintName="items_itempicture_pictures_id_a5af6380_fk_pictures_dj_pictureid"
+       baseTableName="items_itempicture" baseColumnNames="pictures_id"
+       referencedTableName="pictures_dj" referencedColumnNames="pictureid"
+       onDelete="RESTRICT" onUpdate="RESTRICT"/>
+
+  </changeSet>
+
+  <!-- New tables -->
+  <changeSet author="roug" id="ddl02">
+    <comment>New tables</comment>
+
+    <createTable tableName="item_class">
+      <column name="id" type="INT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="level" type="INT"/>
+      <column name="name" type="VARCHAR(255)">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <!-- Item classes -->
+    <insert tableName="item_class">
+      <column name="id" valueNumeric="1"/>
+      <column name="level" valueNumeric="100"/>
+      <column name="name" value="Artefakt"/>
+    </insert>
+    <insert tableName="item_class"> <!-- 2 -->
+      <column name="id" valueNumeric="2"/>
+      <column name="level" valueNumeric="0"/>
+      <column name="name" value="Lokation"/>
+    </insert>
+    <insert tableName="item_class"> <!-- 3 -->
+      <column name="id" valueNumeric="3"/>
+      <column name="level" valueNumeric="10"/>
+      <column name="name" value="Palle"/>
+    </insert>
+    <insert tableName="item_class">
+      <column name="id" valueNumeric="4"/>
+      <column name="level" valueNumeric="15"/>
+      <column name="name" value="Halvpalle"/>
+    </insert>
+    <insert tableName="item_class">  <!-- 5 -->
+      <column name="id" valueNumeric="5"/>
+      <column name="level" valueNumeric="20"/>
+      <column name="name" value="Flyttekasse"/>
+    </insert>
+    <insert tableName="item_class">
+      <column name="id" valueNumeric="6"/>
+      <column name="level" valueNumeric="5"/>
+      <column name="name" value="Pallereol"/>
+    </insert>
+
+    <!--
+    <createTable tableName="notes">
+      <column name="id" type="INT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="item_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="creator" type="VARCHAR(32)" defaultValue="ukendt">
+        <constraints nullable="false" />
+      </column>
+      <column name="created" type="DATETIME"/>
+      <column name="content" type="LONGTEXT">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+    -->
+
+  </changeSet>
+
+  <!-- Changes to old tables -->
+
+  <changeSet author="roug" id="ddl03">
+    <addColumn tableName="items">
+      <column name="itemclassid" type="INT" defaultValueNumeric="1">
+        <constraints foreignKeyName="fk_itemclass" referencedTableName="item_class" referencedColumnNames="id" />
+      </column>
+    </addColumn>
+    <addColumn tableName="files">
+      <column name="status" type="BOOLEAN" defaultValueBoolean="false"/>
+    </addColumn>
+  </changeSet>
+
+  <!-- Change size of audit fields -->
+  <changeSet author="roug" id="ddl04">
+
+    <modifyDataType tableName="producers"
+      columnName="creator" newDataType="VARCHAR(32)"/>
+
+    <modifyDataType tableName="subjects"
+      columnName="creator" newDataType="VARCHAR(32)"/>
+
+    <modifyDataType tableName="files"
+      columnName="creator" newDataType="VARCHAR(32)"/>
+
+    <modifyDataType tableName="donators"
+      columnName="creator" newDataType="VARCHAR(32)"/>
+
+    <modifyDataType tableName="pictures_dj"
+      columnName="pictureregisteredby" newDataType="VARCHAR(32)"/>
+
+  </changeSet>
+
+  <changeSet author="roug" id="ddl05">
+    <addColumn tableName="items">
+      <column name="qrcode" type="INT">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
+  </changeSet>
+
+</databaseChangeLog>

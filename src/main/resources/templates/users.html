@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Brugere')}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions" method="get" action="users-add.html" th:action="@{/users/addform}">
+        <button type="submit">Ny bruger</button>
+      </form>
+      <div th:switch="${users}">
+        <h2 th:case="null">Ingen brugere</h2>
+        <div th:case="*">
+          <h2>Brugere</h2>
+          <table class="datatable">
+            <thead>
+              <tr>
+                <th>Brugernavn</th>
+                <th>Navn</th>
+                <th>Aktiv</th>
+                <th>Staff</th>
+                <th>Superuser</th>
+                <th>Oprettet</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="user : ${users}">
+                <td>
+                  <a href="users-view.html" th:href="@{/users/view/{id}(id=${user.id})}" th:text="${user.username}">henrika</a>
+                </td>
+                <td th:text="${user.fullName}">Henrik Andersen</td>
+                <td th:text="${user.active}">true</td>
+                <td th:text="${user.staff}">true</td>
+                <td th:text="${user.superuser}">false</td>
+                <td th:text="${#temporals.format(user.dateJoined,'YYYY-MM-dd')}">2012-05-06</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

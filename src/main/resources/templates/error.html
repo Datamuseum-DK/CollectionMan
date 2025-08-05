@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">Fejl</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Fejl</h2>
+      <p th:if="${url}">
+		<b>Side:</b> <span th:text="${url}">Page URL</span>
+	</p>
+
+	<p th:if="${timestamp}" id='created'>
+		<b>Tidspunkt:</b> <span th:text="${timestamp}">Timestamp</span>
+	</p>
+
+	<p th:if="${status}">
+		<b>Svarkode:</b> <span th:text="${status}">status-code</span> <span
+			th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+	</p>
+        <!--
+        <div th:text="'Exception: ' + ${exception.message}">${exception.message}</div>
+	<ul>
+            <li th:each="ste : ${exception.stackTrace}">
+            <span th:text="${ste}" th:remove="tag">${ste}</span></li>
+	</ul>
+        -->
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+</footer>
+  </body>
+</html>

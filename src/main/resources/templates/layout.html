@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="da">
+  <head th:fragment="headerFragment">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${webtitle}?:'DDHF mobilregistrering'">DDHF mobilregistrering</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/tabstyles.css" th:href="@{/css/tabstyles.css}"/>
+    <script th:src="@{/js/tabops.js}" src="../static/js/tabops.js"><![CDATA[ ]]></script>
+  </head>
+  <body>
+    <header>
+      <h1 th:fragment="bannerFragment">
+        <a href="index.html" th:href="@{/}">DDHF genstandsdatabase</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Level 2 heading</h2>
+      <p>
+Technologies turn-key reinvent <a href="http://bullshitipsum.com/?paragraphs=5">portals synergies interfaces</a>,
+"next-generation," folksonomies, compelling deploy, syndicate integrated
+brand relationships ubiquitous B2B tagclouds. Generate enable technologies
+sexy wireless, user-centred e-enable, "bleeding-edge functionalities,"
+streamline viral, e-business exploit widgets evolve e-business
+productize create. Bleeding-edge incentivize reinvent, synthesize
+innovate syndicate. Real-time viral transform maximize disintermediate
+value-added maximize iterate channels podcasting eyeballs implement
+disintermediate mindshare intuitive innovative rss-capable compelling
+web services podcasts best-of-breed. Engage applications.
+</p>
+      <h2>Level 2 heading</h2>
+      <p>
+Webservices cutting-edge ubiquitous e-markets one-to-one matrix
+world-class reintermediate folksonomies disintermediate 24/365 e-business
+world-class viral partnerships A-list: synergistic dot-com e-markets
+grow A-list redefine. Web-enabled metrics communities redefine monetize
+web-readiness e-services unleash, real-time, content communities value
+recontextualize architect.
+</p>
+      <h3>Level 3 heading</h3>
+      <p>
+Completely synergize resource sucking relationships via premier niche
+markets. Professionally cultivate one-to-one customer service with robust
+ideas. Dynamically innovate resource-leveling customer service for state
+of the art customer service.
+</p>
+      <h4>Level4 heading</h4>
+      <p>List</p>
+      <ul>
+        <li>Oranges</li>
+        <li>Pears</li>
+      </ul>
+      <p>Data table</p>
+      <table class="datatable">
+        <thead>
+          <tr>
+            <th scope="col">Identifier</th>
+            <th scope="col">Column 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="number">1</td>
+            <td>Translation not available</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <!-- container -->
+    <footer th:fragment="footerFragment">
+      <div style="width:1em; float:right" title="RSS kommer her">π</div>
+      <p sec:authorize="isAuthenticated()">Log ud: <a th:href="@{/logout}" href="login.html" th:text="${#authentication.name}">Bob</a></p>
+      <p sec:authorize="not isAuthenticated()">Bruger: <a th:href="@{/login}" href="login.html">Anonym</a></p>
+    </footer>
+  </body>
+</html>

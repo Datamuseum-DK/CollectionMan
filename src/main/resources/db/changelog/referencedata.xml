@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <property  name="locations.id"  value="66"/>
+
+  <changeSet author="roug" id="ref001">
+    <preConditions onFail="HALT">
+      <sqlCheck expectedResult="0">
+       SELECT COUNT(1) FROM files WHERE fileid=${locations.id}
+      </sqlCheck>
+    </preConditions>
+    <comment>Add file for locations</comment>
+    <insert tableName="files">
+      <column name="fileid" valueNumeric="${locations.id}"/>
+      <column name="filetitle" value="Lokationer"/>
+      <column name="filedescription" value="Magasiner, pallereoler, og andet ikke flytbart"/>
+      <column name="created" valueDate="2024-12-06T12:39:36"/>
+      <column name="creator" value="sr"/>
+      <column name="datingfrom" valueDate="2001-01-01"/>
+      <column name="datingto" valueDate="2024-12-31"/>
+      <column name="lastmodified" valueDate="2024-12-06T12:39:36"/>
+      <column name="status" valueBoolean="false"/>
+    </insert>
+  </changeSet>
+
+
+  <changeSet author="roug" id="ref002">
+    <comment>Add locations</comment>
+    <insert tableName="items">
+      <column name="itemid" valueNumeric="10000030"/>
+      <column name="itemtemporary" valueNumeric="0"/>
+      <column name="olditemid" value=""/>
+      <column name="itemclassid" valueNumeric="1"/>
+      <column name="itemheadline" value="Ukendt lokation"/>
+      <column name="iteminternal" valueNumeric="0"/>
+      <column name="itemdescription" value="Ukendt lokation - bør være tom"/>
+      <column name="itemsize" value=""/>
+      <column name="itemweight" value=""/>
+      <column name="itemmodeltype" value=""/>
+      <column name="itemserialno" value=""/>
+      <column name="itemacquiretype" valueNumeric="0"/>
+      <column name="itemreceivedby" value=""/>
+      <column name="fileid" valueNumeric="${locations.id}"/>
+      <column name="itemusedby" value=""/>
+      <column name="itemusedfor" value=""/>
+      <column name="itemusedwhere" value=""/>
+      <column name="itemextrainfo" value=""/>
+      <column name="itemrestoration" value=""/>
+      <column name="itemreferences" value=""/>
+      <column name="itemremarks" value=""/>
+    </insert>
+    <insert tableName="items">
+      <column name="itemid" valueNumeric="10000031"/>
+      <column name="itemtemporary" valueNumeric="0"/>
+      <column name="olditemid" value=""/>
+      <column name="itemclassid" valueNumeric="1"/>
+      <column name="itemheadline" value="Tapeten"/>
+      <column name="iteminternal" valueNumeric="0"/>
+      <column name="itemdescription" value="200 kvm i Ballerup"/>
+      <column name="itemsize" value=""/>
+      <column name="itemweight" value=""/>
+      <column name="itemmodeltype" value=""/>
+      <column name="itemserialno" value=""/>
+      <column name="itemacquiretype" valueNumeric="0"/>
+      <column name="itemreceivedby" value=""/>
+      <column name="fileid" valueNumeric="${locations.id}"/>
+      <column name="itemusedby" value=""/>
+      <column name="itemusedfor" value=""/>
+      <column name="itemusedwhere" value=""/>
+      <column name="itemextrainfo" value=""/>
+      <column name="itemrestoration" value=""/>
+      <column name="itemreferences" value=""/>
+      <column name="itemremarks" value=""/>
+    </insert>
+    <insert tableName="items">
+      <column name="itemid" valueNumeric="10000032"/>
+      <column name="itemtemporary" valueNumeric="0"/>
+      <column name="olditemid" value=""/>
+      <column name="itemclassid" valueNumeric="1"/>
+      <column name="itemheadline" value="Sandby magasin"/>
+      <column name="iteminternal" valueNumeric="0"/>
+      <column name="itemdescription" value="Magasin i Ringsted"/>
+      <column name="itemsize" value=""/>
+      <column name="itemweight" value=""/>
+      <column name="itemmodeltype" value=""/>
+      <column name="itemserialno" value=""/>
+      <column name="itemacquiretype" valueNumeric="0"/>
+      <column name="itemreceivedby" value=""/>
+      <column name="fileid" valueNumeric="${locations.id}"/>
+      <column name="itemusedby" value=""/>
+      <column name="itemusedfor" value=""/>
+      <column name="itemusedwhere" value=""/>
+      <column name="itemextrainfo" value=""/>
+      <column name="itemrestoration" value=""/>
+      <column name="itemreferences" value=""/>
+      <column name="itemremarks" value=""/>
+    </insert>
+    <insert tableName="items">
+      <column name="itemid" valueNumeric="10000033"/>
+      <column name="itemtemporary" valueNumeric="0"/>
+      <column name="olditemid" value=""/>
+      <column name="itemclassid" valueNumeric="1"/>
+      <column name="itemheadline" value="Nordrup magasin"/>
+      <column name="iteminternal" valueNumeric="0"/>
+      <column name="itemdescription" value="Magasin i Ringsted"/>
+      <column name="itemsize" value=""/>
+      <column name="itemweight" value=""/>
+      <column name="itemmodeltype" value=""/>
+      <column name="itemserialno" value=""/>
+      <column name="itemacquiretype" valueNumeric="0"/>
+      <column name="itemreceivedby" value=""/>
+      <column name="fileid" valueNumeric="${locations.id}"/>
+      <column name="itemusedby" value=""/>
+      <column name="itemusedfor" value=""/>
+      <column name="itemusedwhere" value=""/>
+      <column name="itemextrainfo" value=""/>
+      <column name="itemrestoration" value=""/>
+      <column name="itemreferences" value=""/>
+      <column name="itemremarks" value=""/>
+    </insert>
+    <insert tableName="items">
+      <column name="itemid" valueNumeric="10000034"/>
+      <column name="itemtemporary" valueNumeric="0"/>
+      <column name="olditemid" value=""/>
+      <column name="itemclassid" valueNumeric="1"/>
+      <column name="itemheadline" value="Charlotteskolen"/>
+      <column name="iteminternal" valueNumeric="0"/>
+      <column name="itemdescription" value="Museet i Hedehusene"/>
+      <column name="itemsize" value=""/>
+      <column name="itemweight" value=""/>
+      <column name="itemmodeltype" value=""/>
+      <column name="itemserialno" value=""/>
+      <column name="itemacquiretype" valueNumeric="0"/>
+      <column name="itemreceivedby" value=""/>
+      <column name="fileid" valueNumeric="${locations.id}"/>
+      <column name="itemusedby" value=""/>
+      <column name="itemusedfor" value=""/>
+      <column name="itemusedwhere" value=""/>
+      <column name="itemextrainfo" value=""/>
+      <column name="itemrestoration" value=""/>
+      <column name="itemreferences" value=""/>
+      <column name="itemremarks" value=""/>
+    </insert>
+    <insert tableName="items">
+      <column name="itemid" valueNumeric="10000035"/>
+      <column name="itemtemporary" valueNumeric="0"/>
+      <column name="olditemid" value=""/>
+      <column name="itemclassid" valueNumeric="1"/>
+      <column name="itemheadline" value="Renge magasin"/>
+      <column name="iteminternal" valueNumeric="0"/>
+      <column name="itemdescription" value="Magasin ved Store Heddinge"/>
+      <column name="itemsize" value=""/>
+      <column name="itemweight" value=""/>
+      <column name="itemmodeltype" value=""/>
+      <column name="itemserialno" value=""/>
+      <column name="itemacquiretype" valueNumeric="0"/>
+      <column name="itemreceivedby" value=""/>
+      <column name="fileid" valueNumeric="${locations.id}"/>
+      <column name="itemusedby" value=""/>
+      <column name="itemusedfor" value=""/>
+      <column name="itemusedwhere" value=""/>
+      <column name="itemextrainfo" value=""/>
+      <column name="itemrestoration" value=""/>
+      <column name="itemreferences" value=""/>
+      <column name="itemremarks" value=""/>
+    </insert>
+    <insert tableName="items">
+      <column name="itemid" valueNumeric="10000036"/>
+      <column name="itemtemporary" valueNumeric="0"/>
+      <column name="olditemid" value=""/>
+      <column name="itemclassid" valueNumeric="1"/>
+      <column name="itemheadline" value="Udlånt"/>
+      <column name="iteminternal" valueNumeric="0"/>
+      <column name="itemdescription" value="Udlånt"/>
+      <column name="itemsize" value=""/>
+      <column name="itemweight" value=""/>
+      <column name="itemmodeltype" value=""/>
+      <column name="itemserialno" value=""/>
+      <column name="itemacquiretype" valueNumeric="0"/>
+      <column name="itemreceivedby" value=""/>
+      <column name="fileid" valueNumeric="${locations.id}"/>
+      <column name="itemusedby" value=""/>
+      <column name="itemusedfor" value=""/>
+      <column name="itemusedwhere" value=""/>
+      <column name="itemextrainfo" value=""/>
+      <column name="itemrestoration" value=""/>
+      <column name="itemreferences" value=""/>
+      <column name="itemremarks" value=""/>
+    </insert>
+  </changeSet>
+
+</databaseChangeLog>

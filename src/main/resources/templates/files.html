@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Sager')}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions" method="get" action="files-add.html" th:action="@{/files/addform}">
+        <button type="submit">Ny sag</button>
+      </form>
+      <div th:switch="${files}" class="container my-5">
+        <h2 th:case="null">Ingen sager</h2>
+        <div th:case="*">
+          <h2 class="my-5">Sager</h2>
+          <table class="datatable">
+            <thead>
+              <tr>
+                <th>Navn</th>
+                <th>Genstande</th>
+                <th>Aktiv</th>
+                <th>Oprettet</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="file : ${files}">
+                <td><a href="files-view.html"
+                    th:href="@{/files/view/{id}(id=${file.id})}"
+                    th:text="${file.title}">Fra turistministeriet</a></td>
+                <td class="number" th:text="${file.totalItems}">4</td>
+                <td th:text="${file.status}">true</td>
+                <td th:text="${#temporals.format(file.created,'YYYY-MM-dd')}">2012-05-06</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

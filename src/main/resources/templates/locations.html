@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Lokationer</h2>
+      <ul th:remove="all-but-first">
+      <li th:each="item : ${items}">
+        <div>
+          <a href="items-view.html"
+          th:href="@{/items/view/{id}(id=${item.id})}" th:text="${item.headline}">Charlotteskolen</a>
+        </div>
+        <div th:text="${#strings.abbreviate(item.description, 400)}">Museet i Hedehusene</div>
+      </li>
+      <li>
+        <div>
+          <a href="items-view.html">Sandby</a>
+        </div>
+        <div>Magasin i Ringsted</div>
+      </li>
+      <li>
+        <div>
+          <a href="items-view.html">Ukendt lokation</a>
+        </div>
+        <div>Ukendt lokation - bør være tom</div>
+      </li>
+      </ul>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

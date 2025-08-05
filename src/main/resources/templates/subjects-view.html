@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions">
+        <button id="search" type="submit" form="actions" formaction="subjects.html" th:formaction="@{/subjects}">Liste</button>
+        <button id="rediger" sec:authorize="hasAuthority('CHANGE_SUBJECTS')" type="submit" form="actions" formaction="subjects-edit.html" th:formaction="@{/subjects/edit/{id}(id=${subject.subjectid})}">Rediger</button>
+        <button sec:authorize="hasAuthority('DELETE_SUBJECTS')" id="delete" th:if="${subject.totalItems} == 0" type="submit" form="actions" formaction="subjects.html"
+th:formaction="@{/subjects/delete/{id}(id=${subject.subjectid})}">Slet</button>
+      </form>
+      <h2 th:text="${subject.title}">Emnegruppe</h2>
+      <p style="white-space: pre-wrap;" th:text="${subject.description}">Emnebeskrivelse
+      </p>
+      <div th:if="${not #lists.isEmpty(subject.items)}">
+        <h3>Genstande</h3>
+        <dl>
+          <div th:remove="tag" th:each="item : ${subject.items}">
+            <dt>
+              <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}" th:text="${item.headline}">Flyttekasse 38</a>
+            </dt>
+            <dd th:text="${#strings.abbreviate(item.description, 160)}">3 stk DDE710 tastaturer (Facit A3400) 1 stk PC-tastatur</dd>
+          </div>
+        </dl>
+        <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
+          <ul class="pagination">
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+              <a th:replace="~{paging :: items(1, '&lt;&lt;', 'Første Side')}">&lt;&lt;</a>
+            </li>
+            <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+              <a th:replace="~{paging :: items(${currentPage - 1}, 'Forr', 'Forrige Side')}">Forr.</a>
+            </li>
+            <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
+              <a class="page-link" href="#">...</a>
+            </li>
+            <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
+              <a th:replace="~{paging :: items(${page}, ${page}, 'Side ' + ${page})}">#</a>
+            </li>
+            <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
+              <a class="page-link" href="#">...</a>
+            </li>
+            <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+              <a th:replace="~{paging :: items(${currentPage + 1},'Næste', 'Næste Side')}">Næste</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+              <a th:replace="~{paging :: items(${totalPages}, '&gt;&gt;', 'Sidste Side')}">&gt;&gt;</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

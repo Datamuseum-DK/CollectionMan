@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header>
+      <h1 th:insert="~{layout :: bannerFragment}">
+        <a href="index.html">Administration</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Brugeradministration</h2>
+      <ul class="menu">
+        <li sec:authorize="hasAuthority('VIEW_USER')">
+          <a href="users.html" th:href="@{users}">Brugere</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_GROUP')">
+          <a href="roles.html" th:href="@{roles}">Roller</a>
+        </li>
+        <li sec:authorize="hasAuthority('VIEW_PERMISSION')">
+          <a href="permissions.html" th:href="@{permissions}">Rettigheder</a>
+        </li>
+      </ul>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

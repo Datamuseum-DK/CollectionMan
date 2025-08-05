@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle=${role.name})}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions">
+        <button id="search" type="submit" form="actions" formaction="roles.html" th:formaction="@{/roles}">Liste</button>
+        <button id="rediger" sec:authorize="hasAuthority('CHANGE_GROUP')" type="submit" form="actions" formaction="roles-edit.html" th:formaction="@{/roles/edit/{id}(id=${role.id})}">Rediger</button>
+        <button sec:authorize="hasAuthority('DELETE_GROUP')" id="delete" type="submit" form="actions" formaction="roles.html" th:formaction="@{/roles/delete/{id}(id=${role.id})}">Slet</button>
+      </form>
+      <h2 th:text="${role.name}">brugeradmin</h2>
+      <dl class="factsheet">
+        <dt>Role nr.</dt>
+        <dd th:text="${role.id}">11</dd>
+        <dt>Navn</dt>
+        <dd th:text="${role.name}">brugeradmin</dd>
+      </dl>
+      <h3>Rettigheder</h3>
+      <ul th:remove="all-but-first">
+        <li th:each="permission : ${role.permissions}" th:text="${#strings.toUpperCase(permission.codename)}" th:title="${permission.name}">ADD_GROUP</li>
+        <li title="Can delete group">DELETE_GROUP</li>
+      </ul>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

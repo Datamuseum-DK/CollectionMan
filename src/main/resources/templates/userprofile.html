@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Min profil: <em th:text="${#authentication.name}">login</em></h2>
+      <h3>Autoriteter</h3>
+      <ol>
+        <li th:each="val : ${#authentication.authorities}">
+          <span th:text="${val}" th:remove="tag">SCOPE_read:user</span>
+        </li>
+      </ol>
+
+      <!--
+      <h3>Attributter</h3>
+      <ul>
+        <li th:each="val : ${#authentication.principal.attributes}">
+          <span th:text="${val}" th:remove="tag">location=Copenhagen</span>
+        </li>
+      </ul>
+<p th:text="${#authentication.principal}">
+Bruger profile her
+</p>
+-->
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+</footer>
+  </body>
+</html>

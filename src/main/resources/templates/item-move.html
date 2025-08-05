@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Flyt: <span th:text="${item.headline}">RC8000</span></h2>
+      <form method="post" action="items-view.html"
+              th:object="${item}" th:action="@{/items/updateplace/{id}(id=${item.id})}">
+        <label>Genstand nr.:</label>
+        <span th:text="*{id}">21000937</span>
+        <label class="head" for="plads">Placering:</label>
+
+        <select id="plads" th:field="*{placementid}" th:remove="all-but-first">
+
+          <option value="11004993"
+           th:each="place : ${places}" th:text="${place.headline}" th:value="${place.id}"
+           >Tapeten</option>
+          <option value="11004997">Charlotteskolen</option>
+          <option value="11004998">Sandby</option>
+          <option value="11004999">Ukendt</option>
+          <optgroup label="Sandby">
+            <option value="11001009">Palle 11001009</option>
+            <option value="11001032">Palle 11001032</option>
+            <option value="11001036">Palle 11001036</option>
+            <option value="11001110">Palle 11001110</option>
+            <option value="11001132">Palle 11001132</option>
+            <option value="11001189">Palle 11001189</option>
+            <option value="11001192">Palle 11001192</option>
+            <option value="11001208">Palle 11001208</option>
+            <option value="11001212">Palle 11001212</option>
+          </optgroup>
+          <optgroup label="Norddrup">
+            <option value="11000968">Palle 287</option>
+          </optgroup>
+        </select>
+        <input type="submit" value="Flyt"/>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

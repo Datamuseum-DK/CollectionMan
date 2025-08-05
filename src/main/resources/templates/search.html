@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">Søge genstand</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form action="results.html" th:action="@{/items/results}" method="get">
+        <p>
+          <label for="query">Søgning:</label>
+          <br/>
+          <input type="text" id="query" name="query" value="" />
+        </p>
+        <p>
+          <input type="submit" value="Søg" />
+        </p>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

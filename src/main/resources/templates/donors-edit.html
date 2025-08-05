@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment (webtitle=${donor.name})}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form method="post" action="donors-view.html" th:object="${donor}" th:action="@{/donors/update/{id}(id=${donor.id})}">
+        <h2>Redigere donor <span th:text="*{id}">11</span></h2>
+        <input type="hidden" value="11" th:field="*{id}"/>
+        <input type="hidden" th:field="*{creator}"/>
+        <input type="hidden" th:field="*{created}"/>
+        <div>
+          <label class="leader">Navn</label>
+          <input type="text" th:field="*{name}" value="Pippi Langstrømpe"/>
+          <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fielderror">Field is mandatory</span>
+        </div>
+        <div>
+          <label class="leader">Stilling</label>
+          <input type="text" th:field="*{position}" value="Sanger"/>
+          <span th:if="${#fields.hasErrors('position')}" th:errors="*{position}" class="fielderror">Field is mandatory</span>
+        </div>
+        <div>
+          <label class="leader">Institution</label>
+          <input type="text" th:field="*{institution}" value="Den Selvejende Villa Villekulla"/>
+          <span th:if="${#fields.hasErrors('institution')}" th:errors="*{institution}" class="fielderror">Field is mandatory</span>
+        </div>
+        <div>
+          <label class="leader">Telefon</label>
+          <input type="text" th:field="*{phone}" value="50292399"/>
+          <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="fielderror">Field is mandatory</span>
+        </div>
+        <div>
+          <label class="leader">Email</label>
+          <input type="text" th:field="*{email}" value="mailbox@example.com"/>
+          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fielderror">Field is mandatory</span>
+        </div>
+        <div>
+          <label class="head">Adresse</label>
+          <textarea th:field="*{address}">En beskrivelse her.
+En beskrivelse her.
+En beskrivelse her.</textarea>
+          <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fielderror">Field is mandatory</span>
+        </div>
+        <input type="submit" value="Gem"/>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form method="post" action="users-view.html" th:object="${user}" th:action="@{/users/update/{id}(id=${user.id})}">
+        <h2>Redigere bruger <span th:text="*{id}">11</span></h2>
+        <input type="hidden" value="11000937" th:field="*{id}"/>
+        <input type="hidden" th:field="*{dateJoined}"/>
+        <input type="hidden" th:field="*{lastLogin}"/>
+        <div>
+          <label class="leader">Brugernavn</label>
+          <input type="text" th:field="*{username}" value="sroug"/>
+          <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="fielderror">Error</span>
+        </div>
+        <div>
+          <label class="leader">Fornavn</label>
+          <input type="text" th:field="*{firstName}" value="S&#xF8;ren"/>
+          <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="fielderror">Error</span>
+        </div>
+        <div>
+          <label class="leader">Efternavn</label>
+          <input type="text" th:field="*{lastName}" value="Roug"/>
+          <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="fielderror">Error</span>
+        </div>
+        <div>
+          <label class="leader">Email</label>
+          <input type="text" th:field="*{email}" value="sorenroug@example.com"/>
+          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fielderror">Error</span>
+        </div>
+        <div>
+          <label class="leader">Kodeord</label>
+          <input type="password" th:field="*{password}" value="Kodeord"/>
+          <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fielderror">Error</span>
+        </div>
+        <div><label class="leader">Aktiv</label><input type="checkbox" th:field="*{active}"/> Ja
+          <span th:if="${#fields.hasErrors('active')}" th:errors="*{active}" class="fielderror">Error</span>
+        </div>
+        <div><label class="leader">Staff</label><input type="checkbox" th:field="*{staff}"/> Ja
+          <span th:if="${#fields.hasErrors('staff')}" th:errors="*{staff}" class="fielderror">Error</span>
+        </div>
+        <div><label class="leader">Superbruger</label><input type="checkbox" th:field="*{superuser}"/> Ja
+          <span th:if="${#fields.hasErrors('superuser')}" th:errors="*{superuser}" class="fielderror">Error</span>
+        </div>
+        <h3>Roller</h3>
+        <select th:field="*{roles}" id="id_roles" multiple="multiple">
+          <option value="237" th:each="r : ${allRoles}" th:value="${r.id}" th:text="${r.name}">Admin</option>
+        </select>
+        <h3>Rettigheder</h3>
+        <select th:field="*{permissions}" id="id_permissions" multiple="multiple">
+          <option value="237" th:each="p : ${allPermissions}" th:value="${p.id}" th:text="${p.name}">Can add groups</option>
+        </select>
+        <div>
+          <input type="submit" value="Gem"/>
+        </div>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

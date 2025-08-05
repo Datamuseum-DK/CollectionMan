@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions">
+        <button id="search" type="submit" form="actions" formaction="donors.html" th:formaction="@{/donors}">Liste</button>
+        <button sec:authorize="hasAuthority('CHANGE_DONATORS')" id="rediger" type="submit" form="actions" formaction="donors-edit.html" th:formaction="@{/donors/edit/{id}(id=${donor.id})}">Rediger</button>
+        <button sec:authorize="hasAuthority('DELETE_DONATORS')" id="delete" type="submit" form="actions" formaction="donors.html" th:formaction="@{/donors/delete/{id}(id=${donor.id})}">Slet</button>
+      </form>
+      <h2 th:text="${donor.name}">Henning Lindholm</h2>
+      <dl class="factsheet">
+        <dt>Donator nr.</dt>
+        <dd th:text="${donor.id}">11</dd>
+        <dt>Navn</dt>
+        <dd th:text="${donor.name}">Henning Lindholm</dd>
+        <dt>Stilling</dt>
+        <dd th:text="${donor.position}">Vicevært</dd>
+        <dt>Institution</dt>
+        <dd th:text="${donor.institution}">KVL, Agroteknik</dd>
+        <dt>Adresse</dt>
+        <dd class="multiline" th:text="${#strings.trim(donor.address)}">Vejnavn nr.
+En beskrivelse her.
+En beskrivelse her.
+</dd>
+        <dt>Telefon</dt>
+        <dd th:text="${donor.phone}">4594 9851</dd>
+        <dt>Email</dt>
+        <dd th:text="${donor.email}">noreply@example.com</dd>
+        <dt>Oprettet</dt>
+        <dd th:text="${#temporals.format(donor.created,'YYYY-MM-dd HH:mm')}">2025-01-09T15:46:50</dd>
+        <dt>Oprettet af</dt>
+        <dd th:text="${donor.creator}">User id</dd>
+        <dt>Sidst ændret</dt>
+        <dd th:text="${#temporals.format(donor.lastmodified,'YYYY-MM-dd HH:mm')}">2025-01-09T15:46:50</dd>
+      </dl>
+      <h3>Genstande</h3>
+      <dl>
+        <div th:remove="tag" th:each="item : ${items}">
+          <dt>
+            <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}" th:text="${item.headline}">Flyttekasse 38</a>
+          </dt>
+          <dd th:text="${#strings.defaultString(#strings.abbreviate(item.description, 160), 'Ingen beskrivelse')}">
+3 stk DDE710 tastaturer (Facit A3400) 1 stk PC-tastatur
+</dd>
+        </div>
+      </dl>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

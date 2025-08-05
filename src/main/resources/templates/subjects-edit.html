@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form method="post" action="subjects-view.html" th:object="${subject}" th:action="@{/subjects/update/{id}(id=${subject.subjectid})}">
+        <h2>Redigere emne <span th:text="*{subjectid}">11</span></h2>
+        <input type="hidden" value="937" th:field="*{subjectid}"/>
+        <input type="hidden" th:field="*{creator}"/>
+        <input type="hidden" th:field="*{created}"/>
+        <div>
+          <label class="head">Titel</label>
+          <input type="text" th:field="*{title}" value="Donation fra Skatteministeriet"/>
+          <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Error</span>
+        </div>
+        <div>
+          <label class="head">Beskrivelse</label>
+          <textarea th:field="*{description}">
+En beskrivelse her.
+En beskrivelse her.
+En beskrivelse her.</textarea>
+          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Error</span>
+        </div>
+        <input type="submit" value="Gem"/>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

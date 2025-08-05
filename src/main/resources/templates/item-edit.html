@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment (webtitle='Redigere: ' + ${item.headline})}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/tabstyles.css" th:href="@{/css/tabstyles.css}"/>
+    <script th:src="@{/js/tabops.js}" src="../static/js/tabops.js"><![CDATA[ ]]></script>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistring</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2 th:text="'Redigere ' + ${item.headline}">Redigere genstand</h2>
+      <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'Kontekst')">Kontekst</button>
+        <button class="tablinks" onclick="openTab(event, 'Identifikation')">Identifikation</button>
+        <button class="tablinks" onclick="openTab(event, 'Erhvervelse')">Erhvervelse</button>
+        <button class="tablinks" onclick="openTab(event, 'Brugsaktivitet')">Brug</button>
+        <button class="tablinks" onclick="openTab(event, 'Notater')">Notater</button>
+      </div>
+      <form method="post" action="items-view.html" th:object="${item}" th:action="@{/items/update/{id}(id=${item.id})}">
+        <fieldset id="Kontekst" class="tabcontent" style="display:block">
+          <legend>Kontekst</legend>
+          <input type="hidden" th:field="*{itemtemporary}"/>
+          <input type="hidden" th:field="*{olditemid}"/>
+          <input type="hidden" th:field="*{iteminternal}"/>
+          <input id="genstand" name="id" type="hidden" th:field="*{id}"/>
+          <!--/*-->
+          <label class="leader" for="genstand">Genstand nr.:</label>
+          <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="fielderror">Error</span>
+          <!--*/-->
+          <div>
+            <label class="leader required" for="file">Sag:</label>
+            <select name="file" th:field="*{fileid}" th:remove="all-but-first">
+              <option value="15" th:each="c : ${files}" th:value="${c.id}" th:text="${c.id + ': ' + c.title}">ALCATEL effekter</option>
+              <option value="61">Carl Christian Danielsen (2021-2022 donation)</option>
+              <option value="29">Dataco udstyr fra DSB Informatik</option>
+            </select>
+            <span th:if="${#fields.hasErrors('fileid')}" th:errors="*{fileid}" class="fielderror">Error</span>
+          </div>
+          <div>
+            <label class="leader required" for="id_itemdeleted">Status:</label>
+            <select th:field="*{itemdeleted}" name="itemdeleted" id="id_itemdeleted">
+              <optgroup label="Publiseret">
+                <option value="0" th:selected="${itemdeleted} == 0">godkendt</option>
+              </optgroup>
+              <optgroup label="Redaktion">
+                <option value="1" th:selected="${itemdeleted} == 1">klar</option>
+                <option value="2" th:selected="${itemdeleted} == 2">kladde</option>
+              </optgroup>
+              <optgroup label="Offline">
+                <option value="3" th:selected="${itemdeleted} == 3">udgået</option>
+                <option value="4" th:selected="${itemdeleted} == 4">intern</option>
+              </optgroup>
+            </select>
+            <span th:if="${#fields.hasErrors('itemdeleted')}" th:errors="*{itemdeleted}" class="fielderror">Error</span>
+          </div>
+          <div>
+            <label class="leader" for="id_subjects">Emnegrupper:</label>
+            <!--
+            <input type="checkbox" name="subjects" th:each="s : ${allSubjects}" th:text="${s.title}" th:value="${s.subjectid}" th:field="*{subjects}"/>
+            -->
+            <select th:field="*{subjects}" id="id_subjects" multiple="multiple">
+              <option value="237" th:each="s : ${allSubjects}" th:value="${s.subjectid}" th:text="${s.title}">Hulkort</option>
+            </select>
+            <!--th:selected="${item.subjects.contains(s)}" -->
+          </div>
+        </fieldset>
+        <fieldset id="Identifikation" class="tabcontent">
+          <legend>Identifikation</legend>
+          <label class="leader required" for="headline">Betegnelse:</label>
+          <input type="text" id="headline" value="Xerox 860 tekstbehandlingsanlæg" th:field="*{headline}" class="fullwidth"/>
+          <span th:if="${#fields.hasErrors('headline')}" th:errors="*{headline}" class="fielderror">Error</span>
+          <div>
+            <label class="leader required">Type:</label>
+            <label th:each="type : ${types}">
+              <input type="radio" value="1" id="type1" name="klasse" th:field="*{itemClass}" th:value="${type.id}"/>
+              <th:block for="type1" th:text="${type.name}">Artefakt</th:block>
+            </label>
+            <span th:remove="all">
+              <input type="radio" id="flyttekasse" name="klasse" value="flyttekasse" checked="checked"/>
+              <label for="flyttekasse">Flyttekasse</label>
+              <input type="radio" id="palle" name="klasse" value="palle"/>
+              <label for="palle">Palle</label>
+            </span>
+          </div>
+          <label class="head" for="description">Beskrivelse:</label>
+          <textarea id="description" cols="40" rows="5" th:field="*{description}">Rank Xerox type 860 tekstbehandlingsanlæg med 2 stk 8" diskettedrev, tastatur og skærm.
+Product codes X994, X995 og X996.
+Serienumre: 1111012438, 131-006077-8, 111-148902-1
+Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.</textarea>
+          <div>
+            <label class="leader" for="producent">Producent:</label>
+            <select id="producent" th:field="*{producerid}">
+              <option value="">-------</option>
+              <option value="237" th:each="p : ${producers}" th:value="${p.producerid}" th:text="${p.title}">Motorola micro systems</option>
+              <option value="274" th:remove="all">Nixdorf Computer</option>
+              <option value="64" selected="selected" th:remove="all">Rank Xerox</option>
+              <option value="285" th:remove="all">SC Metric A/S</option>
+            </select>
+          </div>
+          <div>
+            <label class="leader" for="itemmodeltype">Model/type:</label>
+            <input type="text" id="itemmodeltype" value="" th:field="*{itemmodeltype}"/>
+          </div>
+          <div>
+            <label class="leader" for="itemserialno">Serienummer:</label>
+            <input type="text" id="itemserialno" value="" th:field="*{itemserialno}"/>
+          </div>
+          <div>
+            <label class="leader" for="itemsize">Størrelse:</label>
+            <input type="text" id="itemsize" value="" th:field="*{itemsize}"/>
+          </div>
+          <div>
+            <label class="leader" for="itemweight">Vægt:</label>
+            <input type="text" id="itemweight" value="" th:field="*{itemweight}"/>
+          </div>
+          <div>
+            <label class="leader required" for="itemdatingfrom">Datering:</label>
+            <input id="itemdatingfrom" type="date" value="1982-10-11" th:field="*{itemdatingfrom}"/>
+            <span th:if="${#fields.hasErrors('itemdatingfrom')}" th:errors="*{itemdatingfrom}" class="fielderror">Error</span>
+            <label for="itemdatingto">til:</label>
+            <input id="itemdatingto" type="date" value="1982-10-11" th:field="*{itemdatingto}"/>
+          </div>
+        </fieldset>
+        <fieldset id="Erhvervelse" class="tabcontent">
+          <legend>Erhvervelse</legend>
+          <div>
+            <label class="leader required">Måde:</label>
+            <th:block th:remove="all-but-first">
+              <label th:each="t : ${acquiretypes}">
+                <input th:field="*{itemacquiretype}" type="radio" value="0" th:value="${t.ordinal}" th:checked="${t.ordinal == itemacquiretype}"/>
+                <th:block th:text="${#strings.capitalize(#strings.toLowerCase(t))}">Ukendt</th:block>
+              </label>
+              <label><input name="itemacquiretype" type="radio" value="1" checked="checked"/>Gave</label>
+              <label><input name="itemacquiretype" type="radio" value="3"/>Køb</label>
+              <label><input name="itemacquiretype" type="radio" value="4"/>Deponering</label>
+            </th:block>
+            <span th:if="${#fields.hasErrors('itemacquiretype')}" th:errors="*{itemacquiretype}" class="fielderror">Error</span>
+          </div>
+          <div>
+            <label class="leader" for="donorid">Donor:</label>
+            <select id="donorid" th:field="*{donorid}">
+              <option value="">-------</option>
+              <option value="237" th:each="d : ${donors}" th:value="${d.id}" th:text="${d.title}">Motorola micro systems</option>
+              <option value="274" th:remove="all">Nixdorf Computer</option>
+              <option value="64" selected="selected" th:remove="all">Rank Xerox</option>
+              <option value="285" th:remove="all">SC Metric A/S</option>
+            </select>
+          </div>
+          <div>
+            <label class="leader" for="itemdepositeduntil">Deponeret/udlånt indtil:</label>
+            <input id="itemdepositeduntil" type="date" value="1982-10-11" th:field="*{itemdepositeduntil}"/>
+          </div>
+          <div>
+            <label class="leader" for="itemoutdated">Udgået:</label>
+            <input type="text" id="itemoutdated" value="" th:field="*{itemoutdated}"/>
+          </div>
+          <div>
+            <label class="leader" for="itemborroweduntil">Udlånt indtil:</label>
+            <input id="itemborroweduntil" type="date" value="1982-10-11" th:field="*{itemborroweduntil}"/>
+          </div>
+          <label class="leader" for="itemreceived">Modtagelsesdato:</label>
+          <input id="itemreceived" type="date" value="2009-01-30" th:field="*{itemreceived}"/>
+          <label for="itemreceivedby">af:</label>
+          <input type="text" id="itemreceivedby" value="" th:field="*{itemreceivedby}" size="12"/>
+          <label for="itemthanksletter">Takkebrev afsendt:</label>
+          <input id="itemthanksletter" type="date" value="1982-10-11" th:field="*{itemthanksletter}"/>
+        </fieldset>
+        <fieldset id="Brugsaktivitet" class="tabcontent">
+          <legend>Brugsaktivitet</legend>
+          <label class="leader" for="itemusedby">Brugt af:</label>
+          <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}">Brugsen</textarea>
+          <label class="leader" for="itemusedfor">Til hvad:</label>
+          <textarea id="itemusedfor" cols="40" rows="5" th:field="*{itemusedfor}">Kontrabøger</textarea>
+          <label class="leader" for="itemusedwhere">Brugt hvor:</label>
+          <textarea id="itemusedwhere" cols="40" rows="5" th:field="*{itemusedwhere}">Ja, hvor henne?</textarea>
+          <div>
+            <label class="leader" for="itemusedwhereid">Område:</label>
+            <select id="itemusedwhereid" th:field="*{itemusedwhereid}">
+              <option value="">-------</option>
+              <option value="9" th:each="s : ${steder}" th:value="${s.id}" th:text="${s.stednavn}" th:selected="${s.id == itemusedwhereid}">København</option>
+            </select>
+          </div>
+          <div>
+            <label class="leader" for="itemusedfrom">Brugt fra:</label>
+            <input id="itemusedfrom" type="date" value="1982-10-11" th:field="*{itemusedfrom}"/>
+            <label for="itemusedto">til:</label>
+            <input id="itemusedto" type="date" value="1983-10-11" th:field="*{itemusedto}"/>
+          </div>
+          <label class="leader" for="itemusedendfrom" title="Udgået af brug/nedtaget fra">Udgået fra</label>
+          <input id="itemusedendfrom" type="date" value="1982-10-11" th:field="*{itemusedendfrom}"/>
+          <label for="itemusedendto">til:</label>
+          <input id="itemusedendto" type="date" value="1982-10-11" th:field="*{itemusedendto}"/>
+        </fieldset>
+        <fieldset id="Notater" class="tabcontent">
+          <legend>Notater</legend>
+          <label class="head" for="itemextrainfo">Særlige oplysninger:</label>
+          <textarea id="itemextrainfo" cols="40" rows="5" th:field="*{itemextrainfo}">Tekst her</textarea>
+          <label class="head" for="itemrestoration">Restaurering:</label>
+          <textarea id="itemrestoration" cols="40" rows="5" th:field="*{itemrestoration}">Tekst her</textarea>
+          <label class="head" for="itemreferences">Litteraturhenvisninger:</label>
+          <textarea id="itemreferences" cols="40" rows="5" th:field="*{itemreferences}">Tekst her</textarea>
+          <label class="head" for="itemremarks">Bemærkninger:</label>
+          <textarea id="itemremarks" cols="40" rows="5" th:field="*{itemremarks}">Kommentarer</textarea>
+        </fieldset>
+        <input type="submit" value="Gem"/>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form method="post" action="subjects-view.html" th:object="${subject}" th:action="@{addsubject}">
+        <h2>Opret emnegruppe</h2>
+        <div>
+          <label class="head">Titel</label>
+          <input type="text" th:field="*{title}" value="ACT Computers Ltd."/>
+          <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Field is mandatory</span>
+        </div>
+        <div>
+          <label class="head" for="description">Beskrivelse</label>
+          <textarea id="description" name="description" th:field="*{description}" rows="5" cols="40">Dummy indhold.</textarea>
+          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Field is mandatory</span>
+        </div>
+        <input type="submit" value="Opret"/>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Rettigheder')}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Rettigheder</h2>
+      <table class="datatable">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Beskrivelse</th>
+            <th>Entitet</th>
+          </tr>
+        </thead>
+        <tbody th:remove="all-but-first">
+          <tr th:each="permission : ${permissions}">
+            <td th:text="${#strings.toUpperCase(permission.codename)}">ADD_GROUP</td>
+            <td th:text="${permission.name}">Can add group</td>
+            <td th:text="${permission.contentTypeId}" class="number">3</td>
+          </tr>
+          <tr>
+            <td>CHANGE_GROUP</td>
+            <td>Can change group</td>
+            <td class="number">3</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

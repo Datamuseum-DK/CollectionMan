@@ -1,0 +1,17 @@
+# Contexts:
+# 'test' creates tables and inserts minimal test data
+# 'demo' inserts full copy of database
+# 'prod' inserts no data, and only the table changes
+databaseChangeLog:
+  - include:
+      file: createtables.xml
+      relativeToChangelogFile: true
+  - include:
+      file: referencedata.xml
+      relativeToChangelogFile: true
+  - include:
+      file: testdata.xml
+      relativeToChangelogFile: true
+  - include:
+      file: testsubjects.xml
+      relativeToChangelogFile: true

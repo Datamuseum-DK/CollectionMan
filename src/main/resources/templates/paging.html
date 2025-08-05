@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<a th:fragment="paging(pageNum, label, tooltip)" class="page-link"
+  th:href="@{/items(q=${q!=null? q : ''},page=${pageNum},size=${pageSize})}"
+  th:title="${tooltip}" rel="tooltip"
+  th:text="${label}">Page #</a>
+
+<a th:fragment="children(pageNum, label, tooltip)" class="page-link"
+  th:href="@{/items/view/{id}(id=${item.id},page=${pageNum})}"
+  th:title="${tooltip}" rel="tooltip"
+  th:text="${label}">Child page #</a>
+</body>
+</html>

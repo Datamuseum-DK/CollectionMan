@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form method="post" action="places-view.html" th:object="${place}" th:action="@{/places/update/{id}(id=${place.id})}">
+        <h2>Redigere sted <span th:text="*{id}">11</span></h2>
+        <div>
+          <label class="head">Navn</label>
+          <input type="text" th:field="*{stednavn}" value="Hillerød"/>
+          <span th:if="${#fields.hasErrors('stednavn')}" th:errors="*{stednavn}" class="fielderror">Field is mandatory</span>
+        </div>
+        <input type="submit" value="Gem"/>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

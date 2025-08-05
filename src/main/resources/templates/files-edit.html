@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form method="post" action="files-view.html" th:object="${caseFile}" th:action="@{/files/update/{id}(id=${caseFile.id})}">
+        <h2>Redigere sag <span th:text="*{id}">11</span></h2>
+        <p>En sag er en enkelt administrativ hændelse, hvor alle genstande og dokumenter henhører og behandles samlet. Det er ofte en donation eller en deponering.
+Informationer om sagen, f.eks. brugsklausuler, bør skrives ind i beskrivelsesfeltet.
+        </p>
+        <ul th:if="${#fields.hasGlobalErrors()}">
+          <li th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</li>
+        </ul>
+        <input type="hidden" value="11000937" th:field="*{id}"/>
+        <input type="hidden" th:field="*{creator}"/>
+        <input type="hidden" th:field="*{created}"/>
+        <div>
+          <label class="leader required">Titel</label>
+          <input type="text" th:field="*{title}" class="fullwidth" value="Donation fra Skatteministeriet"/>
+          <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Error</span>
+        </div>
+        <div>
+          <label class="leader">Beskrivelse</label>
+          <textarea class="fullwidth" th:field="*{description}" rows="8">
+En beskrivelse her.
+En beskrivelse her.
+En beskrivelse her.</textarea>
+          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Error</span>
+        </div>
+        <div><label class="leader">Status</label>
+        <label><input name="status" th:field="*{status}" type="radio" value="1" checked="checked"/>Åben</label>
+        <label><input name="status" th:field="*{status}" type="radio" value="0"/>Afsluttet</label>
+        </div>
+
+        <div><label class="leader" title="Den periode genstandene er fra">Vedr. tidsrum</label><input type="date" th:field="*{datingfrom}" value="1956-06-09"/> til 
+              <input type="date" th:field="*{datingto}" value="1980-01-01"/>
+        </div>
+        <input type="submit" value="Gem"/>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

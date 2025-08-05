@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <changeSet author="roug" id="id26" context="test">
+    <insert tableName="subjects">
+      <column name="subjectid" valueNumeric="29"/>
+      <column name="created" valueDate="2006-04-03T16:49:22"/>
+      <column name="creator" value="mk"/>
+      <column name="lastmodified" valueDate="2006-04-03T16:49:22"/>
+      <column name="subjectdescription" value="Bordregnemaskiner, lommeregnere"/>
+      <column name="subjecttitle" value="Elektroniske regnemaskiner"/>
+    </insert>
+
+    <insert tableName="subjects">
+      <column name="subjectid" valueNumeric="79"/>
+      <column name="created" valueDate="2006-04-03T16:49:22"/>
+      <column name="creator" value="mk"/>
+      <column name="lastmodified" valueDate="2006-04-03T16:49:22"/>
+      <column name="subjectdescription" value=""/>
+      <column name="subjecttitle" value="Korthuller"/>
+    </insert>
+    <insert tableName="subjects">
+      <column name="subjectid" valueNumeric="91"/>
+      <column name="created" valueDate="2006-05-04T17:14:45"/>
+      <column name="creator" value="mk"/>
+      <column name="lastmodified" valueDate="2011-12-30T11:23:39"/>
+      <column name="subjectdescription" value="Hulkortlæsere og -hullere mv."/>
+      <column name="subjecttitle" value="Hulkortudstyr"/>
+    </insert>
+    <insert tableName="subjects">
+      <column name="subjectid" valueNumeric="95"/>
+      <column name="created" valueDate="2006-10-22T16:02:24"/>
+      <column name="creator" value="fvn"/>
+      <column name="lastmodified" valueDate="2006-10-22T16:04:15"/>
+      <column name="subjectdescription" value=""/>
+      <column name="subjecttitle" value="Mainframes"/>
+    </insert>
+    <insert tableName="subjects">
+      <column name="subjectid" valueNumeric="109"/>
+      <column name="created" valueDate="2011-12-28T14:22:17"/>
+      <column name="creator" value="fvn"/>
+      <column name="lastmodified" valueDate="2011-12-28T14:22:17"/>
+      <column name="subjectdescription" value=""/>
+      <column name="subjecttitle" value="Programmer og programmel"/>
+    </insert>
+    <insert tableName="subjects">
+      <column name="subjectid" valueNumeric="112"/>
+      <column name="created" valueDate="2012-01-01T18:03:52"/>
+      <column name="creator" value="fvn"/>
+      <column name="lastmodified" valueDate="2012-01-01T18:03:52"/>
+      <column name="subjectdescription" value=""/>
+      <column name="subjecttitle" value="Tekstbehandlingsudstyr"/>
+    </insert>
+    <insert tableName="subjects">
+      <column name="subjectid" valueNumeric="130"/>
+      <column name="created" valueDate="2016-01-29T16:15:35"/>
+      <column name="creator" value="fvn"/>
+      <column name="lastmodified" valueDate="2016-01-29T16:15:35"/>
+      <column name="subjectdescription" value=""/>
+      <column name="subjecttitle" value="Paller"/>
+    </insert>
+
+    <!-- links to items -->
+    <insert tableName="items_itemsubject">
+      <column name="items_id" valueNumeric="10000001"/>
+      <column name="subjects_id" valueNumeric="91"/>
+    </insert>
+    <insert tableName="items_itemsubject">
+      <column name="items_id" valueNumeric="10000001"/>
+      <column name="subjects_id" valueNumeric="79"/>
+    </insert>
+
+    <insert tableName="items_itemsubject">
+      <column name="items_id" valueNumeric="11000937"/>
+      <column name="subjects_id" valueNumeric="112"/>
+    </insert>
+
+    <insert tableName="items_itemsubject">
+      <column name="items_id" valueNumeric="11001745"/>
+      <column name="subjects_id" valueNumeric="130"/>
+    </insert>
+
+    <insert tableName="items_itemsubject">
+      <column name="items_id" valueNumeric="11002191"/>
+      <column name="subjects_id" valueNumeric="109"/>
+    </insert>
+
+    <insert tableName="items_itemsubject">
+      <column name="items_id" valueNumeric="11002571"/>
+      <column name="subjects_id" valueNumeric="29"/>
+    </insert>
+
+  </changeSet>
+
+</databaseChangeLog>
