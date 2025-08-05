@@ -43,8 +43,11 @@ java \
   -Dspring.datasource.username=regbase \
   -Dspring.datasource.password=CHANGEME \
   -Dmobilereg.storage-root-dir=/opt/regbase/pictures \
+  -Dserver.servlet.context-path=/ \
   -jar mobilereg-jar-with-dependencies.jar
 ```
+
+You can change the `server.servlet.context-path` to e.g. `/registration` if you don't want to run the application in the root context. Then visit http://localhost:8080/.
 
 ### Kubernetes deployment
 
