@@ -94,7 +94,7 @@ public class Item {
     private String itemserialno;
     // itemdatingfrom      = models.DateField(verbose_name="Datering fra", null=True, blank=False)
     @Column
-    @NotNull(message = "Der skal angives en dato")
+    //@NotNull(message = "Der skal angives en dato")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate itemdatingfrom;
 

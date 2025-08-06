@@ -15,8 +15,8 @@
       <form method="post" action="places-view.html" th:object="${place}" th:action="@{addplace}">
         <h2>Opret sted</h2>
         <div>
-          <label class="head">Navn</label>
-          <input type="text" th:field="*{stednavn}" value="ACT Computers Ltd."/>
+          <label class="head required">Navn</label>
+          <input type="text" th:field="*{stednavn}" value="ACT Computers Ltd." class="fullwidth"/>
           <span th:if="${#fields.hasErrors('stednavn')}" th:errors="*{stednavn}" class="fielderror">Field is mandatory</span>
         </div>
         <input type="submit" value="Opret"/>

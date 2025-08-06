@@ -92,11 +92,17 @@ public class ItemController {
         return fileRepository.findByStatusOrderByTitle(true);
     }
 
+    /**
+     * List all donors.
+     */
     @ModelAttribute("donors")
     public Iterable<Donor> donors() {
         return donorRepository.findByOrderByName();
     }
 
+    /**
+     * List all producers.
+     */
     @ModelAttribute("producers")
     public Iterable<Producer> producers() {
         return producerRepository.findByOrderByTitle();
@@ -155,18 +161,23 @@ public class ItemController {
 
     /**
      * Create the item.
+     *
+     * @param item - The item record containing the entered information.
+     * @param result - Results from validation of the web form.
+     * @param model - Additional attributes used by the web form.
+     * @return redirection to factsheet of created item.
      */
     @PostMapping("/additem")
     @PreAuthorize("hasAuthority('ADD_ITEMS')")
     public String addItem(@Valid Item item, BindingResult result, Model model) {
-        logger.info(String.format("Add form for item %s", item.toString()));
+        logger.debug(String.format("Evaluating item %s", item.toString()));
         if (result.hasErrors()) {
             logger.info(String.format("Result %s", result.toString()));
             return "item-addform";
         }
 
         itemRepository.save(item);
-        return "redirect:/items";
+        return String.format("redirect:/items/view/%d", item.getId());
     }
 
     /**
@@ -204,6 +215,8 @@ public class ItemController {
      * Update the location of the item.
      *
      * @param id item id.
+     * @param result - Results from validation of the web form.
+     * @param model - Additional attributes used by the web form.
      */
     @PostMapping("/updateplace/{id}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -220,6 +233,8 @@ public class ItemController {
      * these are copied from the database again and saved.
      *
      * @param id item id.
+     * @param result - Results from validation of the web form.
+     * @param model - Additional attributes used by the web form.
      */
     @PostMapping("/update/{id}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -389,6 +404,7 @@ public class ItemController {
      * Factsheet for item.
      *
      * @param id item id.
+     * @param model - Additional attributes used by the web form.
      * @param page - page number of result list.
      * @param size - size of page in number of items.
      */
@@ -470,6 +486,5 @@ public class ItemController {
         pictureService.store(myFile, pictureId);
         return String.format("redirect:/items/view/%d", id);
     }
-
 
 }

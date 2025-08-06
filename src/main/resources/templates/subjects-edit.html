@@ -18,17 +18,17 @@
         <input type="hidden" th:field="*{creator}"/>
         <input type="hidden" th:field="*{created}"/>
         <div>
-          <label class="head">Titel</label>
-          <input type="text" th:field="*{title}" value="Donation fra Skatteministeriet"/>
-          <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Error</span>
+          <label class="head" for="title">Titel
+          <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Error</span></label>
+          <input type="text" th:field="*{title}" value="Donation fra Skatteministeriet" class="fullwidth"/>
         </div>
         <div>
-          <label class="head">Beskrivelse</label>
-          <textarea th:field="*{description}">
+          <label class="head" for="description">Beskrivelse
+          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Error</span></label>
+          <textarea th:field="*{description}" rows="5">
 En beskrivelse her.
 En beskrivelse her.
 En beskrivelse her.</textarea>
-          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Error</span>
         </div>
         <input type="submit" value="Gem"/>
       </form>

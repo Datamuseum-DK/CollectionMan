@@ -15,14 +15,14 @@
       <form method="post" action="subjects-view.html" th:object="${subject}" th:action="@{addsubject}">
         <h2>Opret emnegruppe</h2>
         <div>
-          <label class="head">Titel</label>
-          <input type="text" th:field="*{title}" value="ACT Computers Ltd."/>
-          <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Field is mandatory</span>
+          <label class="head required" for="title">Titel
+          <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Field is mandatory</span></label>
+          <input type="text" th:field="*{title}" value="ACT Computers Ltd." class="fullwidth"/>
         </div>
         <div>
-          <label class="head" for="description">Beskrivelse</label>
+          <label class="head" for="description">Beskrivelse
+          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Field is mandatory</span></label>
           <textarea id="description" name="description" th:field="*{description}" rows="5" cols="40">Dummy indhold.</textarea>
-          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Field is mandatory</span>
         </div>
         <input type="submit" value="Opret"/>
       </form>

@@ -40,7 +40,7 @@
           <dd>
             <a href="files-view.html" th:href="@{/files/view/{id}(id=${file.id})}" th:text="${file.title}">ALCATEL effekter</a>
           </dd>
-          <dt th:if="${donor.isPresent()}">Donor</dt>
+          <dt th:if="${donor.isPresent()}">Donator</dt>
           <dd th:if="${donor.isPresent()}">
             <a href="donors-view.html" th:href="@{/donors/view/{id}(id=${donor.get().getId()})}" th:text="${donor.get().getTitle()}">SAS Data Seniorklub</a>
           </dd>
@@ -67,12 +67,16 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <a href="producers-view.html" th:href="@{/producers/view/{id}(id=${producer.get().producerid})}" th:text="${producer.get().title}">Rank Xerox</a>
           </dd>
           <dt>QR kode</dt>
-          <dd th:if="${item.qrcode}" th:text="${item.qrcode}">59001111</dd>
-          <dd th:unless="${item.qrcode}"><a href="addqrform.html" th:href="@{/items/addqrform(id=${item.id})}">Scan og tildel</a></dd>
+          <dd>
+          <span th:if="${item.qrcode}" th:text="${item.qrcode}">59001111</span>
+          <span th:unless="${item.qrcode}">
+            <a href="addqrform.html" th:href="@{/items/addqrform(id=${item.id})}">Scan og tildel</a>
+          </span>
+          </dd>
           <dt>Emnegrupper</dt>
           <dd th:remove="all-but-first">
-            <span th:each="subject : ${item.subjects}">[<a href="subjects-view.html" th:href="@{/subjects/view/{id}(id=${subject.subjectid})}" th:text="${subject.title}">Mainframe</a>] </span>
-            <span>[<a href="#">Radiorør</a>] </span>
+            <a class="subject" th:each="subject : ${item.subjects}" href="subjects-view.html"
+            th:href="@{/subjects/view/{id}(id=${subject.subjectid})}" th:text="${subject.title}">Mainframes</a><a class="subject" href="subjects-view.html">Radiorør</a>
           </dd>
         </dl>
         <h2>Billeder</h2>
@@ -137,7 +141,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
       <fieldset id="Erhvervelse" class="tabcontent">
         <legend>Erhvervelse</legend>
         <dl class="factsheet">
-          <dt>Modtagelsesdato</dt>
+          <dt title="Modtagelsesdato">Modtaget</dt>
           <dd th:text="${#temporals.format(item.itemreceived,'YYYY-MM-dd')}">2012-05-06</dd>
           <dt>Modtaget af</dt>
           <dd th:text="${item.itemreceivedby}">smr</dd>
@@ -157,11 +161,11 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
       <fieldset id="Notater" class="tabcontent">
         <legend>Notater</legend>
         <dl class="factsheet">
-          <dt>Særlige oplysninger</dt>
+          <dt title="Særlige oplysninger om genstandens proveniens">Ekstra info</dt>
           <dd class="multiline" th:text="${item.itemextrainfo}">Tekst her</dd>
           <dt>Restaurering</dt>
           <dd class="multiline" th:text="${item.itemrestoration}">Tekst her</dd>
-          <dt>Litteraturhenvisninger</dt>
+          <dt title="Litteraturhenvisninger">Litteratur</dt>
           <dd class="multiline" th:text="${item.itemreferences}">Tekst her</dd>
           <dt>Bemærkninger</dt>
           <dd class="multiline" th:text="${item.itemremarks}">Kommentarer</dd>

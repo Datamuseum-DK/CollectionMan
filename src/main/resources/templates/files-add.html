@@ -15,7 +15,7 @@
       <h2>Opret sag</h2>
       <form action="files-edit.html" th:action="@{addfile}" th:object="${caseFile}" method="post">
         <div>
-          <label class="head" for="title">Titel:</label>
+          <label class="head required" for="title">Titel:</label>
           <input type="text" th:field="*{title}" id="title" name="title" value="" class="fullwidth"/>
           <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Field is mandatory</span>
         </div>
@@ -24,10 +24,10 @@
           <textarea id="description" name="description" th:field="*{description}" rows="5" cols="40">Dummy indhold.</textarea>
           <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Field is mandatory</span>
         </div>
-        <div><label class="leader">Dateringsperiode</label><input type="date" th:field="*{datingfrom}" value="1956-06-09"/> -
+        <div><label class="leader">Dateringsperiode:</label><input type="date" th:field="*{datingfrom}" value="1956-06-09"/> -
               <input type="date" th:field="*{datingto}" value="1980-01-01"/>
         </div>
-        <div><label class="leader">Status</label>
+        <div><label class="leader">Status:</label>
         <label><input name="status" th:field="*{status}" type="radio" value="1" checked="checked"/>Åben</label>
         <label><input name="status" th:field="*{status}" type="radio" value="0"/>Afsluttet</label>
         </div>

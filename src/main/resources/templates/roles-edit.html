@@ -16,15 +16,16 @@
         <h2>Redigere rolle <span th:text="*{id}">11</span></h2>
         <input type="hidden" value="937" th:field="*{id}"/>
         <div>
-          <label class="head">Navn</label>
+          <label class="leader required">Navn</label>
           <input type="text" th:field="*{name}" value="auditor"/>
           <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fielderror">Error</span>
         </div>
         <div>
-           <label class="leader" for="id_permissions">Rettigheder</label>
-            <select th:field="*{permissions}" id="id_permissions" multiple="multiple">
-              <option value="237" th:each="p : ${allPermissions}" th:value="${p.id}" th:text="${#strings.toUpperCase(p.codename)}">ADD_GROUP</option>
-            </select>
+          <label class="leader" for="id_permissions">Rettigheder</label>
+          <select th:field="*{permissions}" id="id_permissions" multiple="multiple">
+            <option value="237" th:each="p : ${allPermissions}" th:value="${p.id}" th:text="${#strings.toUpperCase(p.codename)}">ADD_GROUP</option>
+            <option value="88" th:remove="all" selected="selected">ADD_ITEM</option>
+          </select>
         </div>
         <input type="submit" value="Gem"/>
       </form>

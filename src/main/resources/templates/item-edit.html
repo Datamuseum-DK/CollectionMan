@@ -32,8 +32,20 @@
           <input id="genstand" name="id" type="hidden" th:field="*{id}"/>
           <!--/*-->
           <label class="leader" for="genstand">Genstand nr.:</label>
-          <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="fielderror">Error</span>
           <!--*/-->
+          <div>
+            <label class="leader required">Type:</label>
+            <label th:each="type : ${types}">
+              <input type="radio" value="1" id="type1" name="klasse" th:field="*{itemClass}" th:value="${type.id}"/>
+              <th:block for="type1" th:text="${type.name}">Artefakt</th:block>
+            </label>
+            <span th:remove="all">
+              <input type="radio" id="flyttekasse" name="klasse" value="flyttekasse" checked="checked"/>
+              <label for="flyttekasse">Flyttekasse</label>
+              <input type="radio" id="palle" name="klasse" value="palle"/>
+              <label for="palle">Palle</label>
+            </span>
+          </div>
           <div>
             <label class="leader required" for="file">Sag:</label>
             <select name="file" th:field="*{fileid}" th:remove="all-but-first">
@@ -62,13 +74,10 @@
           </div>
           <div>
             <label class="leader" for="id_subjects">Emnegrupper:</label>
-            <!--
-            <input type="checkbox" name="subjects" th:each="s : ${allSubjects}" th:text="${s.title}" th:value="${s.subjectid}" th:field="*{subjects}"/>
-            -->
             <select th:field="*{subjects}" id="id_subjects" multiple="multiple">
               <option value="237" th:each="s : ${allSubjects}" th:value="${s.subjectid}" th:text="${s.title}">Hulkort</option>
+              <option value="99" selected="selected" th:remove="all">Programmerbare regnemaskiner</option>
             </select>
-            <!--th:selected="${item.subjects.contains(s)}" -->
           </div>
         </fieldset>
         <fieldset id="Identifikation" class="tabcontent">
@@ -76,19 +85,6 @@
           <label class="leader required" for="headline">Betegnelse:</label>
           <input type="text" id="headline" value="Xerox 860 tekstbehandlingsanlæg" th:field="*{headline}" class="fullwidth"/>
           <span th:if="${#fields.hasErrors('headline')}" th:errors="*{headline}" class="fielderror">Error</span>
-          <div>
-            <label class="leader required">Type:</label>
-            <label th:each="type : ${types}">
-              <input type="radio" value="1" id="type1" name="klasse" th:field="*{itemClass}" th:value="${type.id}"/>
-              <th:block for="type1" th:text="${type.name}">Artefakt</th:block>
-            </label>
-            <span th:remove="all">
-              <input type="radio" id="flyttekasse" name="klasse" value="flyttekasse" checked="checked"/>
-              <label for="flyttekasse">Flyttekasse</label>
-              <input type="radio" id="palle" name="klasse" value="palle"/>
-              <label for="palle">Palle</label>
-            </span>
-          </div>
           <label class="head" for="description">Beskrivelse:</label>
           <textarea id="description" cols="40" rows="5" th:field="*{description}">Rank Xerox type 860 tekstbehandlingsanlæg med 2 stk 8" diskettedrev, tastatur og skærm.
 Product codes X994, X995 og X996.
@@ -121,7 +117,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <input type="text" id="itemweight" value="" th:field="*{itemweight}"/>
           </div>
           <div>
-            <label class="leader required" for="itemdatingfrom">Datering:</label>
+            <label class="leader" for="itemdatingfrom">Datering:</label>
             <input id="itemdatingfrom" type="date" value="1982-10-11" th:field="*{itemdatingfrom}"/>
             <span th:if="${#fields.hasErrors('itemdatingfrom')}" th:errors="*{itemdatingfrom}" class="fielderror">Error</span>
             <label for="itemdatingto">til:</label>
@@ -144,7 +140,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <span th:if="${#fields.hasErrors('itemacquiretype')}" th:errors="*{itemacquiretype}" class="fielderror">Error</span>
           </div>
           <div>
-            <label class="leader" for="donorid">Donor:</label>
+            <label class="leader" for="donorid">Donator:</label>
             <select id="donorid" th:field="*{donorid}">
               <option value="">-------</option>
               <option value="237" th:each="d : ${donors}" th:value="${d.id}" th:text="${d.title}">Motorola micro systems</option>
@@ -165,12 +161,16 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <label class="leader" for="itemborroweduntil">Udlånt indtil:</label>
             <input id="itemborroweduntil" type="date" value="1982-10-11" th:field="*{itemborroweduntil}"/>
           </div>
-          <label class="leader" for="itemreceived">Modtagelsesdato:</label>
-          <input id="itemreceived" type="date" value="2009-01-30" th:field="*{itemreceived}"/>
-          <label for="itemreceivedby">af:</label>
-          <input type="text" id="itemreceivedby" value="" th:field="*{itemreceivedby}" size="12"/>
-          <label for="itemthanksletter">Takkebrev afsendt:</label>
-          <input id="itemthanksletter" type="date" value="1982-10-11" th:field="*{itemthanksletter}"/>
+          <div>
+            <label class="leader" for="itemreceived">Modtagelsesdato:</label>
+            <input id="itemreceived" type="date" value="2009-01-30" th:field="*{itemreceived}"/>
+            <label for="itemreceivedby">af:</label>
+            <input type="text" id="itemreceivedby" value="" th:field="*{itemreceivedby}" size="12"/>
+          </div>
+          <div>
+            <label for="itemthanksletter">Takkebrev afsendt:</label>
+            <input id="itemthanksletter" type="date" value="1982-10-11" th:field="*{itemthanksletter}"/>
+          </div>
         </fieldset>
         <fieldset id="Brugsaktivitet" class="tabcontent">
           <legend>Brugsaktivitet</legend>
@@ -181,19 +181,19 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <label class="leader" for="itemusedwhere">Brugt hvor:</label>
           <textarea id="itemusedwhere" cols="40" rows="5" th:field="*{itemusedwhere}">Ja, hvor henne?</textarea>
           <div>
-            <label class="leader" for="itemusedwhereid">Område:</label>
+            <label class="leader" for="itemusedwhereid">Geografisk område:</label>
             <select id="itemusedwhereid" th:field="*{itemusedwhereid}">
               <option value="">-------</option>
               <option value="9" th:each="s : ${steder}" th:value="${s.id}" th:text="${s.stednavn}" th:selected="${s.id == itemusedwhereid}">København</option>
             </select>
           </div>
           <div>
-            <label class="leader" for="itemusedfrom">Brugt fra:</label>
+            <label class="leader" for="itemusedfrom">Start på brug indenfor:</label>
             <input id="itemusedfrom" type="date" value="1982-10-11" th:field="*{itemusedfrom}"/>
             <label for="itemusedto">til:</label>
             <input id="itemusedto" type="date" value="1983-10-11" th:field="*{itemusedto}"/>
           </div>
-          <label class="leader" for="itemusedendfrom" title="Udgået af brug/nedtaget fra">Udgået fra</label>
+          <label class="leader" for="itemusedendfrom" title="Udgået af brug/nedtaget fra">Brug på brug indenfor:</label>
           <input id="itemusedendfrom" type="date" value="1982-10-11" th:field="*{itemusedendfrom}"/>
           <label for="itemusedendto">til:</label>
           <input id="itemusedendto" type="date" value="1982-10-11" th:field="*{itemusedendto}"/>

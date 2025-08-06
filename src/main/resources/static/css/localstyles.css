@@ -15,6 +15,7 @@ label.head {
 
 label.leader {
   display: inline-block;
+  vertical-align: top;
   min-width: 7em;
 }
 .fullwidth {
@@ -203,7 +204,7 @@ table.datatable {
 
 /* QR scanning */
 #video-container {
-    line-height: 0;
+/*    line-height: 0; */
 }
 
 #qr-video {
@@ -262,6 +263,16 @@ table.datatable {
     white-space: pre-wrap;
     width: 100%;
     padding-left: 0px;
+    min-height: 1em;
+  }
+  dl.factsheet dd a.subject  {
+    background-color: lightblue;
+    border-radius: 1ex;
+    color: inherit;
+    text-decoration: none;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    margin-right: 0.2em;
   }
 }
 

@@ -18,8 +18,8 @@
         <button sec:authorize="hasAuthority('DELETE_SUBJECTS')" id="delete" th:if="${subject.totalItems} == 0" type="submit" form="actions" formaction="subjects.html"
 th:formaction="@{/subjects/delete/{id}(id=${subject.subjectid})}">Slet</button>
       </form>
-      <h2 th:text="${subject.title}">Emnegruppe</h2>
-      <p style="white-space: pre-wrap;" th:text="${subject.description}">Emnebeskrivelse
+      <h2 th:text="${subject.title}">Programmerbare regnemaskiner</h2>
+      <p style="white-space: pre-wrap;" th:text="${subject.description}">Maskiner, der normalt fungerer som regnemaskine, men som kan programmeres, så den selv kan udføre en valgt tastesekvens. Programmerbare lommeregnere.
       </p>
       <div th:if="${not #lists.isEmpty(subject.items)}">
         <h3>Genstande</h3>

@@ -15,16 +15,16 @@
       <form method="post" action="producers-view.html" th:object="${producer}" th:action="@{addproducer}">
         <h2>Opret producent</h2>
         <div>
-          <label class="head">Navn</label>
-          <input type="text" th:field="*{title}" value="ACT Computers Ltd."/>
+          <label class="head required">Navn</label>
+          <input type="text" th:field="*{title}" value="ACT Computers Ltd." class="fullwidth"/>
           <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fielderror">Field is mandatory</span>
         </div>
         <div>
           <label class="head">Beskrivelse</label>
-          <textarea th:field="*{description}">En beskrivelse her.
+          <textarea th:field="*{description}" rows="5">En beskrivelse her.
 En beskrivelse her.
 En beskrivelse her.</textarea>
-          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Field is mandatory</span>
+          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Error</span>
         </div>
         <input type="submit" value="Opret"/>
       </form>
