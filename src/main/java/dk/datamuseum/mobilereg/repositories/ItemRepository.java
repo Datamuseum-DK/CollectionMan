@@ -30,6 +30,11 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
     List<Item> findByPlacementidNull();
 
     /**
+     * Lookup on primary key or QR code.
+     */
+    List<Item> findByIdOrQrcode(int id, Integer qrcode);
+
+    /**
      * Get all items with given producer.
      *
      * @param id - producer id.

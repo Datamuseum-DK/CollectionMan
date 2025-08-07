@@ -1,5 +1,6 @@
 package dk.datamuseum.mobilereg;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,28 +11,17 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConfigurationProperties("mobilereg")
+@Data
 public class MobileRegProperties {
 
-        /**
-         * Folder location for storing pictures
-         */
-        private String storageRootDir = "storage-dir";
+    /**
+     * Folder location for storing pictures.
+     */
+    private String storageRootDir = "storage-dir";
 
-        /**
-         * Get the folder path for storage.
-         */
-        public String getStorageRootDir() {
-                return storageRootDir;
-        }
-
-        /**
-         * Set the folder path for storage.
-         * Used only by Spring Boot.
-         *
-         * @param storageRootDir - the root directory.
-         */
-        public void setStorageRootDir(String storageRootDir) {
-                this.storageRootDir = storageRootDir;
-        }
+    /**
+     * Property name for URL prefixes in QR labels.
+     */
+    private String qrUrlPrefixes = "qr-urlprefixes";
 
 }

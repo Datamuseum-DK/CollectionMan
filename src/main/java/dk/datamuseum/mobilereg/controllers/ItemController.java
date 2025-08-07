@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import dk.datamuseum.mobilereg.MobileRegProperties;
+
 import dk.datamuseum.mobilereg.entities.Donor;
 import dk.datamuseum.mobilereg.entities.CaseFile;
 import dk.datamuseum.mobilereg.entities.Item;
@@ -64,8 +66,6 @@ public class ItemController {
     private ItemClassRepository itemClassRepository;
     @Autowired
     private ItemPictureRepository itemPictureRepository;
-//    @Autowired
-//    private NoteRepository noteRepository;
     @Autowired
     private PictureRepository pictureRepository;
     @Autowired
@@ -76,9 +76,15 @@ public class ItemController {
     private StedRepository stedRepository;
     @Autowired
     private SubjectRepository subjectRepository;
+    @Autowired
+    private MobileRegProperties properties;
 
     private Log logger = LogFactory.getLog(ItemController.class);
 
+    /**
+     * List all acquire types.
+     * For display on item factsheet.
+     */
     @ModelAttribute("acquiretypes")
     public List<Item.Acquired> acquiretypes() {
         return Item.ACQ_OPTIONS;
@@ -298,9 +304,9 @@ public class ItemController {
 
         if (isNumeric(query)) {
             Integer cleanId = Integer.parseInt(query);
-            Optional<Item> directitem = itemRepository.findById(cleanId);
-            if (directitem.isPresent()) {
-                return String.format("redirect:/items/view/%d", cleanId);
+            List<Item> directitem = itemRepository.findByIdOrQrcode(cleanId, cleanId);
+            if (directitem.size() > 0) {
+                return String.format("redirect:/items/view/%d", directitem.get(0).getId());
             }
         }
         List<Item> items = new ArrayList<Item>();
@@ -320,14 +326,15 @@ public class ItemController {
      * Get rid of URL part.
      */
     private Integer evaluateQRString(String qrInput) {
-        if (qrInput.startsWith("https://gier.dk/")
-                || qrInput.startsWith("HTTPS://GIER.DK/"))
-            qrInput = qrInput.substring(16);
-        else if (qrInput.startsWith("https://gier.x.ddhf.dk/"))
-            qrInput = qrInput.substring(23);
-        while (qrInput.startsWith("/"))    // Drop slashes after hostname
-            qrInput = qrInput.substring(1);
+        String prefixProperty = properties.getQrUrlPrefixes();
+        String[] prefixes = prefixProperty.split("\\s*,\\s*");
 
+        for (String prefix : prefixes) {
+            if (qrInput.startsWith(prefix)) {
+                qrInput = qrInput.substring(prefix.length());
+                break;
+            }
+        }
         if (isNumeric(qrInput)) {
             return Integer.parseInt(qrInput);
         } else
