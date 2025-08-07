@@ -17,15 +17,14 @@
     <section id="content">
       <h2>Opret genstand</h2>
       <div class="tab">
-        <button class="tablinks active" onclick="openTab(event, 'Kontekst')">Kontekst</button>
-        <button class="tablinks" onclick="openTab(event, 'Identifikation')">Identifikation</button>
-        <button class="tablinks" onclick="openTab(event, 'Erhvervelse')">Erhvervelse</button>
+        <button class="tablinks active" onclick="openTab(event, 'Identifikation')">Identifikation</button>
+        <button class="tablinks" onclick="openTab(event, 'Adkomst')">Adkomst</button>
         <button class="tablinks" onclick="openTab(event, 'Brugsaktivitet')">Brug</button>
         <button class="tablinks" onclick="openTab(event, 'Notater')">Notater</button>
       </div>
       <form action="item-addform2.html" method="post" th:object="${item}" th:action="@{/items/additem}">
-        <fieldset id="Kontekst" class="tabcontent" style="display:block">
-          <legend>Kontekst</legend>
+        <fieldset id="Identifikation" class="tabcontent" style="display:block">
+          <legend>Identifikation</legend>
           <div>
             <label class="required leader">Type:</label>
             <label th:each="type : ${types}">
@@ -62,27 +61,15 @@
               <option value="99" selected="selected" th:remove="all">Programmerbare regnemaskiner</option>
             </select>
           </div>
-        </fieldset>
-        <fieldset id="Identifikation" class="tabcontent">
-          <legend>Identifikation</legend>
-          <p>
-Beskriv genstanden således at den kan genkendes ud fra informationerne.
-      </p>
           <label class="head required" for="headline">Betegnelse:</label>
           <input type="text" id="headline" value="Xerox 860 tekstbehandlingsanlæg" th:field="*{headline}" class="fullwidth"/>
           <span th:if="${#fields.hasErrors('headline')}" th:errors="*{headline}" class="fielderror">Error</span>
-          <label class="head" for="description">Beskrivelse:</label>
-          <textarea id="description" cols="40" rows="5" th:field="*{description}">Rank Xerox type 860 tekstbehandlingsanlæg med 2 stk 8" diskettedrev, tastatur og skærm.
+          <div>
+            <label class="head" for="description">Beskrivelse:</label>
+            <textarea id="description" cols="40" rows="5" th:field="*{description}">Rank Xerox type 860 tekstbehandlingsanlæg med 2 stk 8" diskettedrev, tastatur og skærm.
 Product codes X994, X995 og X996.
 Serienumre: 1111012438, 131-006077-8, 111-148902-1
 Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.</textarea>
-          <div>
-            <label class="leader" for="itemsize">Størrelse:</label>
-            <input type="text" id="itemsize" value="" th:field="*{itemsize}"/>
-          </div>
-          <div>
-            <label class="leader" for="itemweight">Vægt:</label>
-            <input type="text" id="itemweight" value="" th:field="*{itemweight}"/>
           </div>
           <div>
             <label class="leader" for="producent">Producent:</label>
@@ -103,15 +90,22 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <input type="text" id="itemserialno" value="" th:field="*{itemserialno}"/>
           </div>
           <div>
-            <label class="leader" for="itemdatingfrom">Datering:</label>
+            <label class="leader" for="itemsize">Størrelse:</label>
+            <input type="text" id="itemsize" value="" th:field="*{itemsize}"/>
+          </div>
+          <div>
+            <label class="leader" for="itemweight">Vægt:</label>
+            <input type="text" id="itemweight" value="" th:field="*{itemweight}"/>
+          </div>
+          <div>
+            <label class="leader" for="itemdatingfrom">Datering fra: <span th:if="${#fields.hasErrors('itemdatingfrom')}" th:errors="*{itemdatingfrom}" class="fielderror">Error</span></label>
             <input id="itemdatingfrom" type="date" value="1982-10-11" th:field="*{itemdatingfrom}"/>
-            <span th:if="${#fields.hasErrors('itemdatingfrom')}" th:errors="*{itemdatingfrom}" class="fielderror">Error</span>
             <label for="itemdatingto">til:</label>
             <input id="itemdatingto" type="date" value="1982-10-11" th:field="*{itemdatingto}"/>
           </div>
         </fieldset>
-        <fieldset id="Erhvervelse" class="tabcontent">
-          <legend>Erhvervelse</legend>
+        <fieldset id="Adkomst" class="tabcontent">
+          <legend>Adkomst</legend>
           <p>
 Hvordan er genstanden anskaffet? Kun for artefakter.
       </p>
@@ -144,7 +138,7 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
           </div>
           <div>
             <label class="leader" for="itemoutdated">Udgået:</label>
-            <input type="text" id="itemoutdated" value="" th:field="*{itemoutdated}"/>
+            <input type="number" id="itemoutdated" value="" th:field="*{itemoutdated}"/>
           </div>
           <div>
             <label class="leader" for="itemborroweduntil">Lånt indtil:</label>
