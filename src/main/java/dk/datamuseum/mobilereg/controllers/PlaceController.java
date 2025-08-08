@@ -33,29 +33,32 @@ public class PlaceController {
 
     private Log logger = LogFactory.getLog(PlaceController.class);
 
+    @PreAuthorize("hasAuthority('VIEW_STED')")
     @RequestMapping({"", "/", "/view"})
     public String showStedList(Model model) {
         model.addAttribute("places", placeRepository.findByOrderByStednavn());
         return "places";
     }
 
+    @PreAuthorize("hasAuthority('ADD_STED')")
     @GetMapping("/addform")
     public String addForm(Model model) {
-        Sted place = new Sted();
-        model.addAttribute("place", place);
+        Sted sted = new Sted();
+        model.addAttribute("sted", sted);
         return "places-add";
     }
     
+    @PreAuthorize("hasAuthority('ADD_STED')")
     @PostMapping("/addplace")
-    public String addSted(@Valid Sted place, BindingResult result, Model model) {
-
+    public String addSted(@Valid Sted sted, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "places-add";
         }
-        placeRepository.save(place);
+        placeRepository.save(sted);
         return "redirect:/places";
     }
     
+    @PreAuthorize("hasAuthority('VIEW_STED')")
     @GetMapping("/view/{id}")
     public String showFactsheet(@PathVariable("id") int id, Model model) {
         Sted place = placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid place Id:" + id));
@@ -65,7 +68,7 @@ public class PlaceController {
         return "places-view";
     }
 
-    @PreAuthorize("hasRole('ROLE_STAFF')")
+    @PreAuthorize("hasAuthority('CHANGE_STED')")
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         Sted place = placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid place Id:" + id));
@@ -74,7 +77,7 @@ public class PlaceController {
         return "places-edit";
     }
     
-    @PreAuthorize("hasRole('ROLE_STAFF')")
+    @PreAuthorize("hasAuthority('CHANGE_STED')")
     @PostMapping("/update/{id}")
     public String updateSted(@PathVariable("id") int id, @Valid Sted place, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -91,8 +94,8 @@ public class PlaceController {
     /**
      * Delete place.
      */
+    @PreAuthorize("hasAuthority('DELETE_STED')")
     @GetMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
     public String deleteSted(@PathVariable("id") int id, Model model) {
         Sted place = placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid place Id:" + id));
         placeRepository.delete(place);

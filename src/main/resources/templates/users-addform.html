@@ -12,13 +12,10 @@
       </h1>
     </header>
     <section id="content">
-      <form method="post" action="users-view.html" th:object="${user}" th:action="@{/users/update/{id}(id=${user.id})}">
-        <h2>Redigere bruger <span th:text="*{id}">11</span></h2>
-        <input type="hidden" value="11000937" th:field="*{id}"/>
-        <input type="hidden" th:field="*{dateJoined}"/>
-        <input type="hidden" th:field="*{lastLogin}"/>
+      <form action="users-view.html" th:object="${user}" th:action="@{adduser}" method="post">
+        <h2>Opret bruger</h2>
         <div>
-          <label class="leader">Brugernavn</label>
+          <label class="leader required">Brugernavn</label>
           <input type="text" th:field="*{username}" value="sroug"/>
           <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="fielderror">Error</span>
         </div>
@@ -38,11 +35,11 @@
           <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fielderror">Error</span>
         </div>
         <div>
-          <label class="leader">Kodeord</label>
+          <label class="leader required">Kodeord</label>
           <input type="password" th:field="*{password}" value="Kodeord"/>
           <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fielderror">Error</span>
         </div>
-        <div><label class="leader">Aktiv</label><input type="checkbox" th:field="*{active}"/> Ja
+        <div><label class="leader">Aktiv</label><input type="checkbox" th:field="*{active}" checked="checked"/> Ja
           <span th:if="${#fields.hasErrors('active')}" th:errors="*{active}" class="fielderror">Error</span>
         </div>
         <div><label class="leader">Staff</label><input type="checkbox" th:field="*{staff}"/> Ja
@@ -53,14 +50,14 @@
         </div>
         <h3>Roller</h3>
         <select th:field="*{roles}" id="id_roles" multiple="multiple">
-          <option value="237" th:each="r : ${allRoles}" th:value="${r.id}" th:text="${r.name}">Admin</option>
+          <option value="237" th:each="r : ${allRoles}" th:value="${r.id}" th:text="${r.name}">Staff</option>
         </select>
         <h3>Rettigheder</h3>
         <select th:field="*{permissions}" id="id_permissions" multiple="multiple">
           <option value="237" th:each="p : ${allPermissions}" th:value="${p.id}" th:text="${p.name}">Can add groups</option>
         </select>
         <div>
-          <input type="submit" value="Gem"/>
+          <input type="submit" value="Opret"/>
         </div>
       </form>
     </section>

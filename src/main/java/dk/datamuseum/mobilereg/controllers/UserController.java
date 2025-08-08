@@ -1,7 +1,7 @@
 package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
-// import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -81,8 +81,9 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADD_USER')")
     public String addForm(Model model) {
         User user = new User();
+        user.setActive(true);
         model.addAttribute("user", user);
-        return "users-add";
+        return "users-addform";
     }
     
     /**
@@ -98,6 +99,11 @@ public class UserController {
 
         if (result.hasErrors()) {
             return "users-add";
+        }
+        user.setDateJoined(LocalDateTime.now());
+        String passwd1 = user.getPassword();
+        if (passwd1 != null && !passwd1.equals("")) {
+            user.setPassword(passwordEncoder.encode(passwd1));
         }
         userRepository.save(user);
         return "redirect:/users";

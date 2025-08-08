@@ -22,7 +22,8 @@
         <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="actions" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}">Slet</button>
         <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
       </form>
-      <h2 th:text="${item.headline}">Xerox 860 tekstbehandlingsanlæg</h2>
+      <h2><span th:remove="tag" th:text="${item.headline}">Xerox 860 tekstbehandlingsanlæg</span>
+      (<span th:text="${item.itemdeleted}">godkendt</span>)</h2>
       <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'Identifikation')">Identifikation</button>
         <button th:if="${not #lists.isEmpty(children)}" class="tablinks" onclick="openTab(event, 'Genstande')">Genstande</button>
@@ -61,6 +62,10 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dt th:if="${producer.isPresent()}">Producent</dt>
           <dd th:if="${producer.isPresent()}">
             <a href="producers-view.html" th:href="@{/producers/view/{id}(id=${producer.get().producerid})}" th:text="${producer.get().title}">Rank Xerox</a>
+          </dd>
+          <dt th:if="${item.itemdatingfrom}">Datering</dt>
+          <dd th:if="${item.itemdatingfrom}">Indenfor <span th:remove="tag" th:text="${#temporals.format(item.itemdatingfrom,'YYYY-MM-dd')}">1982-10-11</span>
+          <span th:if="${item.itemdatingto}" th:remove="tag" th:text="${' til ' + #temporals.format(item.itemdatingto,'YYYY-MM-dd')}">1992-09-31</span>
           </dd>
           <dt>QR kode</dt>
           <dd>
@@ -142,7 +147,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <a href="donors-view.html" th:href="@{/donors/view/{id}(id=${donor.get().getId()})}" th:text="${donor.get().getTitle()}">SAS Data Seniorklub</a>
           </dd>
           <dt title="Modtagelsesdato">Modtaget</dt>
-          <dd th:text="${#temporals.format(item.itemreceived,'YYYY-MM-dd') + ' af ' + item.itemreceivedby}">2012-05-06 af fvn</dd>
+          <dd><span th:remove="tag" th:text="${#temporals.format(item.itemreceived,'YYYY-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemreceivedby}">fvn</span></dd>
           <dt title="Deponeret til museet indtil">Deponeret indtil:</dt>
           <dd th:text="${#temporals.format(item.itemdepositeduntil,'YYYY-MM-dd')}">2032-09-16</dd>
           <dt>Udgået:</dt>

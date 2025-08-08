@@ -6,7 +6,7 @@
 
   <property  name="locations.id"  value="66"/>
 
-  <changeSet author="roug" id="ref001">
+  <changeSet author="roug" id="ref001" context="test">
     <preConditions onFail="HALT">
       <sqlCheck expectedResult="0">
        SELECT COUNT(1) FROM files WHERE fileid=${locations.id}
@@ -27,7 +27,7 @@
   </changeSet>
 
 
-  <changeSet author="roug" id="ref002">
+  <changeSet author="roug" id="ref002" context="test">
     <comment>Add locations</comment>
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000030"/>
@@ -51,6 +51,7 @@
       <column name="itemrestoration" value=""/>
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
+      <column name="itemdeleted" valueNumeric="4"/>
     </insert>
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000031"/>
@@ -74,6 +75,7 @@
       <column name="itemrestoration" value=""/>
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
+      <column name="itemdeleted" valueNumeric="4"/>
     </insert>
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000032"/>
@@ -82,7 +84,7 @@
       <column name="itemclassid" valueNumeric="1"/>
       <column name="itemheadline" value="Sandby magasin"/>
       <column name="iteminternal" valueNumeric="0"/>
-      <column name="itemdescription" value="Magasin i Ringsted"/>
+      <column name="itemdescription" value="Et rum med højt til loftet. Ca. 510 m2."/>
       <column name="itemsize" value=""/>
       <column name="itemweight" value=""/>
       <column name="itemmodeltype" value=""/>
@@ -97,7 +99,9 @@
       <column name="itemrestoration" value=""/>
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
+      <column name="itemdeleted" valueNumeric="4"/>
     </insert>
+    <!--
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000033"/>
       <column name="itemtemporary" valueNumeric="0"/>
@@ -120,7 +124,9 @@
       <column name="itemrestoration" value=""/>
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
+      <column name="itemdeleted" valueNumeric="4"/>
     </insert>
+    -->
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000034"/>
       <column name="itemtemporary" valueNumeric="0"/>
@@ -143,6 +149,7 @@
       <column name="itemrestoration" value=""/>
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
+      <column name="itemdeleted" valueNumeric="4"/>
     </insert>
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000035"/>
@@ -151,7 +158,7 @@
       <column name="itemclassid" valueNumeric="1"/>
       <column name="itemheadline" value="Renge magasin"/>
       <column name="iteminternal" valueNumeric="0"/>
-      <column name="itemdescription" value="Magasin ved Store Heddinge"/>
+      <column name="itemdescription" value="Magasin ved Store Heddinge. 6 rum a 100 m2. 2 er pt. ubenyttede, 1 lejet ud."/>
       <column name="itemsize" value=""/>
       <column name="itemweight" value=""/>
       <column name="itemmodeltype" value=""/>
@@ -166,6 +173,7 @@
       <column name="itemrestoration" value=""/>
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
+      <column name="itemdeleted" valueNumeric="4"/>
     </insert>
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000036"/>
@@ -189,6 +197,7 @@
       <column name="itemrestoration" value=""/>
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
+      <column name="itemdeleted" valueNumeric="4"/>
     </insert>
   </changeSet>
 

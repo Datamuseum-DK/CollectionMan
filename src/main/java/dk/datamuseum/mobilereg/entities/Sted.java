@@ -22,6 +22,7 @@ public class Sted {
     private long id;
 
     @Column(length=60)
+    @NotBlank(message = "Name is mandatory")
     private String stednavn;
 
     /* Reference to variable in Item.java */
