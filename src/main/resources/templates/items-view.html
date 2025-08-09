@@ -81,7 +81,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           </dd>
         </dl>
         <h2>Billeder</h2>
-        <form action="items-view.html" th:action="@{/items/pictureupload}" method="post" enctype="multipart/form-data">
+        <form action="items-view.html" th:action="@{/items/pictureupload}" method="post" enctype="multipart/form-data" onsubmit="submitButton.disabled = true; return true;">
           <div th:remove="all-but-first">
             <a href="#" th:each="picture : ${item.pictures}" th:href="@{/pictures/view/{p}(p=${picture.pictureid})}">
               <img src="../../../test/resources/static/testpicture1.jpg" th:src="@{/media/{p}(p=${picture.low})}"/>
@@ -97,7 +97,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
             <label for="picture">Upload billede</label>
             <input type="file" id="picture" name="file" accept="image/*" capture="environment"/>
-            <input type="submit" value="Upload"/>
+            <input id="submitButton" type="submit" value="Upload"/>
           </div>
         </form>
       </fieldset>
