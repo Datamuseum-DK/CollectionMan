@@ -2,32 +2,27 @@ package dk.datamuseum.mobilereg.service;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-//import java.io.InputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-//import java.net.MalformedURLException;
-//import java.nio.file.Files;
-//import java.nio.file.Path;
-//import java.nio.file.Paths;
-//import java.nio.file.StandardCopyOption;
-//import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.core.io.FileSystemResource;
-//import org.springframework.core.io.Resource;
-//import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-//import org.springframework.util.FileSystemUtils;
-//import org.springframework.util.StringUtils;
-//import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
-//import dk.datamuseum.mobilereg.MobileRegProperties;
-//import dk.datamuseum.mobilereg.model.StoredFile;
+import org.imgscalr.Scalr;
+import static org.imgscalr.Scalr.Rotation;
+
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.exif.ExifIFD0Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
 
 /**
  * Scaling of images.
@@ -39,14 +34,25 @@ public class ScalingService {
     @Autowired
     private StorageService storageService;
 
+    /** Orientation of image in sourceFile. */
+    private int orientation;
+
+    private BufferedImage originalImage;
+
     private Log logger = LogFactory.getLog(ScalingService.class);
 
-    private BufferedImage resizeImage(BufferedImage image, int maxDim) {
+    /**
+     * Simple scaling of image. UNUSED.
+     *
+     * @param maxDim - Max size in width and height.
+     * @return scaled image.
+     */
+    private BufferedImage resizeImage(int maxDim) {
         int width, height;
         double scaling;
 
-        width = image.getWidth();
-        height = image.getHeight();
+        width = originalImage.getWidth();
+        height = originalImage.getHeight();
         if (Math.max(width, height) > maxDim) {
             scaling = (0.0 + Math.max(width, height)) / maxDim;
             width = Double.valueOf(width / scaling).intValue();
@@ -54,29 +60,110 @@ public class ScalingService {
         }
         logger.info(String.format("New dimensions %dx%d", width, height));
 
-        Image newResizedImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        Image newResizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         bufferedImage.getGraphics().drawImage(newResizedImage, 0, 0, null);
         return bufferedImage;
     }
 
     /**
-     * Synchronous store.
+     * Scale image with understanding of camera orientation.
+     *
+     * @param maxDim - Max size in width and height.
+     * @return scaled image.
+     *
+     * @see <a href="https://stackoverflow.com/questions/21951892/how-to-determine-and-auto-rotate-images">Stackoverflow</a>.
+     * @see <a href="https://www.javadoc.io/doc/org.imgscalr/imgscalr-lib/latest/org/imgscalr/Scalr.html">Scalr</a>.
      */
-    public void store(BufferedImage originalImage, String subDir, int pictureId, int dimension) {
-        storeAsync(originalImage, subDir, pictureId, dimension);
+    private BufferedImage scaleWithOrientation(int maxDim) {
+        BufferedImage scaledImg = Scalr.resize(originalImage, maxDim);
+
+        switch (orientation) {
+        case 1: // No rotation
+            break;
+        case 2: // Flip X
+            scaledImg = Scalr.rotate(scaledImg, Rotation.FLIP_HORZ);
+            break;
+        case 3: // PI rotation
+            scaledImg = Scalr.rotate(scaledImg, Rotation.CW_180);
+            break;
+        case 4: // Flip Y
+            scaledImg = Scalr.rotate(scaledImg, Rotation.FLIP_VERT);
+            break;
+        case 5: // - PI/2 and Flip X
+            scaledImg = Scalr.rotate(scaledImg, Rotation.CW_90);
+            scaledImg = Scalr.rotate(scaledImg, Rotation.FLIP_HORZ);
+            break;
+        case 6: // -PI/2 and -width
+            scaledImg = Scalr.rotate(scaledImg, Rotation.CW_90);
+            break;
+        case 7: // PI/2 and Flip
+            scaledImg = Scalr.rotate(scaledImg, Rotation.CW_90);
+            scaledImg = Scalr.rotate(scaledImg, Rotation.FLIP_VERT);
+            break;
+        case 8: // PI / 2
+            scaledImg = Scalr.rotate(scaledImg, Rotation.CW_270);
+            break;
+        default:
+            break;
+        }
+        return scaledImg;
+    }
+
+    /**
+     * Set the file to work on and determine the orientation.
+     * First load the image into an image buffer for later work.
+     * Then try to get the orientation.
+     *
+     * @param file - file from user upload.
+     */
+    public void setSourceFile(MultipartFile sourceFile) throws IOException {
+        orientation = 1;  // Default: No rotation
+
+        InputStream sourceStream = sourceFile.getInputStream();
+        originalImage = ImageIO.read(sourceStream);
+        sourceStream.close();
+
+        try {
+            sourceStream = sourceFile.getInputStream();
+            Metadata metadata = ImageMetadataReader.readMetadata(sourceStream);
+            sourceStream.close();
+            ExifIFD0Directory exifIFD0Directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+            orientation = exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
+        } catch (ImageProcessingException ex) {
+            logger.warn("Unable to process image: " + sourceFile.getOriginalFilename());
+        } catch (MetadataException ex) {
+            logger.debug("No EXIF information found for image: " + sourceFile.getOriginalFilename());
+        }
+        return;
+    }
+
+    /**
+     * Synchronous store.
+     *
+     * @param subDir - name of directory for that scaling.
+     * @param pictureId - picture primary key (a number) from the database.
+     * @param dimension - Max size in width and height.
+     */
+    public void store(String subDir, int pictureId, int dimension) {
+        storeAsync(subDir, pictureId, dimension);
     }
 
     /**
      * Scale image and store it, using a thread in the background.
+     *
+     * @param subDir - name of directory for that scaling.
+     * @param pictureId - picture primary key (a number) from the database.
+     * @param dimension - Max size in width and height.
      */
     @Async
-    public void storeAsync(BufferedImage originalImage, String subDir, int pictureId, int dimension) {
+    public void storeAsync(String subDir, int pictureId, int dimension) {
         String formatName = "jpg";
         String imageFileToWrite = Integer.toString(pictureId) + "." + formatName;
 
         try {
-            BufferedImage resizedImage = resizeImage(originalImage, dimension);
+            //BufferedImage resizedImage = resizeImage(dimension);
+            BufferedImage resizedImage = scaleWithOrientation(dimension);
             OutputStream outStream = storageService.getOutputHandle(subDir, imageFileToWrite);
 
             ImageIO.write(resizedImage, formatName, outStream);

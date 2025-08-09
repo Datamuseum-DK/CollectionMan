@@ -35,19 +35,21 @@
           <div>
             <label class="leader required">Type:</label>
             <label th:each="type : ${types}">
-              <input type="radio" value="1" id="type1" name="klasse" th:field="*{itemClass}" th:value="${type.id}"/>
-              <th:block for="type1" th:text="${type.name}">Artefakt</th:block>
+              <input type="radio" name="itemClass" value="1" th:field="*{itemClass}" th:value="${type.id}"/>
+              <span th:text="${type.name}">Artefakt</span>
             </label>
-            <span th:remove="all">
-              <input type="radio" id="flyttekasse" name="klasse" value="flyttekasse" checked="checked"/>
-              <label for="flyttekasse">Flyttekasse</label>
-              <input type="radio" id="palle" name="klasse" value="palle"/>
-              <label for="palle">Palle</label>
-            </span>
+            <label th:remove="all">
+              <input type="radio" name="itemClass" value="2" checked="checked"/>
+              <span>Flyttekasse</span>
+            </label>
+            <label th:remove="all">
+              <input type="radio" name="itemClass" value="3"/>
+              <span>Palle</span>
+            </label>
           </div>
           <div>
-            <label class="leader required" for="file">Sag:</label>
-            <select name="file" th:field="*{fileid}" th:remove="all-but-first">
+            <label class="leader required" for="fileid">Sag:</label>
+            <select name="fileid" id="fileid" th:field="*{fileid}" th:remove="all-but-first">
               <option value="15" th:each="c : ${files}" th:value="${c.id}" th:text="${c.id + ': ' + c.title}">ALCATEL effekter</option>
               <option value="61">Carl Christian Danielsen (2021-2022 donation)</option>
               <option value="29">Dataco udstyr fra DSB Informatik</option>
@@ -122,7 +124,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           </div>
           <div>
             <label class="leader" for="qrcode">QR kode:</label>
-            <input type="number" id="qrcode" value="" th:field="*{qrcode}"/><span th:if="${#fields.hasErrors('qrcode')}" th:errors="*{qrcode}" class="fielderror">Error</span>
+            <input type="number" id="qrcode" value="" th:field="*{qrcode}"/>
+            <span th:if="${#fields.hasErrors('qrcode')}" th:errors="*{qrcode}" class="fielderror">Error</span>
           </div>
         </fieldset>
         <fieldset id="Adkomst" class="tabcontent">
@@ -131,7 +134,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <label class="leader required">Måde:</label>
             <th:block th:remove="all-but-first">
               <label th:each="t : ${acquiretypes}">
-                <input th:field="*{itemacquiretype}" type="radio" value="0" th:value="${t.ordinal}" th:checked="${t.ordinal == itemacquiretype}"/>
+                <input  name="itemacquiretype" th:field="*{itemacquiretype}" type="radio" value="0" th:value="${t.ordinal}" th:checked="${t.ordinal == itemacquiretype}"/>
                 <th:block th:text="${#strings.capitalize(#strings.toLowerCase(t))}">Ukendt</th:block>
               </label>
               <label><input name="itemacquiretype" type="radio" value="1" checked="checked"/>Gave</label>

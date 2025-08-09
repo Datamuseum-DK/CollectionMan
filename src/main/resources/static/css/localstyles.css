@@ -216,6 +216,16 @@ table.datatable {
 }
 /* QR scanning end */
 
+dl.factsheet dd a.subject  {
+  background-color: lightblue;
+  border-radius: 1ex;
+  color: inherit;
+  text-decoration: none;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  margin-right: 0.2em;
+}
+
 @media (max-width: 480px) {
   dl.factsheet dd {
     padding-left: 0px;
@@ -268,15 +278,6 @@ table.datatable {
     width: 100%;
     padding-left: 0px;
     min-height: 1em;
-  }
-  dl.factsheet dd a.subject  {
-    background-color: lightblue;
-    border-radius: 1ex;
-    color: inherit;
-    text-decoration: none;
-    padding-left: 0.3em;
-    padding-right: 0.3em;
-    margin-right: 0.2em;
   }
 }
 

@@ -57,18 +57,18 @@ public class PictureServiceImpl implements PictureService {
         if (file.isEmpty()) {
             throw new StorageException("Failed to store empty file.");
         }
-        BufferedImage originalImage;
+
         try {
-            originalImage = ImageIO.read(file.getInputStream());
+            scalingService.setSourceFile(file);
         } catch (IOException e) {
             throw new StorageFileNotFoundException("Could not read image input", e);
         }
+        // Scale and store thumbnail synchrounously
+        scalingService.store(subDirs[0], pictureId, maxDims[0]);
 
-        // Store synchrounously
-        scalingService.store(originalImage, subDirs[0], pictureId, maxDims[0]);
-
+        // Scale and store the asynchrounously
         for (int i = 1; i < subDirs.length; i++) {
-            scalingService.storeAsync(originalImage, subDirs[i], pictureId, maxDims[i]);
+            scalingService.storeAsync(subDirs[i], pictureId, maxDims[i]);
         }
     }
 
