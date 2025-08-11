@@ -26,7 +26,6 @@
       (<span th:text="${item.itemdeleted}">godkendt</span>)</h2>
       <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'Identifikation')">Identifikation</button>
-        <button th:if="${not #lists.isEmpty(children)}" class="tablinks" onclick="openTab(event, 'Genstande')">Genstande</button>
         <button class="tablinks" onclick="openTab(event, 'Adkomst')">Adkomst</button>
         <button class="tablinks" onclick="openTab(event, 'Brugsaktivitet')">Brug</button>
         <button class="tablinks" onclick="openTab(event, 'Notater')">Notater</button>
@@ -100,10 +99,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <input id="submitButton" type="submit" value="Upload"/>
           </div>
         </form>
-      </fieldset>
-      <div th:if="${not #lists.isEmpty(children)}">
-        <fieldset id="Genstande" class="tabcontent">
-          <legend>Genstande</legend>
+        <div th:if="${not #lists.isEmpty(children)}">
+          <h2>Genstande</h2>
           <dl>
             <div th:remove="tag" th:each="child : ${children}">
               <dt>
@@ -137,8 +134,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
               </li>
             </ul>
           </nav>
-        </fieldset>
-      </div>
+        </div>
+      </fieldset>
       <fieldset id="Adkomst" class="tabcontent">
         <legend>Adkomst</legend>
         <dl class="factsheet">

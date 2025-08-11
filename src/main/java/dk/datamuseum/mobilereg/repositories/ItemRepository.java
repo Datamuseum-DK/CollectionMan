@@ -20,7 +20,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * Do a full text search on items.
      * Searches headline and description.
      */
-    @Query("SELECT i FROM Item i WHERE i.headline LIKE %?1% OR i.description LIKE %?1% ORDER BY i.headline")
+    @Query("SELECT i FROM Item i WHERE i.headline LIKE %?1% OR i.description LIKE %?1% OR i.itemserialno LIKE %?1% ORDER BY i.headline")
     Page<Item> findByFulltextContaining(String query, Pageable pageable);
     
     /**
