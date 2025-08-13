@@ -124,6 +124,7 @@
       <column name="itemheadline" value="ICT mekanisk korthuller"/>
       <column name="itemdatingfrom" valueDate="1950-01-01"/>
       <column name="itemdatingto" valueDate="1969-12-31"/>
+      <column name="itemdeleted" valueNumeric="0"/>
       <column name="itemreceived" valueDate="1988-12-31"/>
       <column name="itemreceivedby" value="JB"/>
       <column name="itemregistered" valueDate="2013-04-01"/>
@@ -244,8 +245,9 @@
       <column name="itemacquiretype" valueNumeric="0"/>
       <column name="itemdatingfrom" valueDate="2023-03-21"/>
       <column name="itemdatingto" valueDate="2023-03-21"/>
+      <column name="itemdeleted" valueNumeric="4"/>
       <column name="itemheadline" value="Flyttekasse PCSW03"/>
-      <column name="itemdescription" value="Programmel ifølge TAWIKI 10/2-24:&#13;&#10;- Allways fra Funk Software - Oracle 5.1B - Orcad - IBM DOS 3.3 - ProComm - Butler disketter - DOS software på 3½&quot; disketter - Microsoft Excel 97 kursus - Microsoft Office 4.2 (kopi) - Windows 3.1 install (kopi)"/>
+      <column name="itemdescription" value="Programmel ifølge TAWIKI 10/2-24:&#13;&#10;- Allways fra Funk Software&#13;&#10;- Oracle 5.1B&#13;&#10;- Orcad&#13;&#10;- IBM DOS 3.3&#13;&#10;- ProComm&#13;&#10;- Butler disketter&#13;&#10;- DOS software på 3½&quot; disketter - Microsoft Excel 97 kursus&#13;&#10;- Microsoft Office 4.2 (kopi)&#13;&#10;- Windows 3.1 install (kopi)"/>
       <column name="itemsize" value=""/>
       <column name="itemweight" value=""/>
       <column name="itemmodeltype" value=""/>

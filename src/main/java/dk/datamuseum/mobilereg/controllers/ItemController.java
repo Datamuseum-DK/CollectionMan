@@ -140,18 +140,31 @@ public class ItemController {
 
     /**
      * Show stage 1 in the creation of an item.
+     * If placementid is filled out, then set the available types to what's legal.
      */
-    @GetMapping("/addform")
+    @RequestMapping("/addform")
     @PreAuthorize("hasAuthority('ADD_ITEMS')")
     public String showAddForm1(
                 Item item,
-                @RequestParam(name = "fileid", required=false) Integer fileid,
                 Model model) {
-        logger.info(String.format("Add form for fileid %d", fileid));
         logger.info(String.format("Add form for item %s", item.toString()));
-        model.addAttribute("locations", itemRepository.findByPlacementidNull());
-        item.setFileid(fileid);
-        model.addAttribute("fileid", fileid);
+        List<ItemClass> classByLevel = itemClassRepository.findAllOrderByLevelDesc();
+        if (classByLevel.size() == 0) {
+            throw new IllegalArgumentException("No item classes!");
+        }
+        if (item.getItemClass() == null) {
+           item.setItemClass(classByLevel.get(0));
+        }
+        if (item.getPlacementid() != null) {
+            Item parent = itemRepository.findById(item.getPlacementid()).orElseThrow(()
+                -> new IllegalArgumentException("Invalid placementid Id:" + item.getPlacementid()));
+            ItemClass parentClass = itemClassRepository.findById(parent.getItemClass().getId()).orElseThrow(()
+                -> new IllegalArgumentException("Unable to get item class of parent Id:"  + item.getPlacementid()));
+            model.addAttribute("locations", itemRepository.findByItemclassLevel(parentClass.getLevel()));
+            model.addAttribute("types", itemClassRepository.findByLevelGreaterThan(parentClass.getLevel()));
+        } else {
+            model.addAttribute("locations", itemRepository.findByItemclassLevel(classByLevel.get(0).getLevel()));
+        }
         return "item-addform";
     }
 

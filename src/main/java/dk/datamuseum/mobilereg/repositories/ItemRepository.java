@@ -30,6 +30,14 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
     List<Item> findByPlacementidNull();
 
     /**
+     * Get all locations above a certain item class.
+     *
+     * @param itemclass - the type of the requesting parent item.
+     */
+    @Query("SELECT i FROM Item i WHERE i.itemClass.level <= ?1")
+    List<Item> findByItemclassLevel(int level);
+
+    /**
      * Lookup on primary key or QR code.
      */
     List<Item> findByIdOrQrcode(int id, Integer qrcode);

@@ -19,18 +19,6 @@
           <input type="submit" value="Filtrer"/>
         </p>
       </form>
-      <div id="actions">
-        <form action="item-addform.html" th:action="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')">
-          <input type="hidden" name="fileid" value="26"/>
-          <input type="hidden" name="itemClass" value="5"/>
-          <input type="hidden" name="headline" value="Flyttekasse "/>
-          <button type="submit" sec:authorize="hasAuthority('ADD_ITEMS')">Opret flyttekasse</button>
-        </form>
-        <form action="item-addform.html" th:action="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')">
-          <input type="hidden" name="itemClass" value="1"/>
-          <button type="submit">Opret artefakt</button>
-        </form>
-      </div>
       <table>
         <tbody th:remove="all-but-first">
           <tr th:each="item : ${items}">

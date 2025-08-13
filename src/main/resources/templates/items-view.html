@@ -15,13 +15,19 @@
       </h1>
     </header>
     <section id="content">
-      <form id="actions">
-        <button id="search" type="submit" form="actions" formaction="items.html" th:formaction="@{/items}">Liste</button>
-        <button id="rediger" type="submit" form="actions" formaction="item-edit.html" th:formaction="@{/items/edit}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Rediger</button>
-        <button id="flyt" type="submit" formaction="item-move.html" th:formaction="@{/items/move}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Flyt</button>
-        <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="actions" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}">Slet</button>
-        <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
-      </form>
+      <div id="actions">
+        <form id="editform">
+          <button id="search" type="submit" form="editform" formaction="items.html" th:formaction="@{/items}">Liste</button>
+          <button id="rediger" type="submit" form="editform" formaction="item-edit.html" th:formaction="@{/items/edit}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Rediger</button>
+          <button id="flyt" type="submit" formaction="item-move.html" th:formaction="@{/items/move}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Flyt</button>
+          <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="editform" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}">Slet</button>
+          <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
+        </form>
+        <form action="item-addform.html" th:action="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')" method="post">
+          <input type="hidden" name="placementid" th:value="${item.id}"/>
+          <button type="submit" sec:authorize="hasAuthority('ADD_ITEMS')">Opret heri</button>
+        </form>
+      </div>
       <h2><span th:remove="tag" th:text="${item.headline}">Xerox 860 tekstbehandlingsanlæg</span>
       (<span th:text="${item.itemdeleted}">godkendt</span>)</h2>
       <div class="tab">

@@ -399,11 +399,13 @@
       <column name="level" valueNumeric="30"/>
       <column name="name" value="Palle"/>
     </insert>
+    <!--
     <insert tableName="item_class">
       <column name="id" valueNumeric="4"/>
       <column name="level" valueNumeric="35"/>
       <column name="name" value="Halvpalle"/>
     </insert>
+    -->
     <insert tableName="item_class">  <!-- 5 -->
       <column name="id" valueNumeric="5"/>
       <column name="level" valueNumeric="50"/>
@@ -417,28 +419,11 @@
     <insert tableName="item_class">
       <column name="id" valueNumeric="7"/>
       <column name="level" valueNumeric="10"/>
-      <column name="name" value="Lokale"/>
+      <column name="name" value="Rum"/>
     </insert>
 
-    <!--
-    <createTable tableName="notes">
-      <column name="id" type="INT" autoIncrement="true">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="item_id" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="creator" type="VARCHAR(32)" defaultValue="ukendt">
-        <constraints nullable="false" />
-      </column>
-      <column name="created" type="DATETIME"/>
-      <column name="content" type="LONGTEXT">
-        <constraints nullable="false" />
-      </column>
-    </createTable>
-    -->
-
   </changeSet>
+
 
   <!-- Changes to old tables -->
 
@@ -480,5 +465,25 @@
       </column>
     </addColumn>
   </changeSet>
+
+<!--
+  <changeSet author="roug" id="ddlnotes">
+    <createTable tableName="notes">
+      <column name="id" type="INT" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="item_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="creator" type="VARCHAR(32)" defaultValue="ukendt">
+        <constraints nullable="false" />
+      </column>
+      <column name="created" type="DATETIME"/>
+      <column name="content" type="LONGTEXT">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+  </changeSet>
+-->
 
 </databaseChangeLog>
