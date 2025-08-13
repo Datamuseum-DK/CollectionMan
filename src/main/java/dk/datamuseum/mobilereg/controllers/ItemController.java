@@ -125,8 +125,8 @@ public class ItemController {
     }
 
     @ModelAttribute("types")
-    public Iterable<ItemClass> itemclasses() {
-        return itemClassRepository.findAll();
+    public List<ItemClass> itemclasses() {
+        return itemClassRepository.findAllOrderByLevelDesc();
     }
 
     @ModelAttribute("statuses")
@@ -148,7 +148,7 @@ public class ItemController {
                 Item item,
                 Model model) {
         logger.info(String.format("Add form for item %s", item.toString()));
-        List<ItemClass> classByLevel = itemClassRepository.findAllOrderByLevelDesc();
+        List<ItemClass> classByLevel = itemclasses();
         if (classByLevel.size() == 0) {
             throw new IllegalArgumentException("No item classes!");
         }

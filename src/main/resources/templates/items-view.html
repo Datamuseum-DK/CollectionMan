@@ -23,13 +23,14 @@
           <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="editform" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}">Slet</button>
           <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
         </form>
-        <form action="item-addform.html" th:action="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')" method="post">
+        <form action="item-addform.html" th:action="@{/items/addform}"
+        th:if="${types[0].getLevel() gt item.itemClass.getLevel()}"
+        sec:authorize="hasAuthority('ADD_ITEMS')" method="post">
           <input type="hidden" name="placementid" th:value="${item.id}"/>
           <button type="submit" sec:authorize="hasAuthority('ADD_ITEMS')">Opret heri</button>
         </form>
       </div>
-      <h2><span th:remove="tag" th:text="${item.headline}">Xerox 860 tekstbehandlingsanlæg</span>
-      (<span th:text="${item.itemdeleted}">godkendt</span>)</h2>
+      <h2><span th:remove="tag" th:text="${item.headline}">Xerox 860 tekstbehandlingsanlæg</span></h2>
       <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'Identifikation')">Identifikation</button>
         <button class="tablinks" onclick="openTab(event, 'Adkomst')">Adkomst</button>
