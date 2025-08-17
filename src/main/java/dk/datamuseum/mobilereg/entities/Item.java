@@ -66,11 +66,12 @@ public class Item {
 
     // itemdeleted         = models.IntegerField(verbose_name="status", choices=status_as, null=True, default=0)
     @ColumnDefault("0")
-    // @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
+    @NotNull(message = "Der skal angives en status")
     private Integer itemdeleted;
 
     // itemheadline        = models.CharField('betegnelse', max_length=255, blank=False, db_index=True)
-    @Column(name = "itemheadline",length=255)
+    @Column(name = "itemheadline", length=255)
     @NotBlank(message = "Headline is mandatory")
     private String headline;
     

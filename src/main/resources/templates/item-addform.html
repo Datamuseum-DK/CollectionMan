@@ -47,6 +47,24 @@
             </select>
           </div>
           <div>
+            <label class="leader required" for="id_itemdeleted">Status:</label>
+            <select th:field="*{itemdeleted}" name="itemdeleted" id="id_itemdeleted">
+              <optgroup label="Publiseret">
+                <option value="0" th:selected="true" selected="selected">godkendt</option>
+              </optgroup>
+              <optgroup label="Redaktion">
+                <option value="1">klar</option>
+                <option value="2">kladde</option>
+              </optgroup>
+              <optgroup label="Offline">
+                <option value="3">udgået</option>
+                <option value="4">intern</option>
+              </optgroup>
+            </select>
+            <span th:if="${#fields.hasErrors('itemdeleted')}" th:errors="*{itemdeleted}" class="fielderror">Error</span>
+          </div>
+
+          <div>
             <label class="required leader" for="placementid">Lokation:</label>
             <select id="placementid" th:field="*{placementid}" th:remove="all-but-first">
               <option value="0" th:value="${location.id}" th:text="${location.headline}" th:each="location: ${locations}">Sandby</option>
