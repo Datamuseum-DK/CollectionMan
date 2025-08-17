@@ -132,8 +132,7 @@ public class ItemController {
     @ModelAttribute("statuses")
     public String[] statuses() {
     String[] itemStatuses = {
-          "publiceret: godkendt", "redaktion: klar", "redaktion: kladde", "offline: udgået",
-          "offline: intern"
+          "Godkendt", "Klar", "Kladde", "Udgået", "Intern"
         };
         return itemStatuses;
     }

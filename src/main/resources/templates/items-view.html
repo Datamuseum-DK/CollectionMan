@@ -19,7 +19,9 @@
         <form id="editform">
           <button id="search" type="submit" form="editform" formaction="items.html" th:formaction="@{/items}">Liste</button>
           <button id="rediger" type="submit" form="editform" formaction="item-edit.html" th:formaction="@{/items/edit}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Rediger</button>
-          <button id="flyt" type="submit" formaction="item-move.html" th:formaction="@{/items/move}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Flyt</button>
+          <button id="flyt" type="submit" formaction="item-move.html" th:formaction="@{/items/move}"
+              th:unless="${item.itemClass.getLevel() eq 0}"
+              sec:authorize="hasAuthority('CHANGE_ITEMS')">Flyt</button>
           <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="editform" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}">Slet</button>
           <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
         </form>
@@ -33,7 +35,7 @@
       <h2><span th:remove="tag" th:text="${item.headline}">Xerox 860 tekstbehandlingsanlæg</span></h2>
       <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'Identifikation')">Identifikation</button>
-        <button class="tablinks" onclick="openTab(event, 'Adkomst')">Adkomst</button>
+        <button class="tablinks" onclick="openTab(event, 'Erhvervelse')">Erhvervelse</button>
         <button class="tablinks" onclick="openTab(event, 'Brugsaktivitet')">Brug</button>
         <button class="tablinks" onclick="openTab(event, 'Notater')">Notater</button>
       </div>
@@ -41,7 +43,8 @@
         <legend>Identifikation</legend>
         <dl class="factsheet">
           <dt>Nr.</dt>
-          <dd><span th:text="${item.id}">11000937</span> (<span th:text="${item.itemClass.name}">Artefakt</span>)
+          <dd><span th:text="${item.id}">11000937</span> (<span th:text="${statuses[item.itemdeleted]}">Godkendt</span>
+          <span th:text="${#strings.toLowerCase(item.itemClass.name)}">artefakt</span>)
         </dd>
           <dt>Sag</dt>
           <dd>
@@ -143,8 +146,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           </nav>
         </div>
       </fieldset>
-      <fieldset id="Adkomst" class="tabcontent">
-        <legend>Adkomst</legend>
+      <fieldset id="Erhvervelse" class="tabcontent">
+        <legend>Erhvervelse</legend>
         <dl class="factsheet">
           <dt th:if="${donor.isPresent()}">Donator</dt>
           <dd th:if="${donor.isPresent()}">
@@ -154,11 +157,11 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd><span th:remove="tag" th:text="${#temporals.format(item.itemreceived,'YYYY-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemreceivedby}">fvn</span></dd>
           <dt title="Deponeret til museet indtil">Deponeret indtil:</dt>
           <dd th:text="${#temporals.format(item.itemdepositeduntil,'YYYY-MM-dd')}">2032-09-16</dd>
-          <dt>Udgået:</dt>
+          <dt>Udgået</dt>
           <dd th:text="${item.itemoutdated}">1</dd>
-          <dt>Lånt indtil:</dt>
+          <dt>Lånt indtil</dt>
           <dd th:text="${#temporals.format(item.itemborroweduntil,'YYYY-MM-dd')}">2027-10-16</dd>
-          <dt>Takkebrev afsendt:</dt>
+          <dt>Takkebrev afsendt</dt>
           <dd th:text="${#temporals.format(item.itemthanksletter,'YYYY-MM-dd')}">2012-09-16</dd>
         </dl>
       </fieldset>

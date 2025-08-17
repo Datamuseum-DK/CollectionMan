@@ -18,7 +18,7 @@
       <h2 th:text="'Redigere ' + ${item.headline}">Redigere genstand</h2>
       <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'Identifikation')">Identifikation</button>
-        <button class="tablinks" onclick="openTab(event, 'Adkomst')">Adkomst</button>
+        <button class="tablinks" onclick="openTab(event, 'Erhvervelse')">Erhvervelse</button>
         <button class="tablinks" onclick="openTab(event, 'Brugsaktivitet')">Brug</button>
         <button class="tablinks" onclick="openTab(event, 'Notater')">Notater</button>
       </div>
@@ -128,8 +128,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <span th:if="${#fields.hasErrors('qrcode')}" th:errors="*{qrcode}" class="fielderror">Error</span>
           </div>
         </fieldset>
-        <fieldset id="Adkomst" class="tabcontent">
-          <legend>Adkomst</legend>
+        <fieldset id="Erhvervelse" class="tabcontent">
+          <legend>Erhvervelse</legend>
           <div>
             <label class="leader required">Måde:</label>
             <th:block th:remove="all-but-first">

@@ -15,7 +15,7 @@
     <section id="content">
       <form id="search" action="items.html" method="get" th:action="@{/items}">
         <p>
-          <input type="text" id="query" name="q" value="" th:value="${q}"/>
+          <input type="text" id="query" name="q" value="" th:value="${q}" title="Søg på betegnelse, beskrivelse, serienr., genstandsid og QR kode"/>
           <input type="submit" value="Filtrer"/>
         </p>
       </form>

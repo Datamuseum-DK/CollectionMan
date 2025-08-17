@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-  <!-- Existing tables created as is
+  <!-- Existing tables created as-is
        See src/ddhf_data/models.py -->
   
   <changeSet author="roug" id="auth01" context="createdjangodb">
@@ -369,6 +369,71 @@
 
   </changeSet>
 
+  <changeSet author="roug" id="djangoalog" context="createdjangodb">
+    <createTable tableName="django_admin_log">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="action_time" type="datetime">
+        <constraints nullable="false"/>
+      </column>
+      <column name="object_id" type="LONGTEXT"/>
+      <column name="object_repr" type="VARCHAR(200)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="action_flag" type="SMALLINT UNSIGNED">
+        <constraints nullable="false"/>
+      </column>
+      <column name="change_message" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="content_type_id" type="INT"/>
+      <column name="user_id" type="INT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <createTable tableName="django_content_type">
+      <column autoIncrement="true" name="id" type="INT">
+          <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="app_label" type="VARCHAR(100)">
+          <constraints nullable="false"/>
+      </column>
+      <column name="model" type="VARCHAR(100)">
+          <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <sql>INSERT INTO django_content_type VALUES (1,'admin','logentry'),(3,'auth','group'),(2,'auth','permission'),(4,'auth','user'),(5,'contenttypes','contenttype'),(7,'ddhf_data','donators'),(8,'ddhf_data','files'),(13,'ddhf_data','items'),(9,'ddhf_data','pictures'),(10,'ddhf_data','producers'),(11,'ddhf_data','sted'),(12,'ddhf_data','subjects'),(6,'sessions','session')</sql>
+    <addUniqueConstraint columnNames="app_label, model"
+        constraintName="django_content_type_app_label_model_76bd3d3b_uniq"
+        tableName="django_content_type"/>
+
+    <createIndex
+        indexName="django_admin_log_content_type_id_c4bce8eb_fk_django_co"
+        tableName="django_admin_log">
+        <column name="content_type_id"/>
+    </createIndex>
+    <createIndex
+        indexName="django_admin_log_user_id_c564eba6_fk_auth_user_id"
+        tableName="django_admin_log">
+        <column name="user_id"/>
+    </createIndex>
+
+    <addForeignKeyConstraint baseColumnNames="content_type_id" baseTableName="django_admin_log"
+        constraintName="django_admin_log_content_type_id_c4bce8eb_fk_django_co"
+        deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+        referencedColumnNames="id" referencedTableName="django_content_type"
+        validate="true"/>
+
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="django_admin_log"
+        constraintName="django_admin_log_user_id_c564eba6_fk_auth_user_id"
+        deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+        referencedColumnNames="id" referencedTableName="auth_user"
+        validate="true"/>
+
+  </changeSet>
+
   <!-- New tables -->
   <changeSet author="roug" id="ddl02">
     <comment>New tables</comment>
@@ -464,6 +529,11 @@
         <constraints nullable="true"/>
       </column>
     </addColumn>
+  </changeSet>
+
+  <changeSet author="roug" id="ddl06">
+    <addNotNullConstraint tableName="items"
+        columnDataType="INT" columnName="itemdeleted"/>
   </changeSet>
 
 <!--
