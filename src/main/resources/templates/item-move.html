@@ -13,15 +13,16 @@
       </h1>
     </header>
     <section id="content">
-      <h2>Flyt: <span th:text="${item.headline}">RC8000</span></h2>
+      <h2>Flyt: <span th:text="${headline}">RC8000</span></h2>
+      <div>
+      <a href="items-qrmove.html" th:href="@{/items/qrmove(id=${itemid})}">Scan QR</a>
+      </div>
       <form method="post" action="items-view.html"
-              th:object="${item}" th:action="@{/items/updateplace/{id}(id=${item.id})}">
+              th:action="@{/items/updateplace/{id}(id=${itemid})}">
         <label>Genstand nr.:</label>
-        <span th:text="*{id}">21000937</span>
-        <label class="head" for="plads">Placering:</label>
-
-        <select id="plads" th:field="*{placementid}" th:remove="all-but-first">
-
+        <span th:text="${itemid}">21000937</span>
+        <label class="head" for="placementid">Placering:</label>
+        <select id="placementid" name="placementid" th:remove="all-but-first">
           <option value="11004993"
            th:each="place : ${places}" th:text="${place.headline}" th:value="${place.id}"
            >Tapeten</option>

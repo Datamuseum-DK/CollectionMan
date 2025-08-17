@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+    <style>
+    #video-container {
+        line-height: 0;
+    }
+
+    #qr-video {
+        height:50vh;
+    }
+
+    #flash-toggle {
+        display: none;
+    }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1 th:insert="~{layout :: bannerFragment}">
+        <a href="index.html">Forside</a>
+      </h1>
+    </header>
+    <section id="content">
+      <div id="video-container">
+        <video id="qr-video"/>
+      </div>
+      <p>
+        <b>Detected QR code: </b>
+        <span id="cam-qr-result">None</span>
+      </p>
+      <div>
+        <button id="start-button">Start</button>
+        <button id="stop-button">Stop</button>
+      </div>
+      <p>
+        <b>Device has camera: </b>
+        <span id="cam-has-camera">false</span>
+      </p>
+      <div>
+        <b>Preferred camera:</b>
+        <select id="cam-list">
+          <option value="environment" selected="selected">Environment Facing (default)</option>
+          <option value="user">User Facing</option>
+        </select>
+      </div>
+      <p>
+        <b>Camera has flash: </b>
+        <span id="cam-has-flash">false</span>
+      </p>
+      <div>
+        <button id="flash-toggle">📸 Flash: <span id="flash-state">off</span></button>
+      </div>
+      <form method="post" action="items-view.html"
+          th:action="@{/items/qrupdateplace/{id}(id=${itemid})}"
+          id="doquery" style="display: none">
+        <input type="hidden" id="result" name="placementid"/>
+        <input type="submit"/>
+      </form>
+      <script src="../static/js/qr-scanner.umd.min.js" th:src="@{/js/qr-scanner.umd.min.js}"><![CDATA[ ]]></script>
+      <script src="../static/js/scansetup.js" th:src="@{/js/scansetup.js}"><![CDATA[ ]]></script>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+</footer>
+  </body>
+</html>

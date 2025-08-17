@@ -217,14 +217,17 @@ public class ItemController {
      * Show the form for moving an item to another container.
      *
      * @param id item id.
+     * @param model - Additional attributes used by the web form.
      */
     @GetMapping("/move")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String showMoveForm(int id, Model model) {
         Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
         int level = item.getItemClass().getLevel();
+        model.addAttribute("level", level);
         model.addAttribute("places", itemRepository.findContainers(level));
-        model.addAttribute("item", item);
+        model.addAttribute("headline", item.getHeadline());
+        model.addAttribute("itemid", id);
 
         return "item-move";
     }
@@ -233,16 +236,53 @@ public class ItemController {
      * Update the location of the item.
      *
      * @param id item id.
-     * @param result - Results from validation of the web form.
+     * @param placementid - the new location.
      * @param model - Additional attributes used by the web form.
      */
-    @PostMapping("/updateplace/{id}")
+    @PostMapping("/updateplace/{itemid}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
-    public String moveItem(@PathVariable("id") int id, Item item, BindingResult result, Model model) {
-        Item itemInDB = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
-        itemInDB.setPlacementid(item.getPlacementid());
+    public String moveItem(@PathVariable("itemid") int itemid, String placementid, Model model) {
+        Item itemInDB = itemRepository.findById(itemid).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + itemid));
+        Integer cleanId = evaluateQRString(placementid);
+        itemInDB.setPlacementid(cleanId);
+        logger.info(String.format("Moving %d to %d", itemInDB.getId(), itemInDB.getPlacementid()));
         itemRepository.save(itemInDB);
-        return String.format("redirect:/items/view/%d", id);
+        return String.format("redirect:/items/view/%d", itemid);
+    }
+
+    /**
+     * Show the form for scanning QR to move.
+     *
+     * @param id item id.
+     * @param model - Additional attributes used by the web form.
+     */
+    @GetMapping("/qrmove")
+    @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
+    public String showQRMoveForm(int id, Model model) {
+        Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
+        model.addAttribute("itemid", id);
+
+        return "items-qrmove";
+    }
+
+    /**
+     * Update the location of the item.
+     *
+     * @param id item id.
+     * @param placementid - the new location's QR code.
+     * @param model - Additional attributes used by the web form.
+     */
+    @PostMapping("/qrupdateplace/{itemid}")
+    @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
+    public String moveQRItem(@PathVariable("itemid") int itemid, String placementid, Model model) {
+        Item itemInDB = itemRepository.findById(itemid).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + itemid));
+        Integer cleanId = evaluateQRString(placementid);
+        Item parentItem = itemRepository.getByQrcode(cleanId);
+        // TODO: Check for legal level.
+        itemInDB.setPlacementid(parentItem.getId());
+        logger.info(String.format("Moving %d to %d", itemInDB.getId(), itemInDB.getPlacementid()));
+        itemRepository.save(itemInDB);
+        return String.format("redirect:/items/view/%d", itemid);
     }
 
     /**
@@ -257,7 +297,7 @@ public class ItemController {
     @PostMapping("/update/{id}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String updateItem(@PathVariable("id") int id, @Valid Item item, BindingResult result, Model model) {
-        logger.info(item);
+        logger.debug(item);
         if (result.hasErrors()) {
             item.setId(id);
             return "item-edit";
@@ -336,6 +376,7 @@ public class ItemController {
 
     /*
      * Get rid of URL part.
+     * Also works if the string is just a number.
      */
     private Integer evaluateQRString(String qrInput) {
         String prefixProperty = properties.getQrUrlPrefixes();
