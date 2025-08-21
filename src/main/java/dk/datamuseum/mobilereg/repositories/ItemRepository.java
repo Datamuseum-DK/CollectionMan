@@ -93,8 +93,8 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * @param level - the level of the item you want to see possible containers for.
      */
     //@NativeQuery(value = "SELECT items.* FROM items JOIN item_class ON items.itemclassid=item_class.id WHERE level < ?1 ORDER BY itemheadline")
-    @Query(value="SELECT i FROM Item i JOIN i.itemClass c WHERE c.level < ?1 ORDER BY i.headline")
-    Iterable<Item> findContainers(int level);
+    @Query(value="SELECT i FROM Item i JOIN i.itemClass c WHERE i.placementid = ?1 AND c.level < ?2 ORDER BY i.headline")
+    Iterable<Item> findContainers(int parentid, int maxLevel);
 
     /**
      * Items that were used at an identified place.

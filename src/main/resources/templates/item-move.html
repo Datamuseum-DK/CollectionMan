@@ -13,38 +13,37 @@
       </h1>
     </header>
     <section id="content">
-      <h2>Flyt: <span th:text="${headline}">RC8000</span></h2>
-      <div>
-      <a href="items-qrmove.html" th:href="@{/items/qrmove(id=${itemid})}">Scan QR</a>
-      </div>
-      <form method="post" action="items-view.html"
-              th:action="@{/items/updateplace/{id}(id=${itemid})}">
-        <label>Genstand nr.:</label>
-        <span th:text="${itemid}">21000937</span>
-        <label class="head" for="placementid">Placering:</label>
-        <select id="placementid" name="placementid" th:remove="all-but-first">
-          <option value="11004993"
-           th:each="place : ${places}" th:text="${place.headline}" th:value="${place.id}"
-           >Tapeten</option>
-          <option value="11004997">Charlotteskolen</option>
-          <option value="11004998">Sandby</option>
-          <option value="11004999">Ukendt</option>
-          <optgroup label="Sandby">
-            <option value="11001009">Palle 11001009</option>
-            <option value="11001032">Palle 11001032</option>
-            <option value="11001036">Palle 11001036</option>
-            <option value="11001110">Palle 11001110</option>
-            <option value="11001132">Palle 11001132</option>
-            <option value="11001189">Palle 11001189</option>
-            <option value="11001192">Palle 11001192</option>
-            <option value="11001208">Palle 11001208</option>
-            <option value="11001212">Palle 11001212</option>
-          </optgroup>
-          <optgroup label="Norddrup">
-            <option value="11000968">Palle 287</option>
-          </optgroup>
-        </select>
-        <input type="submit" value="Flyt"/>
+      <h2>Flyt: <span th:text="${itemid}">21000937</span> - <span th:text="${headline}">RC8000</span></h2>
+      <fieldset>
+        <legend>Flytte med QR kode</legend>
+        <div>
+          <a href="items-qrmove.html" th:href="@{/items/qrmove(id=${itemid})}">Scan QR</a>
+        </div>
+      </fieldset>
+      <form method="post" action="items-move-seek.html" th:action="@{/items/updateplace/{id}(id=${itemid})}">
+        <fieldset>
+          <legend>Søge container</legend>
+          <label class="head" for="placementid" title="Indtast tekst, genstandsnr. eller QR kode">Placering:</label>
+          <input type="text" id="placementid" name="placementid"/>
+          <input type="submit" value="Søg"/>
+        </fieldset>
+      </form>
+      <form method="post" action="items-move-nav.html" th:action="@{/items/updateplace/{id}(id=${itemid})}">
+        <fieldset>
+          <legend>Navigere hierarkisk</legend>
+          <div th:each="place : ${places}">
+            <a href="items-move-nav.html?itemid=10000041" th:href="@{move-nav(itemid=${itemid},placementid=${place.id})}" th:text="${place.headline}">Sandby</a>
+          </div>
+          <div th:remove="all">
+            <a href="items-move-nav.html?itemid=10000042">Tapeten</a>
+          </div>
+          <div th:remove="all">
+            <a href="items-move-nav.html?itemid=10000043">Renge</a>
+          </div>
+          <div th:remove="all">
+            <a href="items-move-nav.html?itemid=10000044">Ukendt</a>
+          </div>
+        </fieldset>
       </form>
     </section>
     <footer th:replace="~{layout :: footerFragment}">

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Flyt: <span th:text="${itemid}">21000937</span> - <span th:text="${headline}">RC8000</span></h2>
+      <form method="post" action="items-view.html" th:action="@{/items/updateplace/{id}(id=${itemid})}">
+        <fieldset>
+          <legend>Navigere hierarkisk</legend>
+          <input th:if="${placementid}" type="hidden" th:value="${placementid}"/>
+          <input type="submit" value="Vælg"/>
+          <div th:each="place : ${places}" th:value="${place.id}">
+            <div>
+              <a href="item-move-nav.html?itemid=10000041" th:href="@{move(itemid)}" th:text="${place.headline}">Pallereol A</a>
+            </div>
+            <div>
+              <a href="item-move-nav.html?itemid=10000042">Pallereol B</a>
+            </div>
+            <div>
+              <a href="item-move-nav.html?itemid=10000043">Pallereol C</a>
+            </div>
+            <div>
+              <a href="item-move-nav.html?itemid=10000044">Pallereol D</a>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

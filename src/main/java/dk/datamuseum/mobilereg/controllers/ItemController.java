@@ -215,6 +215,7 @@ public class ItemController {
 
     /**
      * Show the form for moving an item to another container.
+     * This shows the three ways to move as a menu.
      *
      * @param id item id.
      * @param model - Additional attributes used by the web form.
@@ -225,12 +226,46 @@ public class ItemController {
         Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
         int level = item.getItemClass().getLevel();
         model.addAttribute("level", level);
-        model.addAttribute("places", itemRepository.findContainers(level));
+        model.addAttribute("places", itemRepository.findByPlacementidNull());
         model.addAttribute("headline", item.getHeadline());
         model.addAttribute("itemid", id);
 
         return "item-move";
     }
+
+    /**
+     * Show the navigation for moving a container.
+     * This shows the three ways to move as a menu. If placementid is filled out,
+     * then it shows a button to select this place and any sub-containers, that
+     * have a lower level than the item.
+     *
+     * @param id item id.
+     * @param placementid - current selected place - must be an item id.
+     * @param model - Additional attributes used by the web form.
+     */
+    @GetMapping("/move-nav")
+    @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
+    public String showMoveNav(int itemid, Integer placementid, Model model) {
+        Item item = itemRepository.findById(itemid).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + itemid));
+        int level = item.getItemClass().getLevel();
+        if (placementid != null) {
+            Item currPlaceItem = itemRepository.findById(placementid).orElseThrow(()
+                -> new IllegalArgumentException("Invalid placement Id:" + placementid));
+            //int placelevel = currPlaceItem.getItemClass().getLevel();
+            model.addAttribute("places", itemRepository.findContainers(placementid, itemclasses().get(0).getLevel()));
+            model.addAttribute("placementid", placementid);
+        } else {
+            model.addAttribute("places", itemRepository.findByPlacementidNull());
+        }
+        model.addAttribute("level", level);
+        model.addAttribute("headline", item.getHeadline());
+        model.addAttribute("itemid", itemid);
+
+        return "item-move";
+    }
+
+    /**
 
     /**
      * Update the location of the item.
@@ -262,7 +297,7 @@ public class ItemController {
         Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
         model.addAttribute("itemid", id);
 
-        return "items-qrmove";
+        return "items-move-qr";
     }
 
     /**
