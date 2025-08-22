@@ -14,18 +14,20 @@
     </header>
     <section id="content">
       <h2>Vælg container</h2>
-      <form id="search" action="items-move-seek.html" method="get" th:action="@{/items}">
+      <form id="search" action="items-move-search.html" method="get" th:action="@{/items/move-search}">
         <p>
           <input type="text" id="query" name="q" value="" th:value="${q}" title="Søg på betegnelse, beskrivelse, serienr., genstandsid og QR kode"/>
-          <input type="submit" value="Filtrer"/>
+          <input type="hidden" name="itemid" th:value="${itemid}"/>
+          <input type="submit" value="Søg igen"/>
         </p>
       </form>
+      <form method="post" id="selectplace" th:action="@{/items/updateplace/{id}(id=${itemid})}">
       <table>
         <tbody th:remove="all-but-first">
           <tr th:each="item : ${items}">
             <td>
               <div>
-                <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}" th:text="${item.headline}">Flyttekasse RC34</a>
+                <button name="placementid" form="selectplace" type="submit" th:value="${item.id}" th:text="${item.headline}">Flyttekasse RC34</button>
               </div>
               <div th:text="${#strings.abbreviate(item.description, 400)}">RC manualer med bl.a.: - RC4000 technical manuals - Friden Flexowriter</div>
             </td>
@@ -75,6 +77,7 @@
           </tr>
         </tbody>
       </table>
+      </form>
     </section>
     <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
       <ul class="pagination justify-content-center">

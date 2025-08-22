@@ -20,11 +20,12 @@
           <a href="items-qrmove.html" th:href="@{/items/qrmove(id=${itemid})}">Scan QR</a>
         </div>
       </fieldset>
-      <form method="post" action="items-move-seek.html" th:action="@{/items/updateplace/{id}(id=${itemid})}">
+      <form method="get" action="items-move-search.html" th:action="@{/items/move-search}">
         <fieldset>
           <legend>Søge container</legend>
           <label class="head" for="placementid" title="Indtast tekst, genstandsnr. eller QR kode">Placering:</label>
-          <input type="text" id="placementid" name="placementid"/>
+          <input type="hidden" name="itemid" th:value="${itemid}"/>
+          <input type="text"  name="q"/>
           <input type="submit" value="Søg"/>
         </fieldset>
       </form>

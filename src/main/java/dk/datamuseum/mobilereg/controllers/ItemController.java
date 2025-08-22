@@ -230,7 +230,7 @@ public class ItemController {
         model.addAttribute("headline", item.getHeadline());
         model.addAttribute("itemid", id);
 
-        return "item-move";
+        return "items-move";
     }
 
     /**
@@ -253,6 +253,7 @@ public class ItemController {
             Item currPlaceItem = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid placement Id:" + placementid));
             //int placelevel = currPlaceItem.getItemClass().getLevel();
+            model.addAttribute("placename", currPlaceItem.getHeadline());
             model.addAttribute("places", itemRepository.findContainers(placementid, itemclasses().get(0).getLevel()));
             model.addAttribute("placementid", placementid);
         } else {
@@ -262,23 +263,61 @@ public class ItemController {
         model.addAttribute("headline", item.getHeadline());
         model.addAttribute("itemid", itemid);
 
-        return "item-move";
+        return "items-move-nav";
     }
 
     /**
+     * Show the hits from searching a container by itemid, QR code, or tekst.
+     *
+     * @param id item id.
+     */
+    @GetMapping("/move-search")
+    @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
+    public String showMoveSearch(
+            int itemid,
+            @RequestParam(name = "q", required=false) String query,
+            Model model,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "50") int size) {
+
+        if (query == null) {
+            query = "";
+        }
+        model.addAttribute("q", query);
+        List<Item> items = new ArrayList<Item>();
+        if (isNumeric(query)) {
+            Integer cleanId = Integer.parseInt(query);
+            items = itemRepository.findByIdOrQrcode(cleanId, cleanId);
+            model.addAttribute("currentPage", 1);
+            model.addAttribute("totalItems", items.size());
+            model.addAttribute("totalPages", 1);
+        } else {
+            Pageable paging = PageRequest.of(page - 1, size);
+            Page<Item> pagedItems =  itemRepository.findByFulltextContaining(query, paging);
+            model.addAttribute("currentPage", pagedItems.getNumber() + 1);
+            model.addAttribute("totalItems", pagedItems.getTotalElements());
+            model.addAttribute("totalPages", pagedItems.getTotalPages());
+            items = pagedItems.getContent();
+        }
+        model.addAttribute("items", items);
+        model.addAttribute("itemid", itemid);
+        model.addAttribute("pageSize", size);
+        return "items-move-search";
+    }
 
     /**
      * Update the location of the item.
      *
      * @param id item id.
-     * @param placementid - the new location.
+     * @param placementid - the item id of the new location.
      * @param model - Additional attributes used by the web form.
      */
     @PostMapping("/updateplace/{itemid}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String moveItem(@PathVariable("itemid") int itemid, String placementid, Model model) {
         Item itemInDB = itemRepository.findById(itemid).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + itemid));
-        Integer cleanId = evaluateQRString(placementid);
+        Integer cleanId = Integer.parseInt(placementid);
+        // TODO check that cleanId exists in database
         itemInDB.setPlacementid(cleanId);
         logger.info(String.format("Moving %d to %d", itemInDB.getId(), itemInDB.getPlacementid()));
         itemRepository.save(itemInDB);
@@ -412,6 +451,8 @@ public class ItemController {
     /*
      * Get rid of URL part.
      * Also works if the string is just a number.
+     *
+     * @param qrInput - The QR value - scanned or entered.
      */
     private Integer evaluateQRString(String qrInput) {
         String prefixProperty = properties.getQrUrlPrefixes();
