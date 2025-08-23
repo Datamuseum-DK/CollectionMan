@@ -82,6 +82,24 @@ public class ItemController {
     private Log logger = LogFactory.getLog(ItemController.class);
 
     /**
+     * Get the items class level. 0 is topmost container.
+     *
+     * @param item - the item to get level from.
+     * @return the level as an integer.
+     */
+    private Integer getItemLevel(Item item) {
+        return item.getItemClass().getLevel();
+    }
+
+    /**
+     * Get the top class level - i.e. locations.
+     * @return the level as an integer.
+     */
+    private Integer getTopClassLevel() {
+        return itemclasses().get(0).getLevel();
+    }
+
+    /**
      * List all acquire types.
      * For display on item factsheet.
      */
@@ -114,24 +132,36 @@ public class ItemController {
         return producerRepository.findByOrderByTitle();
     }
 
+    /**
+     * List all locations.
+     */
     @ModelAttribute("steder")
     public Iterable<Sted> steder() {
         return stedRepository.findByOrderByStednavn();
     }
 
+    /**
+     * List all subjects.
+     */
     @ModelAttribute("allSubjects")
     public Iterable<Subject> allSubjects() {
         return subjectRepository.findByOrderByTitle();
     }
 
+    /**
+     * List all item classes.
+     */
     @ModelAttribute("types")
     public List<ItemClass> itemclasses() {
         return itemClassRepository.findAllOrderByLevelDesc();
     }
 
+    /**
+     * List all item statuses.
+     */
     @ModelAttribute("statuses")
     public String[] statuses() {
-    String[] itemStatuses = {
+        String[] itemStatuses = {
           "Godkendt", "Klar", "Kladde", "Udgået", "Intern"
         };
         return itemStatuses;
@@ -140,6 +170,8 @@ public class ItemController {
     /**
      * Show stage 1 in the creation of an item.
      * If placementid is filled out, then set the available types to what's legal.
+     *
+     * @param model - Additional attributes used by the web form.
      */
     @RequestMapping("/addform")
     @PreAuthorize("hasAuthority('ADD_ITEMS')")
@@ -162,19 +194,9 @@ public class ItemController {
             model.addAttribute("locations", itemRepository.findByItemclassLevel(parentClass.getLevel()));
             model.addAttribute("types", itemClassRepository.findByLevelGreaterThan(parentClass.getLevel()));
         } else {
-            model.addAttribute("locations", itemRepository.findByItemclassLevel(classByLevel.get(0).getLevel()));
+            model.addAttribute("locations", itemRepository.findByItemclassLevel(getTopClassLevel()));
         }
         return "item-addform";
-    }
-
-    /**
-     * Show stage 2 in the creation of an item.
-     * The item is not yet valid.
-     */
-    @PostMapping("/addform2")
-    @PreAuthorize("hasAuthority('ADD_ITEMS')")
-    public String showAddForm2(Item item, Model model) {
-        return "item-addform2";
     }
 
     /**
@@ -202,12 +224,14 @@ public class ItemController {
      * Form for editing an item.
      *
      * @param id item id.
+     * @param model - Additional attributes used by the web form.
      */
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String showUpdateForm(int id, Model model) {
         logger.info(String.format("Edit form for %d", id));
-        Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
+        Item item = itemRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + id));
         model.addAttribute("item", item);
 
         return "item-edit";
@@ -223,8 +247,9 @@ public class ItemController {
     @GetMapping("/move")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String showMoveForm(int id, Model model) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
-        int level = item.getItemClass().getLevel();
+        Item item = itemRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + id));
+        int level = getItemLevel(item);
         model.addAttribute("level", level);
         model.addAttribute("places", itemRepository.findByPlacementidNull());
         model.addAttribute("headline", item.getHeadline());
@@ -248,13 +273,14 @@ public class ItemController {
     public String showMoveNav(int itemid, Integer placementid, Model model) {
         Item item = itemRepository.findById(itemid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + itemid));
-        int level = item.getItemClass().getLevel();
+        int level = getItemLevel(item);
         if (placementid != null) {
             Item currPlaceItem = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid placement Id:" + placementid));
             //int placelevel = currPlaceItem.getItemClass().getLevel();
             model.addAttribute("placename", currPlaceItem.getHeadline());
-            model.addAttribute("places", itemRepository.findContainers(placementid, itemclasses().get(0).getLevel()));
+            model.addAttribute("places", itemRepository.findContainers(placementid,
+                    getTopClassLevel()));
             model.addAttribute("placementid", placementid);
         } else {
             model.addAttribute("places", itemRepository.findByPlacementidNull());
@@ -269,7 +295,11 @@ public class ItemController {
     /**
      * Show the hits from searching a container by itemid, QR code, or tekst.
      *
-     * @param id item id.
+     * @param id - item id.
+     * @param query - query string.
+     * @param model - Additional attributes used by the web form.
+     * @param page - page number of paged results.
+     * @param size - number of results on a single page.
      */
     @GetMapping("/move-search")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -314,11 +344,17 @@ public class ItemController {
      */
     @PostMapping("/updateplace/{itemid}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
-    public String moveItem(@PathVariable("itemid") int itemid, String placementid, Model model) {
-        Item itemInDB = itemRepository.findById(itemid).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + itemid));
-        Integer cleanId = Integer.parseInt(placementid);
-        // TODO check that cleanId exists in database
-        itemInDB.setPlacementid(cleanId);
+    public String moveItem(@PathVariable("itemid") int itemid, Integer placementid, Model model) {
+        Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + itemid));
+        // TODO check that placementid exists in database
+        Item parentInDB = itemRepository.findById(placementid).orElseThrow(()
+                -> new IllegalArgumentException("Invalid parent Id:" + itemid));
+        if (getItemLevel(itemInDB) <= getItemLevel(parentInDB)) {
+            throw new IllegalArgumentException(String.format("Item %d can't be in container %d", itemid, placementid));
+        }
+        // TODO check that the hierarchy is respected.
+        itemInDB.setPlacementid(placementid);
         logger.info(String.format("Moving %d to %d", itemInDB.getId(), itemInDB.getPlacementid()));
         itemRepository.save(itemInDB);
         return String.format("redirect:/items/view/%d", itemid);
@@ -343,12 +379,13 @@ public class ItemController {
      * Update the location of the item.
      *
      * @param id item id.
-     * @param placementid - the new location's QR code.
+     * @param placementid - the new location's QR code - this can be a URL.
      * @param model - Additional attributes used by the web form.
      */
     @PostMapping("/qrupdateplace/{itemid}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
-    public String moveQRItem(@PathVariable("itemid") int itemid, String placementid, Model model) {
+    public String moveQRItem(@PathVariable("itemid") int itemid,
+                String placementid, Model model) {
         Item itemInDB = itemRepository.findById(itemid).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + itemid));
         Integer cleanId = evaluateQRString(placementid);
         Item parentItem = itemRepository.getByQrcode(cleanId);
@@ -370,7 +407,9 @@ public class ItemController {
      */
     @PostMapping("/update/{id}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
-    public String updateItem(@PathVariable("id") int id, @Valid Item item, BindingResult result, Model model) {
+    public String updateItem(@PathVariable("id") int id,
+            @Valid Item item,
+            BindingResult result, Model model) {
         logger.debug(item);
         if (result.hasErrors()) {
             item.setId(id);
@@ -387,6 +426,7 @@ public class ItemController {
      * Delete item.
      *
      * @param id item id.
+     * @param model - Additional attributes used by the web form.
      */
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE_ITEMS')")
@@ -412,6 +452,8 @@ public class ItemController {
     /**
      * Run a search and return results.
      *
+     * @param query - query string.
+     * @param model - Additional attributes used by the web form.
      * @param page - page number of result list.
      * @param size - size of page in number of items.
      */
@@ -474,6 +516,7 @@ public class ItemController {
      * Show form to scan a QR and add it to an item.
      *
      * @param id item id to add code to.
+     * @param model - Additional attributes used by the web form.
      */
     @GetMapping("/addqrform")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -491,7 +534,8 @@ public class ItemController {
      * TODO: Don't allow duplicate QR codes.
      *
      * @param id item id.
-     * @param qr QR code, which can be a URL.
+     * @param query QR code, which can be a URL.
+     * @param model - Additional attributes used by the web form.
      */
     @GetMapping("/addqr")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -518,6 +562,8 @@ public class ItemController {
      * Lookup item on QR code.
      *
      * @param id item id.
+     * @param query QR code, which can be a URL.
+     * @param model - Additional attributes used by the web form.
      */
     @GetMapping("/qrfind")
     @PreAuthorize("hasAuthority('VIEW_ITEMS')")
