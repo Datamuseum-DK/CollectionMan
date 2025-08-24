@@ -4,7 +4,7 @@
   <head th:fragment="headerFragment">
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title th:text="${webtitle}?:'DDHF mobilregistrering'">DDHF mobilregistrering</title>
+    <title th:text="${webtitle}?:#{app.title}">DDHF genstandsdatabase</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
     <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/tabstyles.css" th:href="@{/css/tabstyles.css}"/>

@@ -233,6 +233,7 @@ public class ItemController {
         Item item = itemRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + id));
         model.addAttribute("item", item);
+        model.addAttribute("files", fileRepository.findByOrderByTitle());
 
         return "item-edit";
     }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Sager')}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <div th:switch="${changeditems}">
+        <h2 th:case="null">Ingen ændringer</h2>
+        <div th:case="*">
+          <h2>Seneste ændringer</h2>
+          <table class="datatable">
+            <thead>
+              <tr>
+                <th>Ændret</th>
+                <th>Genstand</th>
+                <th>Betegnelse</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="item : ${changeditems}">
+                <td th:text="${#temporals.format(item.lastmodified,'YYYY-MM-dd HH:mm:ss')}">2012-05-06 14:55:12</td>
+                <td>
+                  <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}" th:text="${item.id}">11006777</a>
+                </td>
+                <td th:text="${item.headline}">Flyttekasse 67</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

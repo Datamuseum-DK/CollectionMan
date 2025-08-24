@@ -19,51 +19,53 @@ Formålet med denne app er kunne lave registrering af genstande på den
 mest direkte måde. Dvs. man skal kunne bruge sin mobiltelefon og skanne
 så meget som muligt.
 </p>
-      <p>
-Mobilregistreringen dækker kun det mest nødvendige for at få så
-mange artefakter ind i databasen så hurtigt som muligt. Man kan derefter
-lægge yderligere metadata på via sin PC. Som f.eks. informationer om
-donationen, kategorier, genstanden osv.
-</p>
       <h2>Operationer</h2>
       <details>
         <summary>Finde en genstand</summary>
         <p>
-Du kan finde en genstand i databasen ved at søge på dens genstandsnr., betegnelse eller beskrivelse. Du kan scanne dens QR kode, eller bladre via sag, producent eller emnegruppe.
+Du kan finde en genstand i databasen ved at søge på dens genstandsnr.,
+betegnelse eller beskrivelse. Du kan scanne dens QR kode, eller bladre
+via sag, producent eller emnegruppe.
 </p>
       </details>
       <details>
         <summary>Oprette genstand</summary>
         <p>
-Man opretter en genstand med mobilen ved at:
+Man opretter en genstand ved at:
 </p>
         <ol>
-          <li>Sætte en ubrugt QR etiket på, og derefter skanne den. Programmet giver derefter mulighed for at
-oprette en genstand med det nummer.</li>
-          <li>Hvis man ikke har etiketter, oprette genstanden manuelt. Det tildeler et genstandsnr. man
-kan printe ud senere og påsætte genstanden. Indtil da, så som minimum tilføje et foto.
-</li>
+          <li>Først skal man beslutte om man vil oprette en museumsag og donator. Det er typisk for en modtaget donation.
+Husk at sagen skal være åben.</li>
+          <li>Derefter vælger man en lokation man vil oprette genstanden i. Det kan f.eks. være Charlotteskolen.
+Man går ind via <i>Lokationer</i> og vælger <i>Opret heri</i></li>
+<li>Når genstanden er oprettet kan man sætte en ubrugt QR etiket på, og derefter skanne den.</li>
         </ol>
       </details>
       <details>
         <summary>Flytte genstand</summary>
         <p>
-Når man er på genstandens factsheet kan man klikke på <kbd>Flyt</kbd>. Derefter søger man det magasin, palle osv.,
-genstanden skal flyttes til ved at scanne containerens QR kode, eller søge efter den.
+Når man er på genstandens factsheet kan man klikke på
+<kbd>Flyt</kbd>. Derefter søger man det magasin, palle osv., genstanden
+skal flyttes til ved at navigere, scanne containerens QR kode, eller søge efter den.
 </p>
       </details>
       <details>
         <summary>Udskille genstand</summary>
         <p>
-I tilfælde af at f.eks. en flyttekasse indeholder flere artefakter, og man ønsker at registrere en af dem særskilt,
-opretter man den normalt, og tildeler den en placering i flyttekassen.
+I tilfælde af at f.eks. en flyttekasse indeholder flere artefakter, og
+man ønsker at registrere en af dem særskilt, finder man flyttekassen
+i databasen, og klikker på 'Opret heri'. Derefter udfylder man
+formularen. Dette virker også for paller og pallereoler.
 </p>
       </details>
       <h2>Teknologi</h2>
       <p>
-Appen er udviklet i Spring Boot med Thymeleaf skabeloner og Liquibase database refactoring.
+Applikationen er udviklet i Java og Spring Boot med Thymeleaf skabeloner og Liquibase database refactoring.
 På demo-siten kører den på et Kubernetes cluster som en <a href="https://helm.sh/">Helm</a> deployment.
 Container image ligger på <a href="https://hub.docker.com/r/sorenroug/mobilereg">https://hub.docker.com/r/sorenroug/mobilereg</a>.
+</p>
+      <p>
+Version: <span th:text="${@environment.getProperty('mobilereg.version')}">1.00</span>
 </p>
     </section>
     <footer th:replace="~{layout :: footerFragment}">

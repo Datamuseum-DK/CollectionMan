@@ -1,21 +1,16 @@
 package dk.datamuseum.mobilereg.controllers;
 
-// import java.security.Principal;
-// import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-// import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-// import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.Authentication;
-// import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-// import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import dk.datamuseum.mobilereg.entities.Item;
+import dk.datamuseum.mobilereg.repositories.ItemRepository;
 
 /**
  * Controller for simple pages that don't call a database.
@@ -23,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class SimplePageController {
 
-   private Log logger = LogFactory.getLog(SimplePageController.class);
+    @Autowired
+    private ItemRepository itemRepository;
+
+    private Log logger = LogFactory.getLog(SimplePageController.class);
 /*
     @ModelAttribute("user")
     public String principalAttributes(OAuth2AuthenticationToken authentication) {
@@ -98,6 +96,19 @@ public class SimplePageController {
     @RequestMapping(value = "/scanqr")
     public String scanqr(Model model) {
         return "scanqr";
+    }
+
+    /**
+     * Show change log.
+     * Starting with Items, but will expand
+     *
+     * @param model holder for model attributes
+     * @return view name
+     */
+    @RequestMapping(value = "/changelog")
+    public String itemChangelog(Model model) {
+        model.addAttribute("changeditems", itemRepository.findFirst50ByOrderByLastmodifiedDesc());
+        return "changelog";
     }
 
     /**

@@ -45,6 +45,9 @@
         <li sec:authorize="isAuthenticated()">
           <a href="userprofile.html" th:href="@{userprofile}">Brugerprofil</a>
         </li>
+        <li sec:authorize="hasAuthority('VIEW_ITEMS')">
+          <a href="changelog.html" th:href="@{changelog}">Sidste ændringer</a>
+        </li>
         <li sec:authorize="not isAuthenticated()">
           <a th:href="@{/login}" href="login.html">Log ind</a>
         </li>
