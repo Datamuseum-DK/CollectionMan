@@ -15,7 +15,9 @@
       <form id="actions">
         <button id="search" type="submit" form="actions" formaction="places.html" th:formaction="@{/places}">Liste</button>
         <button id="rediger" type="submit" form="actions" formaction="places-edit.html" th:formaction="@{/places/edit/{id}(id=${place.id})}" sec:authorize="hasAuthority('CHANGE_STED')">Rediger</button>
-        <button sec:authorize="hasAuthority('DELETE_STED')" id="delete" th:if="${place.totalItems} == 0" type="submit" form="actions" formaction="places.html" th:formaction="@{/places/delete/{id}(id=${place.id})}">Slet</button>
+        <button sec:authorize="hasAuthority('DELETE_STED')" id="delete"
+        onclick="return confirm('Er du sikker?')"
+        th:if="${place.totalItems} == 0" type="submit" form="actions" formaction="places.html" th:formaction="@{/places/delete/{id}(id=${place.id})}">Slet</button>
       </form>
       <h2 th:text="${place.stednavn}">Guldborgsund Kommune</h2>
       <dl class="factsheet">

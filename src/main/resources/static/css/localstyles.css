@@ -226,6 +226,15 @@ dl.factsheet dd a.subject  {
   margin-right: 0.2em;
 }
 
+/* Admonitions */
+.system-msg {
+    border: 2px dashed black;
+    padding: 0.5em;
+    margin: 0.5em 2em;
+    font-weight: bold;
+}
+
+/* Beginning of media styles */
 @media (max-width: 480px) {
   dl.factsheet dd {
     padding-left: 0px;

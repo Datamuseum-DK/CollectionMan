@@ -19,7 +19,7 @@
           <input type="submit" value="Filtrer"/>
         </p>
       </form>
-      <table>
+      <table th:if="${not #lists.isEmpty(items)}">
         <tbody th:remove="all-but-first">
           <tr th:each="item : ${items}">
             <td>
@@ -74,6 +74,9 @@
           </tr>
         </tbody>
       </table>
+      <p th:if="${#lists.isEmpty(items)}" class="system-msg">
+      Ingen genstande fundet
+      </p>
     </section>
     <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
       <ul class="pagination justify-content-center">

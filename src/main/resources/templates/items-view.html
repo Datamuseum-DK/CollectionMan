@@ -19,20 +19,18 @@
         <form id="editform">
           <button id="search" type="submit" form="editform" formaction="items.html" th:formaction="@{/items}">Liste</button>
           <button id="rediger" type="submit" form="editform" formaction="item-edit.html" th:formaction="@{/items/edit}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Rediger</button>
-          <button id="flyt" type="submit" formaction="item-move.html" th:formaction="@{/items/move}"
-              th:unless="${item.itemClass.getLevel() eq 0}"
-              sec:authorize="hasAuthority('CHANGE_ITEMS')">Flyt</button>
-          <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="editform" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}">Slet</button>
+          <button id="flyt" type="submit" formaction="item-move.html" th:formaction="@{/items/move}" th:unless="${item.itemClass.getLevel() eq 0}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Flyt</button>
+          <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="editform" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}" onclick="return confirm('Er du sikker?')">Slet</button>
           <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
         </form>
-        <form action="item-addform.html" th:action="@{/items/addform}"
-        th:if="${types[0].getLevel() gt item.itemClass.getLevel()}"
-        sec:authorize="hasAuthority('ADD_ITEMS')" method="post">
+        <form action="item-addform.html" th:action="@{/items/addform}" th:if="${types[0].getLevel() gt item.itemClass.getLevel()}" sec:authorize="hasAuthority('ADD_ITEMS')" method="post">
           <input type="hidden" name="placementid" th:value="${item.id}"/>
           <button type="submit" sec:authorize="hasAuthority('ADD_ITEMS')">Opret heri</button>
         </form>
       </div>
-      <h2><span th:remove="tag" th:text="${item.headline}">Xerox 860 tekstbehandlingsanlæg</span></h2>
+      <h2>
+        <span th:remove="tag" th:text="${item.headline}">Xerox 860 tekstbehandlingsanlæg</span>
+      </h2>
       <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'Identifikation')">Identifikation</button>
         <button class="tablinks" onclick="openTab(event, 'Erhvervelse')">Erhvervelse</button>
@@ -174,6 +172,10 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd class="multiline" th:text="${item.itemusedfor}">Kontrabøger</dd>
           <dt>Brugt hvor</dt>
           <dd class="multiline" th:text="${item.itemusedwhere}">Ja, hvor henne?</dd>
+          <dt>Område</dt>
+          <dd>
+            <span th:each="s : ${steder}" th:if="${s.id == item.itemusedwhereid}" th:text="${s.stednavn}">København</span>
+          </dd>
         </dl>
       </fieldset>
       <fieldset id="Notater" class="tabcontent">
