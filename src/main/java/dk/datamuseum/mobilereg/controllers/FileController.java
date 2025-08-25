@@ -34,6 +34,7 @@ public class FileController {
 
     private Log logger = LogFactory.getLog(FileController.class);
 
+    @PreAuthorize("hasAuthority('VIEW_FILES')")
     @RequestMapping({"", "/", "/view"})
     public String showFileList(Model model) {
         model.addAttribute("files", fileRepository.findByOrderByTitle());
@@ -43,6 +44,7 @@ public class FileController {
     /**
      * Show form to add a case file record.
      */
+    @PreAuthorize("hasAuthority('ADD_FILES')")
     @GetMapping("/addform")
     public String addForm(Model model) {
         CaseFile caseFile = new CaseFile();
@@ -50,6 +52,7 @@ public class FileController {
         return "files-add";
     }
     
+    @PreAuthorize("hasAuthority('ADD_FILES')")
     @PostMapping("/addfile")
     public String addFile(@Valid CaseFile caseFile, BindingResult result, Model model) {
 
@@ -60,6 +63,7 @@ public class FileController {
         return "redirect:/files";
     }
     
+    @PreAuthorize("hasAuthority('VIEW_FILES')")
     @GetMapping("/view/{id}")
     public String showFactsheet(@PathVariable("id") int id, Model model) {
         CaseFile caseFile = fileRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
@@ -69,6 +73,7 @@ public class FileController {
         return "files-view";
     }
 
+    @PreAuthorize("hasAuthority('CHANGE_FILES')")
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         CaseFile caseFile = fileRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
@@ -77,6 +82,7 @@ public class FileController {
         return "files-edit";
     }
     
+    @PreAuthorize("hasAuthority('CHANGE_FILES')")
     @PostMapping("/update/{id}")
     public String updateFile(@PathVariable("id") int id, @Valid CaseFile caseFile, BindingResult result, Model model) {
         logger.info(String.format("caseFile %s", caseFile.toString()));
@@ -96,7 +102,7 @@ public class FileController {
      * Delete caseFile.
      */
     @GetMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAuthority('DELETE_FILES')")
     public String deleteFile(@PathVariable("id") int id, Model model) {
         CaseFile caseFile = fileRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
         fileRepository.delete(caseFile);

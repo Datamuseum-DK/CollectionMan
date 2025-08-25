@@ -100,6 +100,27 @@ public class ItemController {
     }
 
     /**
+     * Checks if item can fit in the parent.
+     */
+    private void checkItemFit(Item item) {
+        if (item.getPlacementid() != null) {
+            Item parent = itemRepository.findById(item.getPlacementid()).orElseThrow(()
+                -> new IllegalArgumentException("Invalid placementid Id:" + item.getPlacementid()));
+            checkItemFit(item, parent);
+        }
+    }
+
+    /**
+     * Checks if item can fit in the parent.
+     */
+    private void checkItemFit(Item item, Item parent) {
+        if (getItemLevel(item) <= getItemLevel(parent)) {
+            throw new IllegalArgumentException(String.format(
+                "Item %d can't be in container %d", item.getId(), parent.getId()));
+        }
+    }
+
+    /**
      * List all acquire types.
      * For display on item factsheet.
      */
@@ -178,7 +199,7 @@ public class ItemController {
     public String showAddForm1(
                 Item item,
                 Model model) {
-        logger.info(String.format("Add form for item %s", item.toString()));
+        logger.debug(String.format("Add form for item %s", item.toString()));
         List<ItemClass> classByLevel = itemclasses();
         if (classByLevel.size() == 0) {
             throw new IllegalArgumentException("No item classes!");
@@ -189,12 +210,13 @@ public class ItemController {
         if (item.getPlacementid() != null) {
             Item parent = itemRepository.findById(item.getPlacementid()).orElseThrow(()
                 -> new IllegalArgumentException("Invalid placementid Id:" + item.getPlacementid()));
+            //TODO parentClass seems unnecessary
             ItemClass parentClass = itemClassRepository.findById(parent.getItemClass().getId()).orElseThrow(()
                 -> new IllegalArgumentException("Unable to get item class of parent Id:"  + item.getPlacementid()));
-            model.addAttribute("locations", itemRepository.findByItemclassLevel(parentClass.getLevel()));
+            model.addAttribute("locations", List.of(parent));
             model.addAttribute("types", itemClassRepository.findByLevelGreaterThan(parentClass.getLevel()));
         } else {
-            model.addAttribute("locations", itemRepository.findByItemclassLevel(getTopClassLevel()));
+            model.addAttribute("locations", itemRepository.findByPlacementidNull());
         }
         return "item-addform";
     }
@@ -212,10 +234,10 @@ public class ItemController {
     public String addItem(@Valid Item item, BindingResult result, Model model) {
         logger.debug(String.format("Evaluating item %s", item.toString()));
         if (result.hasErrors()) {
-            logger.info(String.format("Result %s", result.toString()));
+            logger.debug(String.format("Result %s", result.toString()));
             return "item-addform";
         }
-
+        checkItemFit(item);
         itemRepository.save(item);
         return String.format("redirect:/items/view/%d", item.getId());
     }
@@ -278,7 +300,6 @@ public class ItemController {
         if (placementid != null) {
             Item currPlaceItem = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid placement Id:" + placementid));
-            //int placelevel = currPlaceItem.getItemClass().getLevel();
             model.addAttribute("placename", currPlaceItem.getHeadline());
             model.addAttribute("places", itemRepository.findContainers(placementid,
                     getTopClassLevel()));
@@ -348,13 +369,11 @@ public class ItemController {
     public String moveItem(@PathVariable("itemid") int itemid, Integer placementid, Model model) {
         Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + itemid));
-        // TODO check that placementid exists in database
+
         Item parentInDB = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid parent Id:" + itemid));
-        if (getItemLevel(itemInDB) <= getItemLevel(parentInDB)) {
-            throw new IllegalArgumentException(String.format("Item %d can't be in container %d", itemid, placementid));
-        }
-        // TODO check that the hierarchy is respected.
+        checkItemFit(itemInDB, parentInDB);
+
         itemInDB.setPlacementid(placementid);
         logger.info(String.format("Moving %d to %d", itemInDB.getId(), itemInDB.getPlacementid()));
         itemRepository.save(itemInDB);
@@ -370,7 +389,8 @@ public class ItemController {
     @GetMapping("/qrmove")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String showQRMoveForm(int id, Model model) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
+        Item item = itemRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + id));
         model.addAttribute("itemid", id);
 
         return "items-move-qr";
@@ -387,10 +407,12 @@ public class ItemController {
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String moveQRItem(@PathVariable("itemid") int itemid,
                 String placementid, Model model) {
-        Item itemInDB = itemRepository.findById(itemid).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + itemid));
+        Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + itemid));
         Integer cleanId = evaluateQRString(placementid);
         Item parentItem = itemRepository.getByQrcode(cleanId);
-        // TODO: Check for legal level.
+
+        checkItemFit(itemInDB, parentItem);
         itemInDB.setPlacementid(parentItem.getId());
         logger.info(String.format("Moving %d to %d", itemInDB.getId(), itemInDB.getPlacementid()));
         itemRepository.save(itemInDB);
@@ -399,7 +421,7 @@ public class ItemController {
 
     /**
      * General update of item.
-     * We are not asking for pictures or subjects in the form. Therefore
+     * We are not asking for pictures or placement in the form. Therefore
      * these are copied from the database again and saved.
      *
      * @param id item id.
@@ -416,9 +438,11 @@ public class ItemController {
             item.setId(id);
             return "item-edit";
         }
-        Item itemInDB = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
+        Item itemInDB = itemRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + id));
         item.setPictures(itemInDB.getPictures());
         item.setPlacementid(itemInDB.getPlacementid());
+        checkItemFit(item);
         itemRepository.save(item);
         return String.format("redirect:/items/view/%d", id);
     }

@@ -38,6 +38,7 @@ public class DonorController {
      * List donors, either all or filtered.
      * @param q - query string.
      */
+    @PreAuthorize("hasAuthority('VIEW_DONATORS')")
     @RequestMapping({"", "/", "/view"})
     public String showDonorList(String q, Model model) {
         if (q == null) {
@@ -48,6 +49,7 @@ public class DonorController {
         return "donors";
     }
 
+    @PreAuthorize("hasAuthority('ADD_DONATORS')")
     @GetMapping("/addform")
     public String addForm(Model model) {
         Donor donor = new Donor();
@@ -55,6 +57,7 @@ public class DonorController {
         return "donors-add";
     }
     
+    @PreAuthorize("hasAuthority('ADD_DONATORS')")
     @PostMapping("/adddonor")
     public String addDonor(@Valid Donor donor, BindingResult result, Model model) {
 
@@ -65,6 +68,7 @@ public class DonorController {
         return "redirect:/donors";
     }
     
+    @PreAuthorize("hasAuthority('VIEW_DONATORS')")
     @GetMapping("/view/{id}")
     public String showFactsheet(@PathVariable("id") int id, Model model) {
         Donor donor = donorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
@@ -74,6 +78,7 @@ public class DonorController {
         return "donors-view";
     }
 
+    @PreAuthorize("hasAuthority('CHANGE_DONATORS')")
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         Donor donor = donorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
@@ -82,6 +87,7 @@ public class DonorController {
         return "donors-edit";
     }
     
+    @PreAuthorize("hasAuthority('CHANGE_DONATORS')")
     @PostMapping("/update/{id}")
     public String updateDonor(@PathVariable("id") int id, @Valid Donor donor, BindingResult result, Model model) {
         model.addAttribute("donor", donor);
@@ -99,7 +105,7 @@ public class DonorController {
      * Delete donor.
      */
     @GetMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAuthority('DELETE_DONATORS')")
     public String deleteDonor(@PathVariable("id") int id, Model model) {
         Donor donor = donorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
         donorRepository.delete(donor);

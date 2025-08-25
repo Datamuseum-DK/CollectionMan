@@ -30,7 +30,7 @@ public class PermissionController {
 
     private Log logger = LogFactory.getLog(PermissionController.class);
 
-    //@PreAuthorize("hasRole('ROLE_STAFF')")
+    @PreAuthorize("hasAuthority('VIEW_PERMISSION')")
     @RequestMapping({"", "/", "/view"})
     public String showPermissionList(Model model) {
         model.addAttribute("permissions", permissionRepository.findByOrderByContentTypeIdAscNameAsc());

@@ -12,7 +12,7 @@
       </h1>
     </header>
     <section id="content">
-      <form id="actions" method="get" action="places-add.html" th:action="@{/places/addform}">
+      <form id="actions" method="get" action="places-add.html" th:action="@{/places/addform}" sec:authorize="hasAuthority('ADD_STED')">
         <button type="submit">Nyt sted</button>
       </form>
       <div th:switch="${places}">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?> 
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head th:insert="~{layout :: headerFragment}">
@@ -12,13 +12,12 @@
       </h1>
     </header>
     <section id="content">
-      <form method="post" action="roles-view.html" th:object="${role}" th:action="@{/roles/update/{id}(id=${role.id})}">
-        <h2>Redigere rolle <span th:text="*{id}">11</span></h2>
-        <input type="hidden" value="937" th:field="*{id}"/>
+      <form method="post" action="roles-view.html" th:object="${role}" th:action="@{addrole}">
+        <h2>Opret rolle</h2>
         <div>
           <label class="leader required">Navn</label>
-          <input type="text" th:field="*{name}" value="auditor"/>
-          <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fielderror">Error</span>
+          <input type="text" th:field="*{name}" value="Supervisor" class="fullwidth"/>
+          <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fielderror">Field is mandatory</span>
         </div>
         <div>
           <label class="leader" for="id_permissions">Rettigheder</label>
@@ -27,7 +26,7 @@
             <option value="88" th:remove="all" selected="selected">ADD_ITEM</option>
           </select>
         </div>
-        <input type="submit" value="Gem"/>
+        <input type="submit" value="Opret"/>
       </form>
     </section>
     <footer th:replace="~{layout :: footerFragment}">

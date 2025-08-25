@@ -12,6 +12,9 @@
       </h1>
     </header>
     <section id="content">
+      <form id="actions" method="get" action="roles-add.html" th:action="@{/roles/addform}" sec:authorize="hasAuthority('ADD_GROUP')">
+        <button type="submit">Ny rolle</button>
+      </form>
       <h2>Roller</h2>
       <table class="datatable">
         <thead>

@@ -12,7 +12,7 @@
       </h1>
     </header>
     <section id="content">
-      <form id="actions" method="get" action="users-add.html" th:action="@{/users/addform}">
+      <form id="actions" method="get" action="users-add.html" th:action="@{/users/addform}" sec:authorize="hasAuthority('ADD_USER')">
         <button type="submit">Ny bruger</button>
       </form>
       <div th:switch="${users}">
