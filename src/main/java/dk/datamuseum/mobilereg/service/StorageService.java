@@ -22,4 +22,11 @@ public interface StorageService {
 
     void deleteAll(String subDir);
 
+    /**
+     * Delete a file from storage.
+     *
+     * @param subDir - subdirectory or partition.
+     * @param filename - filename in the subdirectory.
+     */
+    void delete(String subDir, String filename);
 }

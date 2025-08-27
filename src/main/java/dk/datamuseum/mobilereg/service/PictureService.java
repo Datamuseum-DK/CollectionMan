@@ -34,4 +34,11 @@ public interface PictureService {
      */
     void deleteAll();
 
+    /**
+     * Delete a picture by filename from all sub directories.
+     *
+     * @param filename - plain filename without '/' or '\\'.
+     */
+    void delete(String filename);
+
 }

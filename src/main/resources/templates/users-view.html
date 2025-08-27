@@ -15,7 +15,7 @@
       <form id="actions">
         <button id="search" type="submit" form="actions" formaction="users.html" th:formaction="@{/users}">Liste</button>
         <button id="rediger" sec:authorize="hasAuthority('CHANGE_USER')" type="submit" form="actions" formaction="users-edit.html" th:formaction="@{/users/edit/{id}(id=${user.id})}">Rediger</button>
-        <button sec:authorize="hasAuthority('DELETE_USER')" id="delete" type="submit" form="actions" formaction="users.html" th:formaction="@{/users/delete/{id}(id=${user.id})}">Slet</button>
+        <button sec:authorize="hasAuthority('DELETE_USER')" id="delete" type="submit" form="actions" formaction="users.html" th:formaction="@{/users/delete/{id}(id=${user.id})}" onclick="return confirm('Er du sikker?')">Slet</button>
       </form>
       <h2 th:text="${user.fullName}">Michael Henriksen</h2>
       <dl class="factsheet">

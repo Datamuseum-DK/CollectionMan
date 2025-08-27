@@ -16,7 +16,7 @@
         <button id="search" type="submit" form="actions" formaction="subjects.html" th:formaction="@{/subjects}">Liste</button>
         <button id="rediger" sec:authorize="hasAuthority('CHANGE_SUBJECTS')" type="submit" form="actions" formaction="subjects-edit.html" th:formaction="@{/subjects/edit/{id}(id=${subject.subjectid})}">Rediger</button>
         <button sec:authorize="hasAuthority('DELETE_SUBJECTS')" id="delete" th:if="${subject.totalItems} == 0" type="submit" form="actions" formaction="subjects.html"
-th:formaction="@{/subjects/delete/{id}(id=${subject.subjectid})}">Slet</button>
+th:formaction="@{/subjects/delete/{id}(id=${subject.subjectid})}" onclick="return confirm('Er du sikker?')">Slet</button>
       </form>
       <h2 th:text="${subject.title}">Programmerbare regnemaskiner</h2>
       <p style="white-space: pre-wrap;" th:text="${subject.description}">Maskiner, der normalt fungerer som regnemaskine, men som kan programmeres, så den selv kan udføre en valgt tastesekvens. Programmerbare lommeregnere.

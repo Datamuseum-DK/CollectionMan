@@ -110,4 +110,11 @@ public class PictureServiceImpl implements PictureService {
             storageService.deleteAll(subDir);
         }
     }
+
+    @Override
+    public void delete(String filename) {
+        for (String subDir : subDirs) {
+            storageService.delete(subDir, filename);
+        }
+    }
 }

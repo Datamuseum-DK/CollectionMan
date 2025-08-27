@@ -15,7 +15,7 @@
       <form id="actions">
         <button id="search" type="submit" form="actions" formaction="donors.html" th:formaction="@{/donors}">Liste</button>
         <button sec:authorize="hasAuthority('CHANGE_DONATORS')" id="rediger" type="submit" form="actions" formaction="donors-edit.html" th:formaction="@{/donors/edit/{id}(id=${donor.id})}">Rediger</button>
-        <button sec:authorize="hasAuthority('DELETE_DONATORS')" id="delete" type="submit" form="actions" formaction="donors.html" th:formaction="@{/donors/delete/{id}(id=${donor.id})}">Slet</button>
+        <button sec:authorize="hasAuthority('DELETE_DONATORS')" id="delete" type="submit" form="actions" formaction="donors.html" th:formaction="@{/donors/delete/{id}(id=${donor.id})}" onclick="return confirm('Er du sikker?')">Slet</button>
       </form>
       <h2 th:text="${donor.name}">Henning Lindholm</h2>
       <dl class="factsheet">

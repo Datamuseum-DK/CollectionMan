@@ -15,6 +15,7 @@
       <div id="actions">
         <button onclick="rotateit(90)" title="Roter højre">↻</button>
         <button onclick="rotateit(-90)" title="Roter venstre">↺</button>
+        <button sec:authorize="hasAuthority('DELETE_PICTURES')" id="delete" type="submit" form="picactions" formaction="pictures.html" th:formaction="@{/pictures/delete/{id}(id=${picture.pictureid})}" onclick="return confirm('Er du sikker?')">Slet</button>
       </div>
       <h2 th:text="${picture.title}">Billede titel</h2>
       <p>
@@ -36,5 +37,7 @@
       mp.style.transform = 'rotate(' + currDeg + 'deg)';
     }
     // ]]></script>
+    <form id="picactions" style="display: none">
+    </form>
   </body>
 </html>

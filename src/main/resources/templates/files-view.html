@@ -16,7 +16,7 @@
         <button id="search" type="submit" form="actions" formaction="files.html" th:formaction="@{/files}">Liste</button>
         <button sec:authorize="hasAuthority('CHANGE_FILES')" id="rediger" type="submit" form="actions" formaction="files-edit.html" th:formaction="@{/files/edit/{id}(id=${caseFile.id})}">Rediger</button>
         <button type="submit" name="fileid" th:value="${caseFile.id}" formaction="item-add-form.html" th:formaction="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')" th:if="${caseFile.status}">Opret genstand</button>
-        <button sec:authorize="hasAuthority('DELETE_FILES')" id="delete" th:if="${caseFile.totalItems} == 0" type="submit" form="actions" formaction="files.html" th:formaction="@{/files/delete/{id}(id=${caseFile.id})}">Slet</button>
+        <button sec:authorize="hasAuthority('DELETE_FILES')" id="delete" th:if="${caseFile.totalItems} == 0" type="submit" form="actions" formaction="files.html" th:formaction="@{/files/delete/{id}(id=${caseFile.id})}" onclick="return confirm('Er du sikker?')">Slet</button>
       </form>
       <h2 th:text="${caseFile.title}">Donation fra Skatteministeriet</h2>
       <dl class="factsheet">

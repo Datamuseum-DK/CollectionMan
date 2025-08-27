@@ -248,6 +248,9 @@ dl.factsheet dd a.subject  {
   label.leader {
     display: block;
   }
+  #actions button#delete {
+    margin-left: 2em;
+  }
 
 }
 
@@ -259,6 +262,9 @@ dl.factsheet dd a.subject  {
   #actions button {
     width: 4.9em;
     margin: 1px 0;
+  }
+  #actions button#delete {
+    margin-top: 2em;
   }
 
   dl.factsheet {

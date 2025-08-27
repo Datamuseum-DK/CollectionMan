@@ -12,6 +12,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -29,6 +32,8 @@ import dk.datamuseum.mobilereg.MobileRegProperties;
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
+
+    private Log logger = LogFactory.getLog(FileSystemStorageService.class);
 
     @Autowired
     public FileSystemStorageService(MobileRegProperties properties) {
@@ -110,6 +115,13 @@ public class FileSystemStorageService implements StorageService {
     public void deleteAll(String subDir) {
         Path subDirLocation = rootLocation.resolve(subDir);
         FileSystemUtils.deleteRecursively(subDirLocation.toFile());
+    }
+
+    @Override
+    public void delete(String subDir, String filename) {
+        File file = load(subDir, filename).toFile();
+        logger.debug(String.format("Deleted file: %s", file.toString()));
+        file.delete();
     }
 
     /**
