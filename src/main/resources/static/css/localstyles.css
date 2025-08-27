@@ -248,8 +248,12 @@ dl.factsheet dd a.subject  {
   label.leader {
     display: block;
   }
+  #actions button {
+    min-width: 3em;
+    margin: 0 2px;
+  }
   #actions button#delete {
-    margin-left: 2em;
+    float: right;
   }
 
 }
