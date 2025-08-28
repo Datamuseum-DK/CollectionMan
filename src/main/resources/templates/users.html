@@ -37,7 +37,7 @@
                 <td th:text="${user.fullName}">Henrik Andersen</td>
                 <td th:text="${user.active}">true</td>
                 <td th:text="${user.superuser}">false</td>
-                <td th:text="${#temporals.format(user.dateJoined,'YYYY-MM-dd')}">2012-05-06</td>
+                <td th:text="${#temporals.format(user.dateJoined,'yyyy-MM-dd')}">2012-05-06</td>
               </tr>
             </tbody>
           </table>

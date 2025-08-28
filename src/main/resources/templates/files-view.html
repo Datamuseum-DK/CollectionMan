@@ -36,11 +36,11 @@ En beskrivelse her.
                   <span th:text="${caseFile.datingto}">1980-01-01</span>
               </dd>
         <dt>Oprettet</dt>
-        <dd th:text="${#temporals.format(caseFile.created,'YYYY-MM-dd HH:mm')}">2012-05-06</dd>
+        <dd th:text="${#temporals.format(caseFile.created,'yyyy-MM-dd HH:mm')}">2012-05-06 10:42</dd>
         <dt>Oprettet af</dt>
         <dd th:text="${caseFile.creator}">User id</dd>
         <dt>Sidst ændret</dt>
-        <dd th:text="${#temporals.format(caseFile.lastmodified,'YYYY-MM-dd HH:mm')}">2025-01-09T15:46:50</dd>
+        <dd th:text="${#temporals.format(caseFile.lastmodified,'yyyy-MM-dd HH:mm')}">2025-01-09 15:46</dd>
       </dl>
       <h3>Genstande</h3>
       <dl>

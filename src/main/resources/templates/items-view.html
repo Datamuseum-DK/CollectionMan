@@ -20,13 +20,12 @@
           <button id="search" type="submit" form="editform" formaction="items.html" th:formaction="@{/items}">Liste</button>
           <button id="rediger" type="submit" form="editform" formaction="item-edit.html" th:formaction="@{/items/edit}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Rediger</button>
           <button id="flyt" type="submit" formaction="item-move.html" th:formaction="@{/items/move}" th:unless="${item.itemClass.getLevel() eq 0}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Flyt</button>
-          <button type="submit" sec:authorize="hasAuthority('ADD_ITEMS')" form="createform">Opret heri</button>
+          <button type="submit" sec:authorize="hasAuthority('ADD_ITEMS')" form="createform" th:if="${types[0].getLevel() gt item.itemClass.getLevel()}">Opret heri</button>
           <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="editform" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}" onclick="return confirm('Er du sikker?')">Slet</button>
           <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
         </form>
-        <form id="createform" style="display:none" action="item-addform.html" th:action="@{/items/addform}" th:if="${types[0].getLevel() gt item.itemClass.getLevel()}" sec:authorize="hasAuthority('ADD_ITEMS')" method="post">
+        <form id="createform" style="display:none" action="item-addform.html" th:action="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')" method="post">
           <input type="hidden" name="placementid" th:value="${item.id}"/>
-
         </form>
       </div>
       <h2>
@@ -72,8 +71,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <a href="producers-view.html" th:href="@{/producers/view/{id}(id=${producer.get().producerid})}" th:text="${producer.get().title}">Rank Xerox</a>
           </dd>
           <dt th:if="${item.itemdatingfrom}">Datering</dt>
-          <dd th:if="${item.itemdatingfrom}">Indenfor <span th:remove="tag" th:text="${#temporals.format(item.itemdatingfrom,'YYYY-MM-dd')}">1982-10-11</span>
-          <span th:if="${item.itemdatingto}" th:remove="tag" th:text="${' til ' + #temporals.format(item.itemdatingto,'YYYY-MM-dd')}">1992-09-31</span>
+          <dd th:if="${item.itemdatingfrom}">Indenfor <span th:remove="tag" th:text="${#temporals.format(item.itemdatingfrom,'yyyy-MM-dd')}">1982-10-11</span>
+          <span th:if="${item.itemdatingto}" th:remove="tag" th:text="${' til ' + #temporals.format(item.itemdatingto,'yyyy-MM-dd')}">1992-09-31</span>
           </dd>
           <dt>QR kode</dt>
           <dd>
@@ -153,15 +152,15 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <a href="donors-view.html" th:href="@{/donors/view/{id}(id=${donor.get().getId()})}" th:text="${donor.get().getTitle()}">SAS Data Seniorklub</a>
           </dd>
           <dt title="Modtagelsesdato">Modtaget</dt>
-          <dd><span th:remove="tag" th:text="${#temporals.format(item.itemreceived,'YYYY-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemreceivedby}">fvn</span></dd>
+          <dd><span th:remove="tag" th:text="${#temporals.format(item.itemreceived,'yyyy-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemreceivedby}">fvn</span></dd>
           <dt title="Deponeret til museet indtil">Deponeret indtil:</dt>
-          <dd th:text="${#temporals.format(item.itemdepositeduntil,'YYYY-MM-dd')}">2032-09-16</dd>
+          <dd th:text="${#temporals.format(item.itemdepositeduntil,'yyyy-MM-dd')}">2032-09-16</dd>
           <dt>Udgået</dt>
           <dd th:text="${item.itemoutdated}">1</dd>
           <dt>Lånt indtil</dt>
-          <dd th:text="${#temporals.format(item.itemborroweduntil,'YYYY-MM-dd')}">2027-10-16</dd>
+          <dd th:text="${#temporals.format(item.itemborroweduntil,'yyyy-MM-dd')}">2027-10-16</dd>
           <dt>Takkebrev afsendt</dt>
-          <dd th:text="${#temporals.format(item.itemthanksletter,'YYYY-MM-dd')}">2012-09-16</dd>
+          <dd th:text="${#temporals.format(item.itemthanksletter,'yyyy-MM-dd')}">2012-09-16</dd>
         </dl>
       </fieldset>
       <fieldset id="Brugsaktivitet" class="tabcontent">

@@ -35,7 +35,7 @@
                     th:text="${file.title}">Fra turistministeriet</a></td>
                 <td class="number" th:text="${file.totalItems}">4</td>
                 <td th:text="${file.status}">true</td>
-                <td th:text="${#temporals.format(file.created,'YYYY-MM-dd')}">2012-05-06</td>
+                <td th:text="${#temporals.format(file.created,'yyyy-MM-dd')}">2012-05-06</td>
               </tr>
             </tbody>
           </table>

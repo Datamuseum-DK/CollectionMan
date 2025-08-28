@@ -35,7 +35,7 @@
               <a href="donors-view.html" th:href="@{/donors/view/{id}(id=${donor.id})}" th:text="${#strings.defaultString(donor.name, '(mangler)')}">Arne Lindvig Hansen</a>
             </td>
             <td th:text="${donor.institution}">TDC Erhverv</td>
-            <td th:text="${#temporals.format(donor.created,'YYYY-MM-dd')}">2012-05-06</td>
+            <td th:text="${#temporals.format(donor.created,'yyyy-MM-dd')}">2012-05-06</td>
           </tr>
         </tbody>
       </table>

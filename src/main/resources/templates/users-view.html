@@ -30,9 +30,9 @@
         <dt>Email</dt>
         <dd th:text="${user.email}">micahel.henriksen@example.com</dd>
         <dt>Oprettet</dt>
-        <dd th:text="${#temporals.format(user.dateJoined,'YYYY-MM-dd HH:mm')}">2012-05-06</dd>
+        <dd th:text="${#temporals.format(user.dateJoined,'yyyy-MM-dd HH:mm')}">2012-05-06 10:22</dd>
         <dt>Sidste login</dt>
-        <dd th:text="${#temporals.format(user.lastLogin,'YYYY-MM-dd HH:mm')}">2025-01-09T15:46:50</dd>
+        <dd th:text="${#temporals.format(user.lastLogin,'yyyy-MM-dd HH:mm')}">2025-01-09 15:46</dd>
         <dt>Aktiv</dt>
         <dd th:text="${user.active}">true</dd>
         <dt>Staff</dt>
