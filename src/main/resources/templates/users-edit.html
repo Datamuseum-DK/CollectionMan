@@ -12,7 +12,7 @@
       </h1>
     </header>
     <section id="content">
-      <form method="post" action="users-view.html" th:object="${user}" th:action="@{/users/update/{id}(id=${user.id})}">
+      <form id="editfactsheet" method="post" action="users-view.html" th:object="${user}" th:action="@{/users/update/{id}(id=${user.id})}">
         <h2>Redigere bruger <span th:text="*{id}">11</span></h2>
         <input type="hidden" value="11000937" th:field="*{id}"/>
         <input type="hidden" th:field="*{dateJoined}"/>
@@ -51,14 +51,18 @@
         <div><label class="leader">Superbruger</label><input type="checkbox" th:field="*{superuser}"/> Ja
           <span th:if="${#fields.hasErrors('superuser')}" th:errors="*{superuser}" class="fielderror">Error</span>
         </div>
-        <h3>Roller</h3>
+        <div>
+        <label class="leader" for="id_roles">Roller</label>
         <select th:field="*{roles}" id="id_roles" multiple="multiple">
           <option value="237" th:each="r : ${allRoles}" th:value="${r.id}" th:text="${r.name}">Admin</option>
         </select>
-        <h3>Rettigheder</h3>
+        </div>
+        <div>
+        <label class="leader" for="id_permissions">Rettigheder</label>
         <select th:field="*{permissions}" id="id_permissions" multiple="multiple">
           <option value="237" th:each="p : ${allPermissions}" th:value="${p.id}" th:text="${p.name}">Can add groups</option>
         </select>
+        </div>
         <div>
           <input type="submit" value="Gem"/>
         </div>

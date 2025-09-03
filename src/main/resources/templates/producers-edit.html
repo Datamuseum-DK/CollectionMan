@@ -12,7 +12,7 @@
       </h1>
     </header>
     <section id="content">
-      <form method="post" action="producers-view.html" th:object="${producer}" th:action="@{/producers/update/{id}(id=${producer.producerid})}">
+      <form id="editfactsheet" method="post" action="producers-view.html" th:object="${producer}" th:action="@{/producers/update/{id}(id=${producer.producerid})}">
         <h2>Redigere producer <span th:text="*{producerid}">11</span></h2>
         <input type="hidden" th:field="*{creator}"/>
         <input type="hidden" th:field="*{created}"/>
@@ -23,12 +23,14 @@
         </div>
         <div>
           <label class="head">Beskrivelse</label>
-          <textarea th:field="*{description}">En beskrivelse her.
+          <textarea th:field="*{description}" rows="5">En beskrivelse her.
 En beskrivelse her.
 En beskrivelse her.</textarea>
           <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Field is mandatory</span>
         </div>
+        <div>
         <input type="submit" value="Gem"/>
+        </div>
       </form>
     </section>
     <footer th:replace="~{layout :: footerFragment}">

@@ -298,6 +298,9 @@ dl.factsheet dd a.subject  {
     padding-left: 0px;
     min-height: 1em;
   }
+  #editfactsheet div {
+    margin: 0.6ex 0;
+  }
 }
 
 

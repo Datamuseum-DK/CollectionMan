@@ -13,7 +13,7 @@
       </h1>
     </header>
     <section id="content">
-      <form method="post" action="donors-view.html" th:object="${donor}" th:action="@{/donors/update/{id}(id=${donor.id})}">
+      <form id="editfactsheet" method="post" action="donors-view.html" th:object="${donor}" th:action="@{/donors/update/{id}(id=${donor.id})}">
         <h2>Redigere donor <span th:text="*{id}">11</span></h2>
         <input type="hidden" value="11" th:field="*{id}"/>
         <input type="hidden" th:field="*{creator}"/>
@@ -50,7 +50,9 @@ En beskrivelse her.
 En beskrivelse her.</textarea>
           <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fielderror">Field is mandatory</span>
         </div>
+        <div>
         <input type="submit" value="Gem"/>
+        </div>
       </form>
     </section>
     <footer th:replace="~{layout :: footerFragment}">

@@ -22,7 +22,7 @@
         <button class="tablinks" onclick="openTab(event, 'Brugsaktivitet')">Brug</button>
         <button class="tablinks" onclick="openTab(event, 'Notater')">Notater</button>
       </div>
-      <form method="post" action="items-view.html" th:object="${item}" th:action="@{/items/update/{id}(id=${item.id})}">
+      <form id="editfactsheet" method="post" action="items-view.html" th:object="${item}" th:action="@{/items/update/{id}(id=${item.id})}">
         <fieldset id="Identifikation" class="tabcontent" style="display:block">
           <legend>Identifikation</legend>
           <input type="hidden" th:field="*{itemtemporary}"/>
@@ -50,7 +50,7 @@
           <div>
             <label class="leader required" for="fileid">Sag:</label>
             <select name="fileid" id="fileid" th:field="*{fileid}" th:remove="all-but-first">
-              <option value="15" th:each="c : ${files}" th:value="${c.id}" th:text="${c.id + ': ' + c.title}">ALCATEL effekter</option>
+              <option value="15" th:each="c : ${files}" th:value="${c.id}" th:text="${c.title}">ALCATEL effekter</option>
               <option value="61">Carl Christian Danielsen (2021-2022 donation)</option>
               <option value="29">Dataco udstyr fra DSB Informatik</option>
             </select>
@@ -75,17 +75,151 @@
           </div>
           <div>
             <label class="leader" for="id_subjects">Emnegrupper:</label>
-            <select th:field="*{subjects}" id="id_subjects" multiple="multiple">
-              <option value="237" th:each="s : ${allSubjects}" th:value="${s.subjectid}" th:text="${s.title}">Hulkort</option>
-              <option value="99" selected="selected" th:remove="all">Programmerbare regnemaskiner</option>
-            </select>
+            <select th:field="*{subjects}" id="id_subjects" multiple="multiple" size="8" th:remove="all-but-first">
+              <option value="26" th:each="s : ${allSubjects}" th:value="${s.subjectid}" th:text="${s.title}">Abacus</option>
+              <option value="38">Afbrydere</option>
+              <option value="30">Analoge regnemaskiner</option>
+              <option value="110">Arbejdsstationer</option>
+              <option value="65">Årsberetninger</option>
+              <option value="69">Artikler</option>
+              <option value="108">Bærbare og mobile enheder</option>
+              <option value="55">Båndoptagere</option>
+              <option value="90">Båndstation</option>
+              <option value="21">Billeder</option>
+              <option value="10">Bøger</option>
+              <option value="88">Bogføringsmaskiner</option>
+              <option value="4">Breve</option>
+              <option value="68">Brochurer</option>
+              <option value="15">Brugsvejledninger</option>
+              <option value="82">CD-ROM</option>
+              <option value="72">Centralenheder</option>
+              <option value="139">Computerspil</option>
+              <option value="5">Dagbøger</option>
+              <option value="58">Datablade</option>
+              <option value="115">Dataopsamlingsudstyr</option>
+              <option value="114">Dataregistreringsudstyr</option>
+              <option value="118">Dataskærme</option>
+              <option value="101">Dias</option>
+              <option value="129">Digital kamera</option>
+              <option value="25">Digitale regnemaskiner</option>
+              <option value="75">Disk</option>
+              <option value="111">Diskettedrev</option>
+              <option value="81">Disketter</option>
+              <option value="44">Dynamoer</option>
+              <option value="132">Efterbehandlingsudstyr</option>
+              <option value="45">El-motorer</option>
+              <option value="36">Elektriske kredsløb</option>
+              <option value="41">Elektriske måleapparater</option>
+              <option value="28">Elektromekaniske regnemaskiner</option>
+              <option value="33">Elektroniske analoge regnemaskiner</option>
+              <option value="29">Elektroniske regnemaskiner</option>
+              <option value="94">Elektronregnemaskiner</option>
+              <option value="46">Elektronrør</option>
+              <option value="64">Faglige artikler</option>
+              <option value="100">Film</option>
+              <option value="52">Fjernsyn</option>
+              <option value="71">Fortællinger</option>
+              <option value="18">Fotografier</option>
+              <option value="137">Free and Open Source Software</option>
+              <option value="54">Grammofoner</option>
+              <option value="125">Hovedlager</option>
+              <option value="107">Hulkort</option>
+              <option value="91">Hulkortudstyr</option>
+              <option value="135">Hulstrimler</option>
+              <option value="93">Hulstrimmeludstyr</option>
+              <option value="48">Integrerede kredse</option>
+              <option value="22">Interviews</option>
+              <option value="87">Kasseapparater</option>
+              <option value="16">Kataloger</option>
+              <option value="74">Komponenter</option>
+              <option value="73">Konsol</option>
+              <option value="104">Kontrolenheder</option>
+              <option value="79">Korthuller</option>
+              <option value="13">Lærebøger</option>
+              <option value="113">Lommeregnere</option>
+              <option value="20">Lysbilleder</option>
+              <option value="117">Magnetbånd</option>
+              <option value="126">Magnetisk tryk behandlingsudstyr</option>
+              <option value="95">Mainframes</option>
+              <option value="127">Måleinstrumenter</option>
+              <option value="60">Manualer</option>
+              <option value="83">Maskinel dokument</option>
+              <option value="35">Matematiske tabeller</option>
+              <option value="32">Mekaniske analoge regnemaskiner</option>
+              <option value="27">Mekaniske regnemaskiner</option>
+              <option value="97">Mikrodatamater</option>
+              <option value="128">Mikrofilm </option>
+              <option value="96">Minidatamater</option>
+              <option value="121">Modems</option>
+              <option value="19">Negativer</option>
+              <option value="116">Netværksudstyr</option>
+              <option value="7">Notesbøger</option>
+              <option value="39">Omskiftere</option>
+              <option value="123">Optiske enheder</option>
+              <option value="42">Oscillografer, oscilloskoper</option>
+              <option value="86">Overheads</option>
+              <option value="130" selected="selected">Paller</option>
+              <option value="49">Passive elektroniske komponenter</option>
+              <option value="134">Personaleblade</option>
+              <option value="98">Personlige computere</option>
+              <option value="67">Personlige papirer</option>
+              <option value="23">Plakater</option>
+              <option value="106">Plottere</option>
+              <option value="70">Populærvidenskablige bøger</option>
+              <option value="133">Positioneringsudstyr</option>
+              <option value="80">Printere</option>
+              <option value="122">Printkort</option>
+              <option value="59">Prislister</option>
+              <option value="131">Procesudstyr</option>
+              <option value="61">Produktionspapirer</option>
+              <option value="119">Produktionsudstyr</option>
+              <option value="84">Programdokument</option>
+              <option value="109">Programmer og programmel</option>
+              <option value="34" selected="selected">Programmerbare regnemaskiner</option>
+              <option value="6">Protokoller</option>
+              <option value="51">Radioapparater og -udstyr</option>
+              <option value="12">Rapporter</option>
+              <option value="62">Referenceværker</option>
+              <option value="31">Regnestok</option>
+              <option value="40">Relæer</option>
+              <option value="8">Særtryk</option>
+              <option value="85">Salgsmateriale</option>
+              <option value="89">Samlegruppe: Bull Gamma 30</option>
+              <option value="92">Samlegruppe: RC3000 fra Sparekassemuseet</option>
+              <option value="120">Serverudstyr</option>
+              <option value="24">Skrivemaskiner</option>
+              <option value="11">Småskrifter</option>
+              <option value="57">Specifikationer</option>
+              <option value="124">Spilkonsol</option>
+              <option value="77">Strimmelhuller</option>
+              <option value="78">Strimmellæser</option>
+              <option value="37">Strømforsyninger</option>
+              <option value="14">Tabeller</option>
+              <option value="76">Tapeenheder</option>
+              <option value="105">Tastaturer</option>
+              <option value="17">Tegninger</option>
+              <option value="140">Teknisk dokumentation</option>
+              <option value="112">Tekstbehandlingsudstyr</option>
+              <option value="53">Telefoner og telefonudstyr</option>
+              <option value="50">Telegrafudstyr og fjernskrivere</option>
+              <option value="102">Terminaludstyr</option>
+              <option value="136">Testudstyr</option>
+              <option value="9">Tidsskrifter</option>
+              <option value="43">Transformatorer</option>
+              <option value="47">Transistorer</option>
+              <option value="99">Udviklingssystemer</option>
+              <option value="63">Undervisnings- og kursusmateriale</option>
+              <option value="138">UNIX</option>
+              <option value="56">Videobåndoptagere</option>
+              <option value="66">Virksomhedspapirer</option>
+              </select>
           </div>
           <label class="leader required" for="headline">Betegnelse:</label>
           <input type="text" id="headline" value="Xerox 860 tekstbehandlingsanlæg" th:field="*{headline}" class="fullwidth"/>
           <span th:if="${#fields.hasErrors('headline')}" th:errors="*{headline}" class="fielderror">Error</span>
           <div>
             <label class="head" for="description">Beskrivelse:</label>
-            <textarea id="description" cols="40" rows="5" th:field="*{description}">Rank Xerox type 860 tekstbehandlingsanlæg med 2 stk 8" diskettedrev, tastatur og skærm.
+            <textarea id="description" cols="40" rows="8" th:field="*{description}">Rank Xerox type 860 tekstbehandlingsanlæg med 2 stk 8" diskettedrev, tastatur og skærm.
 Product codes X994, X995 og X996.
 Serienumre: 1111012438, 131-006077-8, 111-148902-1
 Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.</textarea>
@@ -132,15 +266,13 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <legend>Erhvervelse</legend>
           <div>
             <label class="leader required">Måde:</label>
-            <th:block th:remove="all-but-first">
               <label th:each="t : ${acquiretypes}">
                 <input  name="itemacquiretype" th:field="*{itemacquiretype}" type="radio" value="0" th:value="${t.ordinal}" th:checked="${t.ordinal == itemacquiretype}"/>
-                <th:block th:text="${#strings.capitalize(#strings.toLowerCase(t))}">Ukendt</th:block>
+                <span th:remove="tag" th:text="${#strings.capitalize(#strings.toLowerCase(t))}">Ukendt</span>
               </label>
-              <label><input name="itemacquiretype" type="radio" value="1" checked="checked"/>Gave</label>
-              <label><input name="itemacquiretype" type="radio" value="3"/>Køb</label>
-              <label><input name="itemacquiretype" type="radio" value="4"/>Deponering</label>
-            </th:block>
+              <label th:remove="all"><input name="itemacquiretype" type="radio" value="1" checked="checked"/>Gave</label>
+              <label th:remove="all"><input name="itemacquiretype" type="radio" value="3"/>Køb</label>
+              <label th:remove="all"><input name="itemacquiretype" type="radio" value="4"/>Deponering</label>
             <span th:if="${#fields.hasErrors('itemacquiretype')}" th:errors="*{itemacquiretype}" class="fielderror">Error</span>
           </div>
           <div>

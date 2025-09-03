@@ -12,7 +12,7 @@
       </h1>
     </header>
     <section id="content">
-      <form method="post" action="roles-view.html" th:object="${role}" th:action="@{/roles/update/{id}(id=${role.id})}">
+      <form id="editfactsheet" method="post" action="roles-view.html" th:object="${role}" th:action="@{/roles/update/{id}(id=${role.id})}">
         <h2>Redigere rolle <span th:text="*{id}">11</span></h2>
         <input type="hidden" value="937" th:field="*{id}"/>
         <div>
@@ -27,7 +27,9 @@
             <option value="88" th:remove="all" selected="selected">ADD_ITEM</option>
           </select>
         </div>
+        <div>
         <input type="submit" value="Gem"/>
+        </div>
       </form>
     </section>
     <footer th:replace="~{layout :: footerFragment}">

@@ -12,7 +12,7 @@
       </h1>
     </header>
     <section id="content">
-      <form method="post" action="subjects-view.html" th:object="${subject}" th:action="@{/subjects/update/{id}(id=${subject.subjectid})}">
+      <form id="editfactsheet" method="post" action="subjects-view.html" th:object="${subject}" th:action="@{/subjects/update/{id}(id=${subject.subjectid})}">
         <h2>Redigere emne <span th:text="*{subjectid}">11</span></h2>
         <input type="hidden" value="937" th:field="*{subjectid}"/>
         <input type="hidden" th:field="*{creator}"/>
@@ -30,7 +30,9 @@ En beskrivelse her.
 En beskrivelse her.
 En beskrivelse her.</textarea>
         </div>
+        <div>
         <input type="submit" value="Gem"/>
+        </div>
       </form>
     </section>
     <footer th:replace="~{layout :: footerFragment}">

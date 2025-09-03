@@ -12,14 +12,16 @@
       </h1>
     </header>
     <section id="content">
-      <form method="post" action="places-view.html" th:object="${place}" th:action="@{/places/update/{id}(id=${place.id})}">
+      <form id="editfactsheet" method="post" action="places-view.html" th:object="${place}" th:action="@{/places/update/{id}(id=${place.id})}">
         <h2>Redigere sted <span th:text="*{id}">11</span></h2>
         <div>
-          <label class="head">Navn</label>
+          <label class="leader required">Navn</label>
           <input type="text" th:field="*{stednavn}" value="Hillerød"/>
           <span th:if="${#fields.hasErrors('stednavn')}" th:errors="*{stednavn}" class="fielderror">Field is mandatory</span>
         </div>
+        <div>
         <input type="submit" value="Gem"/>
+        </div>
       </form>
     </section>
     <footer th:replace="~{layout :: footerFragment}">
