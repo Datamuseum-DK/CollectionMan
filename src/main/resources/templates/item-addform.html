@@ -22,7 +22,7 @@
         <button class="tablinks" onclick="openTab(event, 'Brugsaktivitet')">Brug</button>
         <button class="tablinks" onclick="openTab(event, 'Notater')">Notater</button>
       </div>
-      <form action="item-addform2.html" method="post" th:object="${item}" th:action="@{/items/additem}">
+      <form id="editfactsheet" action="item-addform2.html" method="post" th:object="${item}" th:action="@{/items/additem}">
         <fieldset id="Identifikation" class="tabcontent" style="display:block">
           <legend>Identifikation</legend>
           <div>
@@ -74,7 +74,7 @@
           </div>
           <div>
             <label class="leader" for="id_subjects">Emnegrupper:</label>
-            <select th:field="*{subjects}" id="id_subjects" multiple="multiple">
+            <select th:field="*{subjects}" id="id_subjects" multiple="multiple" size="8">
               <option value="237" th:each="s : ${allSubjects}" th:value="${s.subjectid}" th:text="${s.title}">Hulkort</option>
               <option value="99" selected="selected" th:remove="all">Programmerbare regnemaskiner</option>
             </select>

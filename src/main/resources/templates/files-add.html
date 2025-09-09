@@ -13,7 +13,7 @@
     </header>
     <section id="content">
       <h2>Opret sag</h2>
-      <form action="files-edit.html" th:action="@{addfile}" th:object="${caseFile}" method="post">
+      <form id="editfactsheet" action="files-edit.html" th:action="@{addfile}" th:object="${caseFile}" method="post">
         <div>
           <label class="head required" for="title">Titel:</label>
           <input type="text" th:field="*{title}" id="title" name="title" value="" class="fullwidth"/>

@@ -14,7 +14,7 @@
     </header>
     <section id="content">
       <h2>Opret donor</h2>
-      <form action="donors-view.html" th:action="@{adddonor}" th:object="${donor}" method="post">
+      <form id="editfactsheet" action="donors-view.html" th:action="@{adddonor}" th:object="${donor}" method="post">
         <div>
           <label class="head required">Navn
           <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fielderror">Field is mandatory</span></label>

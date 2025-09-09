@@ -301,8 +301,7 @@ public class ItemController {
             Item currPlaceItem = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid placement Id:" + placementid));
             model.addAttribute("placename", currPlaceItem.getHeadline());
-            model.addAttribute("places", itemRepository.findContainers(placementid,
-                    getTopClassLevel()));
+            model.addAttribute("places", itemRepository.findContainers(placementid, level));
             model.addAttribute("placementid", placementid);
         } else {
             model.addAttribute("places", itemRepository.findByPlacementidNull());
