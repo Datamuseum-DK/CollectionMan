@@ -61,7 +61,7 @@
           <dt th:unless="${#strings.isEmpty(item.itemserialno)}">Serienr.</dt>
           <dd th:unless="${#strings.isEmpty(item.itemserialno)}" th:text="${item.itemserialno}">131-006077-8</dd>
           <dt>Beskrivelse</dt>
-          <dd class="multiline" th:text="${#strings.trim(item.description)}">Rank Xerox type 860 tekstbehandlingsanlæg
+          <dd class="multiline" th:utext="${#strings.trim(item.description)}">Rank Xerox type 860 tekstbehandlingsanlæg
 med 2 stk 8" diskettedrev, tastatur og skærm.
 Product codes X994, X995 og X996.
 Serienumre: 1111012438, 131-006077-8, 111-148902-1
@@ -167,7 +167,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         <legend>Brugsaktivitet</legend>
         <dl class="factsheet">
           <dt>Brugt af</dt>
-          <dd class="multiline" th:text="${item.itemusedby}">Brugsen</dd>
+          <dd class="multiline" th:utext="${item.itemusedby}">Brugsen</dd>
           <dt>Til hvad</dt>
           <dd class="multiline" th:text="${item.itemusedfor}">Kontrabøger</dd>
           <dt>Brugt hvor</dt>
@@ -182,13 +182,13 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         <legend>Notater</legend>
         <dl class="factsheet">
           <dt title="Særlige oplysninger om genstandens proveniens">Ekstra info</dt>
-          <dd class="multiline" th:text="${item.itemextrainfo}">Tekst her</dd>
+          <dd class="multiline" th:utext="${item.itemextrainfo}">Tekst her</dd>
           <dt>Restaurering</dt>
           <dd class="multiline" th:text="${item.itemrestoration}">Tekst her</dd>
           <dt title="Litteraturhenvisninger">Litteratur</dt>
           <dd class="multiline" th:text="${item.itemreferences}">Tekst her</dd>
           <dt>Bemærkninger</dt>
-          <dd class="multiline" th:text="${item.itemremarks}">Kommentarer</dd>
+          <dd class="multiline" th:utext="${item.itemremarks}">Kommentarer</dd>
         </dl>
       </fieldset>
     </section>

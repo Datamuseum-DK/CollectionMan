@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import dk.datamuseum.mobilereg.MobileRegProperties;
 
@@ -492,6 +493,7 @@ public class ItemController {
         if (query == null) {
             query = "";
         }
+        query = query.strip();
         model.addAttribute("q", query);
 
         if (isNumeric(query)) {
@@ -606,6 +608,11 @@ public class ItemController {
         return "qrresult";
     }
 
+    private String richText(String plainText) {
+        String richDesc = HtmlUtils.htmlEscape(plainText);
+        return richDesc.replaceAll("110(\\d{5})","<a href='110$1'>110$1</a>");
+    }
+
     /**
      * Factsheet for item.
      *
@@ -622,6 +629,12 @@ public class ItemController {
             @RequestParam(defaultValue = "50") int size) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
+
+        item.setDescription(richText(item.getDescription()));
+        item.setItemextrainfo(richText(item.getItemextrainfo()));
+        item.setItemremarks(richText(item.getItemremarks()));
+        item.setItemusedby(richText(item.getItemusedby()));
+
         model.addAttribute("item", item);
         CaseFile file = fileRepository.findById(item.getFileid())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
