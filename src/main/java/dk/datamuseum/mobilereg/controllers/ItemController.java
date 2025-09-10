@@ -608,9 +608,25 @@ public class ItemController {
         return "qrresult";
     }
 
+    /*
+     * Produce HTML with detected links. A simple markdown syntax.
+     * item numbers are detected,
+     * URLs are detected.
+     */
     private String richText(String plainText) {
         String richDesc = HtmlUtils.htmlEscape(plainText);
-        return richDesc.replaceAll("110(\\d{5})","<a href='110$1'>110$1</a>");
+        richDesc = richDesc.replaceAll("(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:;/~+#-]*[\\w@?^=%&/~+#;])",
+            "<a href='$0'>$0</a>");
+        return richDesc.replaceAll("(1[01]0[01]\\d{4})","<a href='$1'>$1</a>");
+    }
+
+    private void enrichTextareas(Item item) {
+        item.setDescription(richText(item.getDescription()));
+        item.setItemextrainfo(richText(item.getItemextrainfo()));
+        item.setItemreferences(richText(item.getItemreferences()));
+        item.setItemrestoration(richText(item.getItemrestoration()));
+        item.setItemremarks(richText(item.getItemremarks()));
+        item.setItemusedby(richText(item.getItemusedby()));
     }
 
     /**
@@ -630,11 +646,7 @@ public class ItemController {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
 
-        item.setDescription(richText(item.getDescription()));
-        item.setItemextrainfo(richText(item.getItemextrainfo()));
-        item.setItemremarks(richText(item.getItemremarks()));
-        item.setItemusedby(richText(item.getItemusedby()));
-
+        enrichTextareas(item);
         model.addAttribute("item", item);
         CaseFile file = fileRepository.findById(item.getFileid())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
@@ -647,7 +659,6 @@ public class ItemController {
             model.addAttribute("producer", producerRepository.findById(item.getProducerid()));
         else
             model.addAttribute("producer", Optional.empty());
-        //model.addAttribute("notes", noteRepository.findByItemId(id));
         model.addAttribute("parents", itemRepository.findParentContainers(id));
 
         List<Item> children = new ArrayList<Item>();

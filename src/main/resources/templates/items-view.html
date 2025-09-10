@@ -186,7 +186,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dt>Restaurering</dt>
           <dd class="multiline" th:text="${item.itemrestoration}">Tekst her</dd>
           <dt title="Litteraturhenvisninger">Litteratur</dt>
-          <dd class="multiline" th:text="${item.itemreferences}">Tekst her</dd>
+          <dd class="multiline" th:utext="${item.itemreferences}">Tekst her</dd>
           <dt>Bemærkninger</dt>
           <dd class="multiline" th:utext="${item.itemremarks}">Kommentarer</dd>
         </dl>
