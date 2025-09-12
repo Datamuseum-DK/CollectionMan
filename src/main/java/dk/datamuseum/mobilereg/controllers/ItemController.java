@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,6 +57,11 @@ import dk.datamuseum.mobilereg.service.PictureService;
 @Controller
 @RequestMapping("/items")
 public class ItemController {
+
+    /** Pattern for URLs. */
+    static Pattern urlPattern = Pattern.compile("(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:;/~+#-]*[\\w@?^=%&/~+#;])");
+    /** Pattern for Item numbers. */
+    static Pattern itemPattern = Pattern.compile("(^|\\G|[\\s\\p{Punct}&&[^/]])(1[01]0[01]\\d{4})([\\s\\p{Punct}]|$)", Pattern.MULTILINE);
 
     @Autowired
     private DonorRepository donorRepository;
@@ -614,10 +620,11 @@ public class ItemController {
      * URLs are detected.
      */
     private String richText(String plainText) {
-        String richDesc = HtmlUtils.htmlEscape(plainText);
-        richDesc = richDesc.replaceAll("(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:;/~+#-]*[\\w@?^=%&/~+#;])",
-            "<a href='$0'>$0</a>");
-        return richDesc.replaceAll("(1[01]0[01]\\d{4})","<a href='$1'>$1</a>");
+        String richDesc = HtmlUtils.htmlEscape(plainText, "UTF-8");
+        richDesc = urlPattern.matcher(richDesc).replaceAll("<a href='$0'>$0</a>");
+        richDesc = itemPattern.matcher(richDesc).replaceAll("$1<a href='$2'>$2</a>$3");
+
+        return richDesc;
     }
 
     private void enrichTextareas(Item item) {

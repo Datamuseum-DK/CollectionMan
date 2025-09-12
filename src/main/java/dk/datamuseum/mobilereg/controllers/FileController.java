@@ -34,6 +34,11 @@ public class FileController {
 
     private Log logger = LogFactory.getLog(FileController.class);
 
+    /**
+     * View list of case files.
+     *
+     * @param model - Additional attributes used by the web form.
+     */
     @PreAuthorize("hasAuthority('VIEW_FILES')")
     @RequestMapping({"", "/", "/view"})
     public String showFileList(Model model) {
@@ -43,6 +48,8 @@ public class FileController {
 
     /**
      * Show form to add a case file record.
+     *
+     * @param model - Additional attributes used by the web form.
      */
     @PreAuthorize("hasAuthority('ADD_FILES')")
     @GetMapping("/addform")
@@ -52,6 +59,11 @@ public class FileController {
         return "files-add";
     }
     
+    /**
+     * Add a case file to the database.
+     *
+     * @param model - Additional attributes used by the web form.
+     */
     @PreAuthorize("hasAuthority('ADD_FILES')")
     @PostMapping("/addfile")
     public String addFile(@Valid CaseFile caseFile, BindingResult result, Model model) {
@@ -63,6 +75,11 @@ public class FileController {
         return "redirect:/files";
     }
     
+    /**
+     * Show the factsheet of a case file.
+     *
+     * @param model - Additional attributes used by the web form.
+     */
     @PreAuthorize("hasAuthority('VIEW_FILES')")
     @GetMapping("/view/{id}")
     public String showFactsheet(@PathVariable("id") int id, Model model) {
@@ -73,6 +90,11 @@ public class FileController {
         return "files-view";
     }
 
+    /**
+     * Show the edit form for a case file.
+     *
+     * @param model - Additional attributes used by the web form.
+     */
     @PreAuthorize("hasAuthority('CHANGE_FILES')")
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
@@ -82,6 +104,11 @@ public class FileController {
         return "files-edit";
     }
     
+    /**
+     * Update a case file.
+     *
+     * @param model - Additional attributes used by the web form.
+     */
     @PreAuthorize("hasAuthority('CHANGE_FILES')")
     @PostMapping("/update/{id}")
     public String updateFile(@PathVariable("id") int id, @Valid CaseFile caseFile, BindingResult result, Model model) {
@@ -99,7 +126,9 @@ public class FileController {
     }
     
     /**
-     * Delete caseFile.
+     * Delete case file.
+     *
+     * @param model - Additional attributes used by the web form.
      */
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE_FILES')")
