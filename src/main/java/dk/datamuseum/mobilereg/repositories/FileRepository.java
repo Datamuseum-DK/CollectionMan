@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Interface for database queries on the 'files' table.
- * A repository has a number of default queries.
+ * A repository already has a number of default queries: count, delete,
+ * existsById, findAll, findById, save.
  */
 @Repository
 public interface FileRepository extends CrudRepository<CaseFile, Integer> {

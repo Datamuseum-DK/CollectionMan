@@ -8,6 +8,9 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * The item_class entity.
+ */
 @Entity
 @Data
 //@Table(name = "items")

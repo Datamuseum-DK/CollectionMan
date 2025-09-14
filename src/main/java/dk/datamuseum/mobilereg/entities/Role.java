@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
+/**
+ * The role entity.
+ */
 @Entity
 @Table(name = "auth_group")
 @Data

@@ -37,6 +37,8 @@ public class DonorController {
     /**
      * List donors, either all or filtered.
      * @param q - query string.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
      */
     @PreAuthorize("hasAuthority('VIEW_DONATORS')")
     @RequestMapping({"", "/", "/view"})
@@ -49,6 +51,12 @@ public class DonorController {
         return "donors";
     }
 
+    /**
+     * Show form for creation of a new donor.
+     *
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
+     */
     @PreAuthorize("hasAuthority('ADD_DONATORS')")
     @GetMapping("/addform")
     public String addForm(Model model) {
@@ -68,6 +76,13 @@ public class DonorController {
         return "redirect:/donors";
     }
     
+    /**
+     * Show factsheet of a donor.
+     *
+     * @param id - donor id.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
+     */
     @PreAuthorize("hasAuthority('VIEW_DONATORS')")
     @GetMapping("/view/{id}")
     public String showFactsheet(@PathVariable("id") int id, Model model) {
@@ -78,6 +93,13 @@ public class DonorController {
         return "donors-view";
     }
 
+    /**
+     * Show edit form for donor.
+     *
+     * @param id - donor id.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
+     */
     @PreAuthorize("hasAuthority('CHANGE_DONATORS')")
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
@@ -86,7 +108,15 @@ public class DonorController {
         
         return "donors-edit";
     }
-    
+
+    /**
+     * General update of donor.
+     *
+     * @param id - donor id.
+     * @param result - Results from validation of the web form.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template or redirection to factsheet.
+     */
     @PreAuthorize("hasAuthority('CHANGE_DONATORS')")
     @PostMapping("/update/{id}")
     public String updateDonor(@PathVariable("id") int id, @Valid Donor donor, BindingResult result, Model model) {
@@ -103,6 +133,9 @@ public class DonorController {
 
     /**
      * Delete donor.
+     *
+     * @param id - donor id.
+     * @param model - Additional attributes used by the web form.
      */
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE_DONATORS')")

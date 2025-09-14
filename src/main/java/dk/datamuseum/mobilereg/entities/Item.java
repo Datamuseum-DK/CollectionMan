@@ -27,13 +27,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
+/**
+ * The items entity.
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "items")
 @Data
 public class Item {
 
-    // https://dev.to/noelopez/spring-rest-working-with-enums-ma
+    /**
+     * Enumeration of ways an item was acquired.
+     */
     public enum Acquired {
         UKENDT, GAVE, ARV, KØB, DEPONERING;
 

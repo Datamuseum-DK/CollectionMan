@@ -8,6 +8,9 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * Many-to-many relation between items and subjects.
+ */
 @Entity
 @IdClass(ItemSubjectId.class)
 @Table(name = "items_itemsubject")
@@ -23,5 +26,4 @@ public class ItemSubject {
     @NotNull(message = "Subject id is mandatory")
     @Column(name = "subjects_id")
     private int subjectid;
-
 }

@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import lombok.Data;
 
+/**
+ * A combined key for itemids and pictureids.
+ */
 @Data
 public class ItemPictureId {
 

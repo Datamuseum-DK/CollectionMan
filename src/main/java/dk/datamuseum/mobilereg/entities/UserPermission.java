@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
+/**
+ * Many-to-many relation between users and permission.
+ * A permission can be used in many users.
+ * A user can have many permissions.
+ */
 @Entity
 @Table(name = "auth_user_user_permissions")
 @Data

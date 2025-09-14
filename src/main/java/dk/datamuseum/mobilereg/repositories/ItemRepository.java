@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Interface for database queries on the 'items' table.
- * A repository has a number of default queries.
+ * A repository already has a number of default queries: count, delete,
+ * existsById, findAll, findById, save.
  */
 @Repository
 public interface ItemRepository extends CrudRepository<Item, Integer> {
@@ -19,6 +20,10 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
     /**
      * Do a full text search on items.
      * Searches headline and description.
+     *
+     * @param query - the query.
+     * @param pageable - information about which page the user wants returned.
+     * @return a page of hits.
      */
     @Query("SELECT i FROM Item i WHERE i.headline LIKE %?1% OR i.description LIKE %?1% OR i.itemserialno LIKE %?1% ORDER BY i.headline")
     Page<Item> findByFulltextContaining(String query, Pageable pageable);
@@ -26,19 +31,24 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
     /**
      * Get all locations. I.e., all containers that are the top of
      * the hierarchy.
+     *
+     * @return a list of items - potentially with no members.
      */
     List<Item> findByPlacementidNull();
 
     /**
      * Get all locations above a certain item class.
      *
-     * @param itemclass - the type of the requesting parent item.
+     * @param level - the level of the requesting parent item.
+     * @return a list of items - potentially with no members.
      */
     @Query("SELECT i FROM Item i WHERE i.itemClass.level <= ?1")
     List<Item> findByItemclassLevel(int level);
 
     /**
      * Lookup on primary key or QR code.
+     *
+     * @return a list of items - potentially with no members.
      */
     List<Item> findByIdOrQrcode(int id, Integer qrcode);
 
@@ -46,6 +56,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * Get all items with given producer.
      *
      * @param id - producer id.
+     * @return an iteration of items - potentially with no members.
      */
     Iterable<Item> findByProduceridOrderByHeadline(int id);
 
@@ -53,6 +64,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * Get all items with given donor.
      *
      * @param id - donor id.
+     * @return an iteration of items - potentially with no members.
      */
     Iterable<Item> findByDonoridOrderByHeadline(int id);
 
@@ -64,6 +76,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * Use database names for columns.
      *
      * @param id - item id.
+     * @return a list of items - potentially with no members.
      */
     @NativeQuery(value = "WITH RECURSIVE name_tree(itemid,placementid,itemheadline) AS ("
           + " select itemid, placementid, itemheadline from items where itemid = ?1"
@@ -77,6 +90,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * All items belonging to a file.
      *
      * @param id - item id.
+     * @return a list of items - potentially with no members.
      */
     List<Item> findByFileidOrderByHeadline(int id);
 
@@ -84,13 +98,18 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * All items belonging to a container.
      *
      * @param id - container id.
+     * @return a page of hits.
      */
     Page<Item> findByPlacementidOrderByHeadline(int id, Pageable pageable);
 
     /**
      * Find containers above a given level.
+     * Used for hierarchial navigation when moving. You don't want to present
+     * containers that can't contain the item to move.
      *
-     * @param level - the level of the item you want to see possible containers for.
+     * @param parentid the returned items must have this parent.
+     * @param maxLevel - the level of the item you want to see possible containers for.
+     * @return an iteration of items - potentially with no members.
      */
     @Query(value="SELECT i FROM Item i JOIN i.itemClass c WHERE i.placementid = ?1 AND c.level < ?2 ORDER BY i.headline")
     Iterable<Item> findContainers(int parentid, int maxLevel);
@@ -99,6 +118,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * Items that were used at an identified place.
      *
      * @param id - sted id.
+     * @return a list of items - potentially with no members.
      */
     List<Item> findByItemusedwhereidOrderByHeadline(int id);
 
@@ -111,6 +131,8 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
 
     /**
      * List top 50 items in reverse order of last modified.
+     *
+     * @return an iteration of items - potentially with no members.
      */
     //@Query(value="SELECT TOP 50 i FROM Item i ORDER BY i.lastmodified DESC")
     Iterable<Item> findFirst50ByOrderByLastmodifiedDesc();

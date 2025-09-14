@@ -28,6 +28,8 @@ public class Application {
 
     /**
      * Initialisation of Spring Boot application.
+     *
+     * @param args - all the arguments given on the command line.
      */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -36,6 +38,8 @@ public class Application {
     /**
      * Create the audit functionality.
      * I.e., auto-fills the fields creator, created and lastmodified for a record.
+     *
+     * @return instantiated class, which is added to the bean registry.
      */
     @Bean
     public AuditorAware<String> auditorProvider() {
@@ -45,6 +49,8 @@ public class Application {
 
     /**
      * Instantiate the PBKDF2 password encoder.
+     *
+     * @return instantiated class, which is added to the bean registry.
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,6 +62,8 @@ public class Application {
 
     /**
      * Instantiate the special validator for Items.
+     *
+     * @return instantiated class, which is added to the bean registry.
      */
     //@Bean
     public Validator itemValidator() {

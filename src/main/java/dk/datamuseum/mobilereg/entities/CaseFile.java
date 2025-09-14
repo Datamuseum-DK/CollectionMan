@@ -18,6 +18,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
+/**
+ * The files entity.
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "files")

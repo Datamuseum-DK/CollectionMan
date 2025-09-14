@@ -93,10 +93,11 @@ public class RoleController {
     /**
      * Update role.
      *
+     * @param id - id of role.
      * @param role - The role record containing the entered information.
      * @param result - Results from validation of the web form.
      * @param model - Additional attributes used by the web form.
-     * @return redirection to factsheet of created item.
+     * @return name of Thymeleaf template or redirection to factsheet.
      */
     @PreAuthorize("hasAuthority('CHANGE_GROUP')")
     @PostMapping("/update/{id}")

@@ -1,11 +1,16 @@
 package dk.datamuseum.mobilereg.service;
 
-import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
 import dk.datamuseum.mobilereg.model.StoredFile;
 
+/**
+ * Service to store pictures and return in 4 sizes.
+ * When a picture is uploaded and saved with the store() method, then the
+ * picture is resized to several different sizes.
+ * Then the client should request an image based on the size, so that
+ * the most efficient size is returned.
+ */
 public interface PictureService {
 
     String PICTUREORIGINAL = "pictureoriginal";
@@ -18,6 +23,9 @@ public interface PictureService {
 
     /**
      * Store an image in 4 sizes.
+     *
+     * @param file - The file to store
+     * @param pictureId the identifier in the database for the file.
      */
     void store(MultipartFile file, int pictureId);
 
@@ -26,6 +34,7 @@ public interface PictureService {
      *
      * @param subDir - section of the data storage.
      * @param path - name of file.
+     * @return the file with meta data.
      */
     StoredFile getByPath(String subDir, String path);
 

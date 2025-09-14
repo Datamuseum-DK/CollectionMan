@@ -8,25 +8,66 @@ import java.util.stream.Stream;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Interface for a storage service.
+ * Implementations can then be based om files, Minio, etc.
+ */
 public interface StorageService {
 
-    void init(String subDir);
+    /**
+     * Create subsections.
+     * This is to be used by the clients of the service to coexist with other uses.
+     *
+     * @param section - name of the section. May not contain '/'
+     */
+    void init(String section);
 
-    void store(MultipartFile file, String subDir);
+    /**
+     * Store a file in a section.
+     *
+     * @param section - name of the section. May not contain '/'
+     */
+    void store(MultipartFile file, String section);
 
-    OutputStream getOutputHandle(String subDir, String fileName);
+    /**
+     * Open a file as a stream.
+     *
+     * @param section - name of the section. May not contain '/'
+     * @param filename - file name.
+     * @return file as an output stream.
+     */
+    OutputStream getOutputHandle(String section, String filename);
 
-    Path load(String subDir, String filename);
+    /**
+     * Get path to a filename.
+     *
+     * @param section - name of the section. May not contain '/'
+     * @param filename - file name.
+     * @return file as an output stream.
+     */
+    Path load(String section, String filename);
 
-    Resource loadAsResource(String subDir, String filename);
+    /**
+     * Get file as a resource.
+     *
+     * @param section - name of the section. May not contain '/'
+     * @param filename - file name.
+     * @return file as a resource.
+     */
+    Resource loadAsResource(String section, String filename);
 
-    void deleteAll(String subDir);
+    /**
+     * Delete all files in a section.
+     *
+     * @param section - name of the section. May not contain '/'
+     */
+    void deleteAll(String section);
 
     /**
      * Delete a file from storage.
      *
-     * @param subDir - subdirectory or partition.
-     * @param filename - filename in the subdirectory.
+     * @param section - name of the section.
+     * @param filename - filename in the section.
      */
-    void delete(String subDir, String filename);
+    void delete(String section, String filename);
 }

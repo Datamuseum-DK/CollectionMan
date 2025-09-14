@@ -78,6 +78,15 @@ public class SubjectController {
         return "subjects-edit";
     }
 
+    /**
+     * General update of subject.
+     *
+     * @param id - subject id.
+     * @param subject - the updated record.
+     * @param result - Results from validation of the web form.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template or redirection to factsheet.
+     */
     @PreAuthorize("hasAuthority('CHANGE_SUBJECTS')")
     @PostMapping("/update/{id}")
     public String updateSubject(@PathVariable("id") int id, @Valid Subject subject, BindingResult result, Model model) {

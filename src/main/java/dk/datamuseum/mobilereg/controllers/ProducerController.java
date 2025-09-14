@@ -87,7 +87,16 @@ public class ProducerController {
         
         return "producers-edit";
     }
-    
+
+    /**
+     * General update of producer.
+     *
+     * @param id - producer id.
+     * @param producer - the updated record.
+     * @param result - Results from validation of the web form.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template or redirection to factsheet.
+     */
     @PreAuthorize("hasAuthority('CHANGE_PRODUCERS')")
     @PostMapping("/update/{id}")
     public String updateProducer(@PathVariable("id") int id, @Valid Producer producer, BindingResult result, Model model) {

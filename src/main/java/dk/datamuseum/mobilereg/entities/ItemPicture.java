@@ -8,6 +8,9 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * Many-to-many relation between items and pictures.
+ */
 @Entity
 @IdClass(ItemPictureId.class)
 @Table(name = "items_itempicture")

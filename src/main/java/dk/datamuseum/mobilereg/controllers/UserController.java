@@ -138,7 +138,7 @@ public class UserController {
         
         return "users-edit";
     }
-    
+
     /**
      * Update user by a staff member. Not for user updating own password.
      *
@@ -146,6 +146,7 @@ public class UserController {
      * @param user - User entitity
      * @param result - errors etc. from validation.
      * @param model - addition information from the form.
+     * @return name of Thymeleaf template or redirection to list.
      */
     @PostMapping("/update/{id}")
     @PreAuthorize("hasAuthority('CHANGE_USER')")

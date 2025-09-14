@@ -15,6 +15,10 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.*;
 import lombok.Data;
 
+/**
+ * The notes entity.
+ * Unused.
+ */
 @Entity
 @Table(name = "notes")
 @Data

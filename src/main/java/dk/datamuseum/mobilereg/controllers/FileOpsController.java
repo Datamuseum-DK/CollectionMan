@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * File operations - upload, download, delete.
- * See http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
+ * @see <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html">Spring MultipartFile</a>.
  */
 @Controller
 public class FileOpsController {
@@ -56,4 +56,3 @@ public class FileOpsController {
     }
 
 }
-

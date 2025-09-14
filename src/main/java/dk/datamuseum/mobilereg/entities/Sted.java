@@ -12,6 +12,9 @@ import java.util.List;
 import lombok.Data;
 import org.hibernate.annotations.Formula;
 
+/**
+ * The sted entity.
+ */
 @Entity
 @Table(name = "sted")
 @Data

@@ -99,14 +99,6 @@ public class ItemController {
     }
 
     /**
-     * Get the top class level - i.e. locations.
-     * @return the level as an integer.
-     */
-    private Integer getTopClassLevel() {
-        return itemclasses().get(0).getLevel();
-    }
-
-    /**
      * Checks if item can fit in the parent.
      */
     private void checkItemFit(Item item) {
@@ -234,7 +226,7 @@ public class ItemController {
      * @param item - The item record containing the entered information.
      * @param result - Results from validation of the web form.
      * @param model - Additional attributes used by the web form.
-     * @return redirection to factsheet of created item.
+     * @return name of Thymeleaf template or redirection to factsheet of created item.
      */
     @PostMapping("/additem")
     @PreAuthorize("hasAuthority('ADD_ITEMS')")
@@ -254,6 +246,7 @@ public class ItemController {
      *
      * @param id item id.
      * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
      */
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -273,6 +266,7 @@ public class ItemController {
      *
      * @param id item id.
      * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
      */
     @GetMapping("/move")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -294,9 +288,10 @@ public class ItemController {
      * then it shows a button to select this place and any sub-containers, that
      * have a lower level than the item.
      *
-     * @param id item id.
+     * @param itemid item id.
      * @param placementid - current selected place - must be an item id.
      * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
      */
     @GetMapping("/move-nav")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -323,11 +318,12 @@ public class ItemController {
     /**
      * Show the hits from searching a container by itemid, QR code, or tekst.
      *
-     * @param id - item id.
+     * @param itemid - item id.
      * @param query - query string.
      * @param model - Additional attributes used by the web form.
      * @param page - page number of paged results.
      * @param size - number of results on a single page.
+     * @return name of Thymeleaf template.
      */
     @GetMapping("/move-search")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -366,9 +362,10 @@ public class ItemController {
     /**
      * Update the location of the item.
      *
-     * @param id item id.
+     * @param itemid item id.
      * @param placementid - the item id of the new location.
      * @param model - Additional attributes used by the web form.
+     * @return redirection to factsheet of created item.
      */
     @PostMapping("/updateplace/{itemid}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -391,12 +388,14 @@ public class ItemController {
      *
      * @param id item id.
      * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
      */
     @GetMapping("/qrmove")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String showQRMoveForm(int id, Model model) {
-        Item item = itemRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("Invalid item Id:" + id));
+        if (!itemRepository.existsById(id)) {
+            throw new IllegalArgumentException("Invalid item Id: " + id);
+        }
         model.addAttribute("itemid", id);
 
         return "items-move-qr";
@@ -405,9 +404,10 @@ public class ItemController {
     /**
      * Update the location of the item.
      *
-     * @param id item id.
+     * @param itemid item id.
      * @param placementid - the new location's QR code - this can be a URL.
      * @param model - Additional attributes used by the web form.
+     * @return redirection to factsheet of created item.
      */
     @PostMapping("/qrupdateplace/{itemid}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -430,9 +430,11 @@ public class ItemController {
      * We are not asking for pictures or placement in the form. Therefore
      * these are copied from the database again and saved.
      *
-     * @param id item id.
+     * @param id - item id.
+     * @param item - the updated record.
      * @param result - Results from validation of the web form.
      * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template or redirection to factsheet.
      */
     @PostMapping("/update/{id}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -458,6 +460,7 @@ public class ItemController {
      *
      * @param id item id.
      * @param model - Additional attributes used by the web form.
+     * @return redirection to factsheet of created item.
      */
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE_ITEMS')")
@@ -487,6 +490,7 @@ public class ItemController {
      * @param model - Additional attributes used by the web form.
      * @param page - page number of result list.
      * @param size - size of page in number of items.
+     * @return name of Thymeleaf template or redirection to factsheet of item.
      */
     @RequestMapping({"", "/", "/view"})
     @PreAuthorize("hasAuthority('VIEW_ITEMS')")
@@ -549,6 +553,7 @@ public class ItemController {
      *
      * @param id item id to add code to.
      * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
      */
     @GetMapping("/addqrform")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -568,6 +573,7 @@ public class ItemController {
      * @param id item id.
      * @param query QR code, which can be a URL.
      * @param model - Additional attributes used by the web form.
+     * @return redirection to factsheet of created item.
      */
     @GetMapping("/addqr")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
@@ -593,9 +599,10 @@ public class ItemController {
     /**
      * Lookup item on QR code.
      *
-     * @param id item id.
      * @param query QR code, which can be a URL.
      * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
+     * @return name of Thymeleaf template or redirection to factsheet of created item.
      */
     @GetMapping("/qrfind")
     @PreAuthorize("hasAuthority('VIEW_ITEMS')")
@@ -616,8 +623,10 @@ public class ItemController {
 
     /*
      * Produce HTML with detected links. A simple markdown syntax.
-     * item numbers are detected,
-     * URLs are detected.
+     * item numbers are detected, URLs are detected.
+     *
+     * @param plainText - the text field from the database.
+     * @return HTML escaped text with some HTML tags.
      */
     private String richText(String plainText) {
         String richDesc = HtmlUtils.htmlEscape(plainText, "UTF-8");
@@ -643,6 +652,7 @@ public class ItemController {
      * @param model - Additional attributes used by the web form.
      * @param page - page number of result list.
      * @param size - size of page in number of items.
+     * @return name of Thymeleaf template.
      */
     @GetMapping("/view/{id}")
     @PreAuthorize("hasAuthority('VIEW_ITEMS')")
@@ -687,6 +697,7 @@ public class ItemController {
      *
      * @param id - Item id
      * @param myFile - file with filename and content.
+     * @return redirection to factsheet of created item.
      */
     @RequestMapping(value = "/pictureupload", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('ADD_PICTURES')")

@@ -115,7 +115,7 @@ public class ScalingService {
      * First load the image into an image buffer for later work.
      * Then try to get the orientation.
      *
-     * @param file - file from user upload.
+     * @param sourceFile - file from user upload.
      */
     public void setSourceFile(MultipartFile sourceFile) throws IOException {
         orientation = 1;  // Default: No rotation
@@ -136,11 +136,12 @@ public class ScalingService {
         } catch (MetadataException ex) {
             logger.debug("No EXIF information found for image: " + sourceFile.getOriginalFilename());
         }
-        return;
     }
 
     /**
      * Synchronous store.
+     * When calling storeAsync() directly inside the same class, the @Async is
+     * not invoked.
      *
      * @param subDir - name of directory for that scaling.
      * @param pictureId - picture primary key (a number) from the database.

@@ -15,6 +15,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ * The producers entity.
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "producers")

@@ -76,7 +76,16 @@ public class PlaceController {
         
         return "places-edit";
     }
-    
+
+    /**
+     * General update of place.
+     *
+     * @param id - place id.
+     * @param place - the updated record.
+     * @param result - Results from validation of the web form.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template or redirection to list.
+     */
     @PreAuthorize("hasAuthority('CHANGE_STED')")
     @PostMapping("/update/{id}")
     public String updateSted(@PathVariable("id") int id, @Valid Sted place, BindingResult result, Model model) {
