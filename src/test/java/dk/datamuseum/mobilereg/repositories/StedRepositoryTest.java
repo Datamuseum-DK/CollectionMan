@@ -1,7 +1,6 @@
-package dk.datamuseum.mobilereg;
+package dk.datamuseum.mobilereg.repositories;
 
 import dk.datamuseum.mobilereg.entities.Sted;
-import dk.datamuseum.mobilereg.repositories.StedRepository;
 
 import java.util.Optional;
 import org.apache.commons.logging.Log;
