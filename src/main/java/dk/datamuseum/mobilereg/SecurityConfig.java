@@ -31,7 +31,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Profile("!test")
+//@Profile("!test")
 public class SecurityConfig {
 
     private Log logger = LogFactory.getLog(SecurityConfig.class);

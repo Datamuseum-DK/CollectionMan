@@ -33,10 +33,17 @@ class WebApplicationTests {
     }
 
     @Test
-    @WithMockUser(username = "reg",password = "testkode")
+    //@WithMockUser(username = "reg")
     void shouldReturnDefaultMessage() throws Exception {
         this.mockMvc.perform(get("/")).andExpect(status().isOk())
             .andExpect(content().string(containsString("<a href=\"about\">Brugervejledning</a>")));
+    }
+
+    @Test
+    @WithMockUser(username = "reg")
+    void userProfileAuth() throws Exception {
+        this.mockMvc.perform(get("/userprofile")).andExpect(status().isOk())
+            .andExpect(content().string(containsString("<h3>Autoriteter</h3>")));
     }
 
 }
