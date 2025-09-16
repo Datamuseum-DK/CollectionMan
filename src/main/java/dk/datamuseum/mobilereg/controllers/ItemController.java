@@ -60,8 +60,13 @@ public class ItemController {
 
     /** Pattern for URLs. */
     static Pattern urlPattern = Pattern.compile("(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:;/~+#-]*[\\w@?^=%&/~+#;])");
+    static String  urlReplacement = "<a href='$0'>$0</a>";
     /** Pattern for Item numbers. */
     static Pattern itemPattern = Pattern.compile("(^|\\G|[\\s\\p{Punct}&&[^/]])(1[01]0[01]\\d{4})([\\s\\p{Punct}]|$)", Pattern.MULTILINE);
+    static String  itemReplacement = "$1<a href='$2'>$2</a>$3";
+    
+    static Pattern bitsPattern = Pattern.compile("\\[\\[bits:(300[01]\\d{4})\\]\\]", Pattern.MULTILINE|Pattern.CASE_INSENSITIVE);
+    static String  bitsReplacement = "<a href='https://ta.ddhf.dk/wiki/Bits:$1'>Bits:$1</a>";
 
     @Autowired
     private DonorRepository donorRepository;
@@ -630,8 +635,9 @@ public class ItemController {
      */
     private String richText(String plainText) {
         String richDesc = HtmlUtils.htmlEscape(plainText, "UTF-8");
-        richDesc = urlPattern.matcher(richDesc).replaceAll("<a href='$0'>$0</a>");
-        richDesc = itemPattern.matcher(richDesc).replaceAll("$1<a href='$2'>$2</a>$3");
+        richDesc = urlPattern.matcher(richDesc).replaceAll(urlReplacement);
+        richDesc = itemPattern.matcher(richDesc).replaceAll(itemReplacement);
+        richDesc = bitsPattern.matcher(richDesc).replaceAll(bitsReplacement);
 
         return richDesc;
     }
