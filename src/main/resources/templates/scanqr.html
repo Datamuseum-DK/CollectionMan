@@ -25,7 +25,7 @@
         <a href="index.html">Forside</a>
       </h1>
     </header>
-    <section id="content">
+    <main>
       <div id="video-container">
         <video id="qr-video"/>
       </div>
@@ -64,7 +64,7 @@
       </form>
       <script src="../static/js/qr-scanner.umd.min.js" th:src="@{/js/qr-scanner.umd.min.js}"><![CDATA[ ]]></script>
       <script src="../static/js/scansetup.js" th:src="@{/js/scansetup.js}"><![CDATA[ ]]></script>
-    </section>
+    </main>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
 </footer>

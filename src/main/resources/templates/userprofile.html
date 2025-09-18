@@ -11,7 +11,7 @@
         <a href="index.html">DDHF mobilregistrering</a>
       </h1>
     </header>
-    <section id="content">
+    <main>
       <h2>Min profil: <em th:text="${#authentication.name}">login</em></h2>
       <h3>Autoriteter</h3>
       <ol>
@@ -31,7 +31,7 @@
 Bruger profile her
 </p>
 -->
-    </section>
+    </main>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
 </footer>

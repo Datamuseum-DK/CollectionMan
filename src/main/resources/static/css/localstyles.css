@@ -1,7 +1,7 @@
 body {
   max-width: 1024px;
 }
-body #content, button, textarea, select, input {
+body #content, main, button, textarea, select, input {
   font-size: 14pt;
 }
 
@@ -64,12 +64,12 @@ label {
    max-width: 100%;
 }
 
-.menu {
+menu {
   list-style-type: none;
   margin: 3px;
   padding-left: 0;
 }
-.menu li {
+menu li {
   background-color:#CBE2EA;
   padding: 5pt;
   margin: 3px;
@@ -238,6 +238,7 @@ dl.factsheet dd a.subject  {
 @media (max-width: 480px) {
   dl.factsheet dd {
     padding-left: 0px;
+    margin-left: 1em;
   }
   dl.factsheet dt {
     font-weight: bold;
@@ -264,8 +265,8 @@ dl.factsheet dd a.subject  {
     float:right;
   }
   #actions button {
-    width: 4.9em;
-    margin: 1px 0;
+    width: 5em;
+    margin: 1px 0 1ex 0;
   }
   #actions button#delete {
     margin-top: 2em;

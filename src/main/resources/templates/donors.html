@@ -12,15 +12,17 @@
         <a href="index.html">DDHF mobilregistrering</a>
       </h1>
     </header>
-    <section id="content">
+    <main>
       <form id="actions" method="get" action="donors-add.html" th:action="@{/donors/addform}">
         <button type="submit">Ny donator</button>
       </form>
+      <search>
+        <form action="donors.html" th:action="@{/donors}">
+          <input type="text" id="query" autofocus="autofocus" name="q" value="" th:value="${q}"/>
+          <input type="submit" value="Filtrer"/>
+        </form>
+      </search>
       <h2 class="my-5">Donatorer</h2>
-      <form action="donors.html" th:action="@{/donors}">
-        <input type="text" id="query" name="q" value="" th:value="${q}"/>
-        <input type="submit" value="Filtrer"/>
-      </form>
       <table class="datatable">
         <thead>
           <tr>
@@ -39,7 +41,7 @@
           </tr>
         </tbody>
       </table>
-    </section>
+    </main>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
     </footer>

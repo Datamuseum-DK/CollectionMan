@@ -12,9 +12,9 @@
         <a href="index.html">Forside</a>
       </h1>
     </header>
-    <section id="content">
+    <main>
       <h2>Hovedmenu</h2>
-      <ul class="menu">
+      <menu>
         <li sec:authorize="hasAuthority('VIEW_ITEMS')">
           <a href="items.html" th:href="@{items}">Genstande</a>
         </li>
@@ -54,8 +54,8 @@
         <li>
           <a href="about.html" th:href="@{about}">Brugervejledning</a>
         </li>
-      </ul>
-    </section>
+      </menu>
+    </main>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
     </footer>

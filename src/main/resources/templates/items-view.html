@@ -14,7 +14,7 @@
         <a href="index.html">DDHF mobilregistrering</a>
       </h1>
     </header>
-    <section id="content">
+    <main>
       <div id="actions">
         <form id="editform">
           <button id="search" type="submit" form="editform" formaction="items.html" th:formaction="@{/items}">Liste</button>
@@ -191,7 +191,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd class="multiline" th:utext="${item.itemremarks}">Kommentarer</dd>
         </dl>
       </fieldset>
-    </section>
+    </main>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
     </footer>

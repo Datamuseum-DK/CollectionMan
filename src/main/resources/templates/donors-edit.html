@@ -40,7 +40,7 @@
         </div>
         <div>
           <label class="leader">Email</label>
-          <input type="text" th:field="*{email}" value="mailbox@example.com"/>
+          <input type="email" th:field="*{email}" value="mailbox@example.com"/>
           <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fielderror">Field is mandatory</span>
         </div>
         <div>

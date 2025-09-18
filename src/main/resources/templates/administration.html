@@ -14,7 +14,7 @@
     </header>
     <section id="content">
       <h2>Brugeradministration</h2>
-      <ul class="menu">
+      <menu>
         <li sec:authorize="hasAuthority('VIEW_USER')">
           <a href="users.html" th:href="@{users}">Brugere</a>
         </li>
@@ -24,7 +24,7 @@
         <li sec:authorize="hasAuthority('VIEW_PERMISSION')">
           <a href="permissions.html" th:href="@{permissions}">Rettigheder</a>
         </li>
-      </ul>
+      </menu>
     </section>
     <footer th:replace="~{layout :: footerFragment}">
     Footer

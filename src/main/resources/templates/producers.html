@@ -17,7 +17,7 @@
       </form>
       <h2>Producenter</h2>
       <form action="producers.html" th:action="@{/producers}">
-          <input type="text" id="query" name="q" value="" th:value="${q}"/>
+          <input type="text" id="query" name="q" autofocus="autofocus" value="" th:value="${q}"/>
           <input type="submit" value="Filtrer"/>
       </form>
       <ul th:remove="all-but-first">
