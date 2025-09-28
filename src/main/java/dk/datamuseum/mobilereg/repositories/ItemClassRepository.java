@@ -13,13 +13,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ItemClassRepository extends CrudRepository<ItemClass, Integer> {
-    
+
     /**
      * Get all container types.
      */
     @Query("SELECT a FROM ItemClass a INNER JOIN (SELECT MAX(level) level FROM ItemClass) b ON a.level < b.level")
     List<ItemClass> findAllContainerTypes();
-    
+
     /**
      * Get all artefact types.
      * I.e., those with no types at a lower level.

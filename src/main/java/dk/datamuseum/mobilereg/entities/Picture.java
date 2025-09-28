@@ -64,6 +64,9 @@ public class Picture {
     @Column(name = "picturelow")
     private String low;
 
+    @Column(name = "itemid")
+    private Integer itemid;
+
     /* Reference to variable in Item.java */
     @ManyToMany(mappedBy = "pictures")
     private List<Item> items;

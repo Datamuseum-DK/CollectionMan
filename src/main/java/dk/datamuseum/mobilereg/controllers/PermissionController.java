@@ -1,7 +1,6 @@
 package dk.datamuseum.mobilereg.controllers;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,14 +13,13 @@ import dk.datamuseum.mobilereg.repositories.PermissionRepository;
 /**
  * Controller for permissions.
  */
+@Slf4j
 @Controller
 @RequestMapping("/permissions")
 public class PermissionController {
     
     @Autowired
     private PermissionRepository permissionRepository;
-
-    private Log logger = LogFactory.getLog(PermissionController.class);
 
     /**
      * Show list of built-in permissions.

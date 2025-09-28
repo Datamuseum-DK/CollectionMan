@@ -31,12 +31,12 @@ public class Subject {
     // subjectid           = models.AutoField(verbose_name="emnegruppe nr.", primary_key=True)
     @Id
     @Column
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int subjectid;
 
     // creator             = models.CharField(max_length=12, null=False, verbose_name="oprettet af")
     @CreatedBy
-    @Column(length=32)
+    @Column(length = 32)
     private String creator;
 
     // created             = models.DateTimeField(verbose_name='oprettet', help_text="tidspunkt for registrering", auto_now_add=True)
@@ -55,7 +55,7 @@ public class Subject {
     private String title;
 
     // subjectdescription  = models.TextField('beskrivelse', null=True, blank=True) # text,
-    @Column(name = "subjectdescription", length=65535)
+    @Column(name = "subjectdescription", length = 65535)
     private String description;
 
     /* Reference to variable in Item.java */
@@ -70,7 +70,7 @@ public class Subject {
     public String toString() {
         return this.title;
     }
- 
+
     /*
     @Override
     public int hashCode() {
@@ -80,7 +80,7 @@ public class Subject {
         return result;
     }
     */
- 
+
  /*
     @Override
     public boolean equals(Object obj) {

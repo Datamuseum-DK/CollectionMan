@@ -3,8 +3,7 @@ package dk.datamuseum.mobilereg.controllers;
 import jakarta.validation.Valid;
 //import java.time.LocalDateTime;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,6 +22,7 @@ import dk.datamuseum.mobilereg.repositories.ItemRepository;
 /**
  * Controller for case files.
  */
+@Slf4j
 @Controller
 @RequestMapping("/files")
 public class FileController {
@@ -31,8 +31,6 @@ public class FileController {
     private FileRepository fileRepository;
     @Autowired
     private ItemRepository itemRepository;
-
-    private Log logger = LogFactory.getLog(FileController.class);
 
     /**
      * View list of case files.
@@ -116,10 +114,10 @@ public class FileController {
     @PreAuthorize("hasAuthority('CHANGE_FILES')")
     @PostMapping("/update/{id}")
     public String updateFile(@PathVariable("id") int id, @Valid CaseFile caseFile, BindingResult result, Model model) {
-        logger.info(String.format("caseFile %s", caseFile.toString()));
+        log.info("CaseFile {}", caseFile);
         if (result.hasErrors()) {
             caseFile.setId(id);
-            logger.info(String.format("errors %s", result.toString()));
+            log.info("errors {}", result);
             model.addAttribute("caseFile", caseFile);
             return "files-edit";
         }
@@ -139,7 +137,7 @@ public class FileController {
     public String deleteFile(@PathVariable("id") int id, Model model) {
         CaseFile caseFile = fileRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
         fileRepository.delete(caseFile);
-        logger.info(String.format("Deleted file Id %d", id));
+        log.info("Deleted file Id {}", id);
         return "redirect:/files";
     }
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
  * Implement security audit.
  */
 public class SpringSecurityAuditorAwareImpl implements AuditorAware<String> {
-    
+
     /**
      * Get the name of the authenticated principal.
      */

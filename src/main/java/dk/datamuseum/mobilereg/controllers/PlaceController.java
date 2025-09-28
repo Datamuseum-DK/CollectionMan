@@ -2,8 +2,7 @@ package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,6 +21,7 @@ import dk.datamuseum.mobilereg.repositories.ItemRepository;
 /**
  * Controller for places.
  */
+@Slf4j
 @Controller
 @RequestMapping("/places")
 public class PlaceController {
@@ -30,8 +30,6 @@ public class PlaceController {
     private StedRepository placeRepository;
     @Autowired
     private ItemRepository itemRepository;
-
-    private Log logger = LogFactory.getLog(PlaceController.class);
 
     @PreAuthorize("hasAuthority('VIEW_STED')")
     @RequestMapping({"", "/", "/view"})
@@ -108,7 +106,7 @@ public class PlaceController {
     public String deleteSted(@PathVariable("id") int id, Model model) {
         Sted place = placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid place Id:" + id));
         placeRepository.delete(place);
-        logger.info(String.format("Deleted place Id %d", id));
+        log.info("Deleted place Id {}", id);
         return "redirect:/places";
     }
 }

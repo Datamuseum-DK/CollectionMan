@@ -155,12 +155,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd><span th:remove="tag" th:text="${#temporals.format(item.itemreceived,'yyyy-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemreceivedby}">fvn</span></dd>
           <dt title="Deponeret til museet indtil">Deponeret indtil:</dt>
           <dd th:text="${#temporals.format(item.itemdepositeduntil,'yyyy-MM-dd')}">2032-09-16</dd>
-          <dt>Udgået</dt>
-          <dd th:text="${item.itemoutdated}">1</dd>
           <dt>Lånt indtil</dt>
           <dd th:text="${#temporals.format(item.itemborroweduntil,'yyyy-MM-dd')}">2027-10-16</dd>
-          <dt>Takkebrev afsendt</dt>
-          <dd th:text="${#temporals.format(item.itemthanksletter,'yyyy-MM-dd')}">2012-09-16</dd>
         </dl>
       </fieldset>
       <fieldset id="Brugsaktivitet" class="tabcontent">

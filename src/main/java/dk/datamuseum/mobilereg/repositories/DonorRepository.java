@@ -16,7 +16,7 @@ public interface DonorRepository extends CrudRepository<Donor, Integer> {
     /**
      * List all producers and order by name.
      */
-    Iterable<Donor> findByOrderByName();    
+    Iterable<Donor> findByOrderByName();
 
     /**
      * List all producers matching query in title.

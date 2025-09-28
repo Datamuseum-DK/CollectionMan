@@ -29,47 +29,47 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "auth_user")
 @Data
 public class User {
-    
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length=128)
+    @Column(length = 128)
     private String password;
 
-    @Column(name="last_login")
+    @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
     //@NotNull(message = "Angiv om brugeren er superuser")
-    @Column(name="is_superuser")
+    @Column(name = "is_superuser")
     private boolean superuser;   // Should be TINYINT
 
     @NotBlank
-    @Column(length=150)
+    @Column(length = 150)
     private String username;
 
     @NotNull
-    @Column(name="first_name", length=150)
+    @Column(name = "first_name", length = 150)
     private String firstName;
 
     @NotNull
-    @Column(name="last_name", length=150)
+    @Column(name = "last_name", length = 150)
     private String lastName;
 
     @NotNull
-    @Column(name="email", length=254)
+    @Column(name = "email", length = 254)
     private String email;
 
     //@NotNull(message = "Angiv om brugeren er TA")
-    @Column(name="is_staff")
+    @Column(name = "is_staff")
     private boolean staff;   // Should be TINYINT
 
     //@NotNull(message = "Angiv om brugeren er aktiv")
-    @Column(name="is_active")
+    @Column(name = "is_active")
     private boolean active;   // Should be TINYINT
 
     @CreatedDate
-    @Column(name="date_joined")
+    @Column(name = "date_joined")
     private LocalDateTime dateJoined;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

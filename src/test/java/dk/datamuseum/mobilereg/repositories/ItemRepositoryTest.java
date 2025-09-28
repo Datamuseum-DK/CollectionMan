@@ -55,8 +55,7 @@ class ItemRepositoryTest {
         // given
         Item item = new Item();
         //item.setId(1);
-        item.setItemtemporary(0);
-        item.setOlditemid("");
+        //item.setItemtemporary(0);
         item.setItemdeleted(0);
         item.setHeadline("item");
         item.setDescription("item");
@@ -74,7 +73,7 @@ class ItemRepositoryTest {
         item.setItemrestoration("");
         item.setItemreferences("");
         item.setItemremarks("");
-        item.setIteminternal(0);
+        //item.setIteminternal(0);
         item.setItemacquiretype(1);
         item.setPictures(new ArrayList<Picture>());
         item.setSubjects(new ArrayList<Subject>());

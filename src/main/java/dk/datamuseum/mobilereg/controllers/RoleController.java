@@ -2,8 +2,7 @@ package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,17 +22,16 @@ import dk.datamuseum.mobilereg.repositories.RoleRepository;
 /**
  * Controller for roles.
  */
+@Slf4j
 @Controller
 @RequestMapping("/roles")
 public class RoleController {
-    
+
     @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
     private PermissionRepository permissionRepository;
-
-    private Log logger = LogFactory.getLog(RoleController.class);
 
     @ModelAttribute("allPermissions")
     public Iterable<Permission> allPermissions() {
@@ -76,7 +74,7 @@ public class RoleController {
 
     /**
      * Show edit form for role.
-     * 
+     *
      * @param model - Additional attributes used by the web form.
      * @return name of form
      */
@@ -102,15 +100,15 @@ public class RoleController {
     @PreAuthorize("hasAuthority('CHANGE_GROUP')")
     @PostMapping("/update/{id}")
     public String updateRole(@PathVariable("id") int id, @Valid Role role,
-	    BindingResult result, Model model) {
+            BindingResult result, Model model) {
         if (result.hasErrors()) {
             role.setId(id);
             model.addAttribute("role", role);
             return "roles-edit";
         }
-        
-        roleRepository.save(role); 
-        
+
+        roleRepository.save(role);
+
         return "redirect:/roles";
     }
 
@@ -121,9 +119,9 @@ public class RoleController {
     @GetMapping("/delete/{id}")
     public String deleteRole(@PathVariable("id") int id, Model model) {
         Role role = roleRepository.findById(id).orElseThrow(()
-		-> new IllegalArgumentException("Invalid role Id:" + id));
+                -> new IllegalArgumentException("Invalid role Id:" + id));
         roleRepository.delete(role);
-        logger.info(String.format("Deleted role Id %d", id));
+        log.info("Deleted role Id {}", id);
         return "redirect:/roles";
     }
 }

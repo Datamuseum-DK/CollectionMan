@@ -17,12 +17,12 @@ import org.springframework.validation.Validator;
 /**
  * Spring Boot application class.
  */
-@SpringBootApplication 
+@SpringBootApplication
 @EnableAsync
-@ComponentScan(basePackages={"dk.datamuseum.mobilereg"})
-@EnableJpaRepositories(basePackages="dk.datamuseum.mobilereg.repositories")
+@ComponentScan(basePackages = {"dk.datamuseum.mobilereg"})
+@EnableJpaRepositories(basePackages = "dk.datamuseum.mobilereg.repositories")
 @EnableTransactionManagement
-@EntityScan(basePackages="dk.datamuseum.mobilereg.entities")
+@EntityScan(basePackages = "dk.datamuseum.mobilereg.entities")
 @EnableJpaAuditing
 public class Application {
 
@@ -31,13 +31,14 @@ public class Application {
      *
      * @param args - all the arguments given on the command line.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
     /**
      * Create the audit functionality.
-     * I.e., auto-fills the fields creator, created and lastmodified for a record.
+     * I.e., auto-fills the fields creator, created and lastmodified for a
+     * record.
      *
      * @return instantiated class, which is added to the bean registry.
      */
@@ -55,7 +56,8 @@ public class Application {
     @Bean
     public PasswordEncoder passwordEncoder() {
 //      return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        Pbkdf2PasswordEncoder encoder = Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+        Pbkdf2PasswordEncoder encoder = 
+                Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
         encoder.setEncodeHashAsBase64(true);
         return encoder;
     }

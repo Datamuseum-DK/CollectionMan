@@ -25,9 +25,6 @@
       <form id="editfactsheet" method="post" action="items-view.html" th:object="${item}" th:action="@{/items/update/{id}(id=${item.id})}">
         <fieldset id="Identifikation" class="tabcontent" style="display:block">
           <legend>Identifikation</legend>
-          <input type="hidden" th:field="*{itemtemporary}"/>
-          <input type="hidden" th:field="*{olditemid}"/>
-          <input type="hidden" th:field="*{iteminternal}"/>
           <div>
             <label class="leader" for="genstand">Genstand nr.:</label>
             <input id="genstand" name="id" type="text" readonly="readonly" th:field="*{id}" value="11002200"/>
@@ -298,10 +295,6 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <input id="itemreceived" type="date" value="2009-01-30" th:field="*{itemreceived}"/>
             <label for="itemreceivedby">af:</label>
             <input type="text" id="itemreceivedby" value="" th:field="*{itemreceivedby}" size="12"/>
-          </div>
-          <div>
-            <label for="itemthanksletter">Takkebrev afsendt:</label>
-            <input id="itemthanksletter" type="date" value="1982-10-11" th:field="*{itemthanksletter}"/>
           </div>
         </fieldset>
         <fieldset id="Brugsaktivitet" class="tabcontent">

@@ -2,8 +2,7 @@ package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import dk.datamuseum.mobilereg.repositories.ProducerRepository;
 /**
  * Controller for producers.
  */
+@Slf4j
 @Controller
 @RequestMapping("/producers")
 public class ProducerController {
@@ -29,8 +29,6 @@ public class ProducerController {
     private ProducerRepository producerRepository;
     @Autowired
     private ItemRepository itemRepository;
-
-    private Log logger = LogFactory.getLog(ProducerController.class);
 
     /**
      * List producers, either all or filtered.
@@ -119,7 +117,7 @@ public class ProducerController {
     public String deleteProducer(@PathVariable("id") int id, Model model) {
         Producer producer = producerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid producer Id:" + id));
         producerRepository.delete(producer);
-        logger.info(String.format("Deleted producer Id %d", id));
+        log.info("Deleted producer Id {}", id);
         return "redirect:/producers";
     }
 }

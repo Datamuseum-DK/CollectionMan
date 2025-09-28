@@ -3,8 +3,7 @@ package dk.datamuseum.mobilereg.controllers;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +26,7 @@ import dk.datamuseum.mobilereg.repositories.UserRepository;
 /**
  * Controller for users.
  */
+@Slf4j
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -42,8 +42,6 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    private Log logger = LogFactory.getLog(UserController.class);
 
     /**
      * View all possible permissions.
@@ -166,7 +164,7 @@ public class UserController {
         }
 
         userRepository.save(user);
-        logger.info(String.format("Updated user Id %d", id));
+        log.info("Updated user Id {}", id);
         return "redirect:/users";
     }
     
@@ -181,7 +179,7 @@ public class UserController {
     public String deleteUser(@PathVariable("id") int id, Model model) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         userRepository.delete(user);
-        logger.info(String.format("Deleted user Id %d", id));
+        log.info("Deleted user Id {}", id);
         return "redirect:/users";
     }
 }

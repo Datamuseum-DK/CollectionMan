@@ -11,8 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -26,13 +25,17 @@ import dk.datamuseum.mobilereg.MobileRegProperties;
 /**
  * File-based implementation of storage service.
  */
+@Slf4j
 @Service
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
 
-    private Log logger = LogFactory.getLog(FileSystemStorageService.class);
-
+    /**
+     * Constructor.
+     *
+     * @param properties - bean containing getters for application properties.
+     */
     @Autowired
     public FileSystemStorageService(MobileRegProperties properties) {
         if (properties.getStorageRootDir().trim().length() == 0) {
@@ -118,7 +121,7 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public void delete(String subDir, String filename) {
         File file = load(subDir, filename).toFile();
-        logger.debug(String.format("Deleted file: %s", file.toString()));
+        log.debug("Deleted file: {}", file.toString());
         file.delete();
     }
 

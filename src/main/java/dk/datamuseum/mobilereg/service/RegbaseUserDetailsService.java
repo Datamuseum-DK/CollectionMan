@@ -5,24 +5,25 @@ import dk.datamuseum.mobilereg.entities.Role;
 import dk.datamuseum.mobilereg.entities.User;
 import dk.datamuseum.mobilereg.repositories.PermissionRepository;
 import dk.datamuseum.mobilereg.repositories.UserRepository;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+//import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 /**
  * UserDetailsService providing information from the registration database.
  */
+@Slf4j
 @Service
 public class RegbaseUserDetailsService implements UserDetailsService {
 
@@ -30,13 +31,11 @@ public class RegbaseUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
 
-    private Log logger = LogFactory.getLog(RegbaseUserDetailsService.class);
-
     /**
      * Constructor.
      *
      */
-    public RegbaseUserDetailsService(PermissionRepository permissionRepository, 
+    public RegbaseUserDetailsService(PermissionRepository permissionRepository,
                     UserRepository userRepository) {
         this.permissionRepository = permissionRepository;
         this.userRepository = userRepository;
@@ -65,7 +64,7 @@ public class RegbaseUserDetailsService implements UserDetailsService {
     /**
      * Add roles and permissions from roles.
      */
-    private void addRolesFromDB(User user, Set <SimpleGrantedAuthority> authorities) {
+    private void addRolesFromDB(User user, Set<SimpleGrantedAuthority> authorities) {
         List<Role> roles = user.getRoles();
         for (Role role : roles) {
             authorities.add(roleAsAuth(role));
@@ -81,7 +80,7 @@ public class RegbaseUserDetailsService implements UserDetailsService {
         return permissionRepository.findAll();
     }
 
-    private void addPermissions(User user, Set <SimpleGrantedAuthority> authorities) {
+    private void addPermissions(User user, Set<SimpleGrantedAuthority> authorities) {
         List<Permission> permissions = user.getPermissions();
         for (Permission permission : permissions) {
             authorities.add(permissionAsAuth(permission));
@@ -130,11 +129,13 @@ public class RegbaseUserDetailsService implements UserDetailsService {
         }
     }
 
-    // Unused
+    // Unused stream version
+    /*
     private Set <SimpleGrantedAuthority> mapRolesToAuthorities(Collection <Role> roles) {
         Set <SimpleGrantedAuthority> mapRoles = roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()))
                 .collect(Collectors.toSet());
         return mapRoles;
     }
+    */
 }

@@ -6,7 +6,7 @@
     <groupId>dk.datamuseum</groupId>
     <artifactId>mobilereg</artifactId>
     <name>CollectionMan</name>
-    <version>6.0.5-SNAPSHOT</version>
+    <version>6.1.0-SNAPSHOT</version>
 
     <dependencyManagement>
         <dependencies>
@@ -61,16 +61,24 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
         <dependency>
+           <groupId>org.liquibase</groupId>
+           <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
+        </dependency>
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-test</artifactId>
-    <scope>test</scope>
-</dependency>
-
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
          <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -100,19 +108,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-           <groupId>org.liquibase</groupId>
-           <artifactId>liquibase-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.imgscalr</groupId>
-            <artifactId>imgscalr-lib</artifactId>
-            <version>4.2</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -226,7 +225,18 @@
 		<configuration>
 		</configuration>
 	    </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.6.0</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
         </plugins>
     </reporting>
 

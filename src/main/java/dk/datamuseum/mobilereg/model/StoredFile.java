@@ -14,7 +14,9 @@ public class StoredFile {
     private String filename;
 
     private MediaType contentType;
+
     private long fileSize;
+
     private Resource content;
 
     public String getSubDir() {
@@ -61,6 +63,11 @@ public class StoredFile {
         return content;
     }
 
+    /**
+     * Set content as a Resource.
+     *
+     * @param content - the file content.
+     */
     public void setContentResource(final Resource content) {
         this.content = content;
     }

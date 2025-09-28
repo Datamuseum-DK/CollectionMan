@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import javax.imageio.ImageIO;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -27,11 +26,13 @@ import com.drew.metadata.MetadataException;
 /**
  * Scaling of images.
  * Calls storage service for all storage.
+ * FIXME: Not thread-safe
  */
+@Slf4j
 @Service
 public class ScalingService {
 
-    @Autowired
+    //@Autowired
     private StorageService storageService;
 
     /** Orientation of image in sourceFile. */
@@ -39,7 +40,13 @@ public class ScalingService {
 
     private BufferedImage originalImage;
 
-    private Log logger = LogFactory.getLog(ScalingService.class);
+    /**
+     * Constructor.
+     */
+    @Autowired
+    public ScalingService(StorageService storageService) {
+        this.storageService = storageService;
+    }
 
     /**
      * Simple scaling of image. UNUSED.
@@ -58,7 +65,7 @@ public class ScalingService {
             width = Double.valueOf(width / scaling).intValue();
             height = Double.valueOf(height / scaling).intValue();
         }
-        logger.info(String.format("New dimensions %dx%d", width, height));
+        log.info(String.format("New dimensions %dx%d", width, height));
 
         Image newResizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -132,9 +139,9 @@ public class ScalingService {
             if (exifIFD0Directory == null) return;
             orientation = exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
         } catch (ImageProcessingException ex) {
-            logger.warn("Unable to process image: " + sourceFile.getOriginalFilename());
+            log.warn("Unable to process image: {}", sourceFile.getOriginalFilename());
         } catch (MetadataException ex) {
-            logger.debug("No EXIF information found for image: " + sourceFile.getOriginalFilename());
+            log.debug("No EXIF information found for image: " + sourceFile.getOriginalFilename());
         }
     }
 

@@ -53,9 +53,9 @@ public class Item {
     private int id;
 
     // itemtemporary       = models.IntegerField(blank=True, null=False, default=0)
-    @ColumnDefault("0")
-    @Column(nullable = false)
-    private Integer itemtemporary;
+    //@ColumnDefault("0")
+    //@Column(nullable = false)
+    //private Integer itemtemporary;
 
     /**
      * File = Sag.
@@ -66,8 +66,8 @@ public class Item {
     private Integer fileid;
 
     // olditemid           = models.CharField(verbose_name="gammelt nr.", max_length=255, blank=True)
-    @Column(length=255)
-    private String olditemid;
+    //@Column(length=255)
+    //private String olditemid;
 
     // itemdeleted         = models.IntegerField(verbose_name="status", choices=status_as, null=True, default=0)
     @ColumnDefault("0")
@@ -133,8 +133,8 @@ public class Item {
     private Integer donorid;
 
     // itemoutdated        = models.IntegerField("udgået",null=True, blank=True)
-    @Column
-    private Integer itemoutdated;
+    //@Column
+    //private Integer itemoutdated;
 
     // itemborroweduntil   = models.DateField(verbose_name="udlånt indtil",null=True, blank=True)
     @Column
@@ -166,9 +166,9 @@ public class Item {
     private LocalDateTime lastmodified;
 
     // itemthanksletter    = models.DateField(verbose_name="takkebrev afsendt", null=True, blank=True)
-    @Column
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate itemthanksletter;
+    //@Column
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
+    //private LocalDate itemthanksletter;
 
     /**
      * Id of containing item. Can be null.
@@ -240,10 +240,10 @@ public class Item {
     private String itemremarks;
 
     // iteminternal        = models.IntegerField("intern", help_text="forenigens aktiv", default=0, null=False, blank=True)
-    @Column
-    @ColumnDefault("0")
-    @NotNull(message = "Der skal angives en status")
-    private Integer iteminternal;
+    //@Column
+    //@ColumnDefault("0")
+    //@NotNull(message = "Der skal angives en status")
+    //private Integer iteminternal;
 
     // itemsubject         = models.ManyToManyField(Subjects, related_name="itemlist", verbose_name="emnegrupper" ,null=True, blank=True)
     @ManyToMany
@@ -267,6 +267,9 @@ public class Item {
     @JoinColumn(name="itemclassid", nullable=false)
     private ItemClass itemClass;
 
+    /**
+     * The QR codes we used are integers.
+     */
     @Column
     private Integer qrcode;
 
@@ -275,11 +278,11 @@ public class Item {
      * TODO: Don't use join for itemclass.
      */
     public Item() {
-        setIteminternal(0);
+        //setIteminternal(0);
         setItemdeleted(0); // Godkendt
-        setItemtemporary(0);
+        //setItemtemporary(0);
         //setItemClass(1);
-        setOlditemid("");
+        //setOlditemid("");
         setItemsize("");
         setItemweight("");
         setItemmodeltype("");

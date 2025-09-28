@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <changeSet author="roug" id="ref01">
+    <dropColumn tableName="items">
+      <column name="olditemid"/>
+      <column name="itemthanksletter"/>
+      <column name="itemtemporary"/>
+      <column name="iteminternal"/>
+      <column name="itemoutdated"/>
+    </dropColumn>
+  </changeSet>
+
+  <changeSet author="roug" id="ref02">
+    <comment>Change pictures to many-to-one</comment>
+    <addColumn tableName="pictures_dj">
+      <column name="itemid" type="INT">
+        <constraints foreignKeyName="fk_picture_itemid" referencedTableName="items" referencedColumnNames="itemid" />
+      </column>
+    </addColumn>
+  </changeSet>
+  <changeSet author="roug" id="refh3" dbms="h2">
+    <sql>UPDATE pictures_dj SET itemid=(SELECT items_id FROM items_itempicture WHERE pictureid=pictures_id)</sql>
+  </changeSet>
+  <changeSet author="roug" id="ref03" dbms="!h2">
+    <sql>UPDATE pictures_dj JOIN items_itempicture ON pictureid=pictures_id SET itemid=items_id</sql>
+  </changeSet>
+
+</databaseChangeLog>

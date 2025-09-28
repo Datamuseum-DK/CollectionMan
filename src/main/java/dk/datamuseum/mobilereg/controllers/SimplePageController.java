@@ -1,8 +1,7 @@
 package dk.datamuseum.mobilereg.controllers;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,13 +14,19 @@ import dk.datamuseum.mobilereg.repositories.ItemRepository;
 /**
  * Controller for simple pages that don't call a database.
  */
+@Slf4j
 @Controller
 public class SimplePageController {
 
-    @Autowired
     private ItemRepository itemRepository;
 
-    private Log logger = LogFactory.getLog(SimplePageController.class);
+    /**
+     * Constructor.
+     */
+    public SimplePageController(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
+
 /*
     @ModelAttribute("user")
     public String principalAttributes(OAuth2AuthenticationToken authentication) {
@@ -44,6 +49,9 @@ public class SimplePageController {
 
     /**
      * About.
+     *
+     * @param model holder for model attributes
+     * @return view name
      */
     @RequestMapping(value = "/about")
     public String about(Model model) {
@@ -53,6 +61,9 @@ public class SimplePageController {
     /**
      * Administration.
      * Access is not verified as each individual menu item is checked for access.
+     *
+     * @param model holder for model attributes
+     * @return view name
      */
     @RequestMapping(value = "/administration")
     public String administration(Model model) {
@@ -60,18 +71,23 @@ public class SimplePageController {
     }
 
     /**
-     * Brugerprofil.
+     * Information page for the authenticated user.
+     *
+     * @return view name
      */
     @RequestMapping(value = "/userprofile")
     public String userprofile(Authentication authentication) {
         //Principal principal = authentication.getPrincipal();
-        //logger.info(principal.getAttributes());
-        logger.info(authentication.getAuthorities());
+        //log.info(principal.getAttributes());
+        log.info("Authorities: {}", authentication.getAuthorities());
         return "userprofile";
     }
 
     /**
      * Search.
+     *
+     * @param model holder for model attributes
+     * @return view name
      */
     /*
     @RequestMapping(value = "/search")
@@ -82,6 +98,9 @@ public class SimplePageController {
 
     /**
      * Error.
+     *
+     * @param model holder for model attributes
+     * @return view name
      */
     /*
     @RequestMapping(value = "/error")
@@ -92,6 +111,9 @@ public class SimplePageController {
 
     /**
      * Scan QR.
+     *
+     * @param model holder for model attributes
+     * @return view name
      */
     @RequestMapping(value = "/scanqr")
     public String scanqr(Model model) {

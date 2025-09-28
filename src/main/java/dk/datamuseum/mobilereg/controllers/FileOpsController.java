@@ -4,8 +4,7 @@ import dk.datamuseum.mobilereg.model.StoredFile;
 import dk.datamuseum.mobilereg.service.PictureService;
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -20,13 +19,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * File operations - upload, download, delete.
  * @see <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html">Spring MultipartFile</a>.
  */
+@Slf4j
 @Controller
 public class FileOpsController {
 
     @Autowired
     private PictureService pictureService;
-
-    private Log logger = LogFactory.getLog(FileOpsController.class);
 
     /**
      * Download a file.
@@ -40,7 +38,7 @@ public class FileOpsController {
         @PathVariable("directory") String subDir,
         @PathVariable("file_name") String pathName) throws IOException {
 
-        logger.debug(String.format("Download: %s/%s", subDir, pathName));
+        log.debug("Download: {}/{}", subDir, pathName);
 
         StoredFile pictureRec = pictureService.getByPath(subDir, pathName);
         HttpHeaders headers = new HttpHeaders();

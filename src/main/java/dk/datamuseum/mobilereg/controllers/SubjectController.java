@@ -2,8 +2,7 @@ package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import dk.datamuseum.mobilereg.repositories.SubjectRepository;
 /**
  * Controller for subjects.
  */
+@Slf4j
 @Controller
 @RequestMapping("/subjects")
 public class SubjectController {
@@ -29,8 +29,6 @@ public class SubjectController {
     private SubjectRepository subjectRepository;
     @Autowired
     private ItemRepository itemRepository;
-
-    private Log logger = LogFactory.getLog(SubjectController.class);
 
     @PreAuthorize("hasAuthority('VIEW_SUBJECTS')")
     @RequestMapping({"", "/", "/view"})
@@ -109,7 +107,7 @@ public class SubjectController {
     public String deleteSubject(@PathVariable("id") int id, Model model) {
         Subject subject = subjectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid subject Id:" + id));
         subjectRepository.delete(subject);
-        logger.info(String.format("Deleted subject Id %d", id));
+        log.info("Deleted subject Id {}", id);
         return "redirect:/subjects";
     }
 

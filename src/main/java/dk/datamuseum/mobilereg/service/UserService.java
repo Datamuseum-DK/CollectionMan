@@ -9,7 +9,7 @@ import java.util.List;
  * Unused.
  */
 public interface UserService {
-		
+
     void saveUser(UserDto userDto);
 
     List<UserDto> findAllUsers();

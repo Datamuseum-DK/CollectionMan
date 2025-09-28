@@ -3,8 +3,7 @@ package dk.datamuseum.mobilereg.controllers;
 import jakarta.validation.Valid;
 //import java.time.LocalDateTime;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,19 +22,19 @@ import dk.datamuseum.mobilereg.repositories.ItemRepository;
 /**
  * Controller for donors.
  */
+@Slf4j
 @Controller
 @RequestMapping("/donors")
 public class DonorController {
-    
+
     @Autowired
     private DonorRepository donorRepository;
     @Autowired
     private ItemRepository itemRepository;
 
-    private Log logger = LogFactory.getLog(DonorController.class);
-
     /**
      * List donors, either all or filtered.
+     *
      * @param q - query string.
      * @param model - Additional attributes used by the web form.
      * @return name of Thymeleaf template.
@@ -64,7 +63,7 @@ public class DonorController {
         model.addAttribute("donor", donor);
         return "donors-add";
     }
-    
+
     @PreAuthorize("hasAuthority('ADD_DONATORS')")
     @PostMapping("/adddonor")
     public String addDonor(@Valid Donor donor, BindingResult result, Model model) {
@@ -75,7 +74,7 @@ public class DonorController {
         donorRepository.save(donor);
         return "redirect:/donors";
     }
-    
+
     /**
      * Show factsheet of a donor.
      *
@@ -89,7 +88,7 @@ public class DonorController {
         Donor donor = donorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
         model.addAttribute("donor", donor);
         model.addAttribute("items", itemRepository.findByDonoridOrderByHeadline(id));
-        
+
         return "donors-view";
     }
 
@@ -105,7 +104,7 @@ public class DonorController {
     public String showUpdateForm(@PathVariable("id") int id, Model model) {
         Donor donor = donorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
         model.addAttribute("donor", donor);
-        
+
         return "donors-edit";
     }
 
@@ -125,7 +124,7 @@ public class DonorController {
             donor.setId(id);
             return "donors-edit";
         }
-        
+
         donorRepository.save(donor);
 
         return String.format("redirect:/donors/view/%d", id);
@@ -142,7 +141,7 @@ public class DonorController {
     public String deleteDonor(@PathVariable("id") int id, Model model) {
         Donor donor = donorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
         donorRepository.delete(donor);
-        logger.info(String.format("Deleted donor Id %d", id));
+        log.info("Deleted donor Id {}", id);
         return "redirect:/donors";
     }
 }

@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import javax.imageio.ImageIO;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -21,14 +20,13 @@ import dk.datamuseum.mobilereg.model.StoredFile;
  * Implementation of Picture service.
  * Calls storage service for all storage.
  */
+@Slf4j
 @Service
 public class PictureServiceImpl implements PictureService {
 
-    private StorageService storageService;
+    private final StorageService storageService;
 
-    private ScalingService scalingService;
-
-    private Log logger = LogFactory.getLog(PictureServiceImpl.class);
+    private final ScalingService scalingService;
 
     @Autowired
     public PictureServiceImpl(StorageService storageService, ScalingService scalingService) {
@@ -74,7 +72,7 @@ public class PictureServiceImpl implements PictureService {
 
         String path = reqSubDir + "/" + filename;
         if (!isLegalDir(reqSubDir)) {
-            logger.info(String.format("Not a legal subdirectory for picture: %s", reqSubDir));
+            log.info("Not a legal subdirectory for picture: {}", reqSubDir);
             throw new StorageFileNotFoundException("Could not read file: " + path);
         }
         StoredFile fileRec = new StoredFile();
@@ -84,7 +82,7 @@ public class PictureServiceImpl implements PictureService {
         Path file = storageService.load(reqSubDir, filename);
         Resource resource = new FileSystemResource(file);
         if (!resource.exists()) {
-            logger.info(String.format("Could not read file: %s", path));
+            log.info("Could not read file: {}", path);
             throw new StorageFileNotFoundException("Could not read file: " + path);
         }
         fileRec.setContentResource(resource);

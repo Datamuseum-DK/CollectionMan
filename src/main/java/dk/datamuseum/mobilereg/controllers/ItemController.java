@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.data.domain.Page;
@@ -50,10 +49,12 @@ import dk.datamuseum.mobilereg.repositories.StedRepository;
 import dk.datamuseum.mobilereg.repositories.SubjectRepository;
 
 import dk.datamuseum.mobilereg.service.PictureService;
+import static dk.datamuseum.mobilereg.service.RichTextService.richText;
 
 /**
  * Controller for items.
  */
+@Slf4j
 @Controller
 @RequestMapping("/items")
 public class ItemController {
@@ -90,8 +91,6 @@ public class ItemController {
     private SubjectRepository subjectRepository;
     @Autowired
     private MobileRegProperties properties;
-
-    private Log logger = LogFactory.getLog(ItemController.class);
 
     /**
      * Get the items class level. 0 is topmost container.
@@ -203,7 +202,7 @@ public class ItemController {
     public String showAddForm1(
                 Item item,
                 Model model) {
-        logger.debug(String.format("Add form for item %s", item.toString()));
+        log.debug("Add form for item {}", item.toString());
         List<ItemClass> classByLevel = itemclasses();
         if (classByLevel.size() == 0) {
             throw new IllegalArgumentException("No item classes!");
@@ -236,9 +235,9 @@ public class ItemController {
     @PostMapping("/additem")
     @PreAuthorize("hasAuthority('ADD_ITEMS')")
     public String addItem(@Valid Item item, BindingResult result, Model model) {
-        logger.debug(String.format("Evaluating item %s", item.toString()));
+        log.debug("Evaluating item {}", item.toString());
         if (result.hasErrors()) {
-            logger.debug(String.format("Result %s", result.toString()));
+            log.debug("Result {}", result.toString());
             return "item-addform";
         }
         checkItemFit(item);
@@ -256,7 +255,7 @@ public class ItemController {
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String showUpdateForm(int id, Model model) {
-        logger.info(String.format("Edit form for %d", id));
+        log.info("Edit form for {}", id);
         Item item = itemRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + id));
         model.addAttribute("item", item);
@@ -383,7 +382,7 @@ public class ItemController {
         checkItemFit(itemInDB, parentInDB);
 
         itemInDB.setPlacementid(placementid);
-        logger.info(String.format("Moving %d to %d", itemInDB.getId(), itemInDB.getPlacementid()));
+        log.info("Moving {} to {}", itemInDB.getId(), itemInDB.getPlacementid());
         itemRepository.save(itemInDB);
         return String.format("redirect:/items/view/%d", itemid);
     }
@@ -425,7 +424,7 @@ public class ItemController {
 
         checkItemFit(itemInDB, parentItem);
         itemInDB.setPlacementid(parentItem.getId());
-        logger.info(String.format("Moving %d to %d", itemInDB.getId(), itemInDB.getPlacementid()));
+        log.info("Moving {} to {}", itemInDB.getId(), itemInDB.getPlacementid());
         itemRepository.save(itemInDB);
         return String.format("redirect:/items/view/%d", itemid);
     }
@@ -446,7 +445,7 @@ public class ItemController {
     public String updateItem(@PathVariable("id") int id,
             @Valid Item item,
             BindingResult result, Model model) {
-        logger.debug(item);
+        log.debug("Incoming item: {}", item);
         if (result.hasErrors()) {
             item.setId(id);
             return "item-edit";
@@ -472,7 +471,7 @@ public class ItemController {
     public String deleteItem(@PathVariable("id") int id, Model model) {
         Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
         itemRepository.delete(item);
-        logger.info(String.format("Deleted item Id %d", id));
+        log.info(String.format("Deleted item Id %d", id));
         return "redirect:/items";
     }
 
@@ -567,7 +566,7 @@ public class ItemController {
                 Model model) {
         //model.addAttribute("id", id.toString());
         model.addAttribute("itemid", id);
-        logger.info(String.format("Form to add QR code to %d", id));
+        log.info("Form to add QR code to {}", id);
         return "addqrform";
     }
 
@@ -586,7 +585,7 @@ public class ItemController {
             @RequestParam(name = "id", required=true) Integer id,
             @RequestParam(name = "qr", required=true) String query,
             Model model) {
-        logger.info(String.format("Add QR code %s to %d", query, id));
+        log.info("Add QR code {} to {}", query, id);
         if (query == null)
             throw new IllegalArgumentException("No QR code");
         Integer cleanId = evaluateQRString(query);
@@ -614,7 +613,7 @@ public class ItemController {
     public String findByQRCode(
             @RequestParam(name = "qr", required=true) String query,
             Model model) {
-        logger.info(String.format("QR code query %s", query));
+        log.info("QR code query {}", query);
         if (query == null)
             throw new IllegalArgumentException("No QR code");
         Integer cleanId = evaluateQRString(query);
@@ -633,6 +632,7 @@ public class ItemController {
      * @param plainText - the text field from the database.
      * @return HTML escaped text with some HTML tags.
      */
+    /*
     private String richText(String plainText) {
         String richDesc = HtmlUtils.htmlEscape(plainText, "UTF-8");
         richDesc = urlPattern.matcher(richDesc).replaceAll(urlReplacement);
@@ -641,6 +641,7 @@ public class ItemController {
 
         return richDesc;
     }
+    */
 
     private void enrichTextareas(Item item) {
         item.setDescription(richText(item.getDescription()));
@@ -723,6 +724,7 @@ public class ItemController {
         picture.setOriginal("");
         picture.setMedium("");
         picture.setLow("");
+        picture.setItemid(id);
         pictureRepository.save(picture);
 
         var pictureId = picture.getPictureid();
@@ -736,7 +738,7 @@ public class ItemController {
         itemPicture.setPictureid(pictureId);
         itemPictureRepository.save(itemPicture);
 
-        logger.info(String.format("Upload of %s to picture id %d", myFile.getOriginalFilename(), pictureId));
+        log.info("Upload of {} to picture id {}", myFile.getOriginalFilename(), pictureId);
         pictureService.store(myFile, pictureId);
         return String.format("redirect:/items/view/%d", id);
     }

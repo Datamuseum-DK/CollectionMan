@@ -1,7 +1,6 @@
 package dk.datamuseum.mobilereg.controllers;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,10 +18,11 @@ import dk.datamuseum.mobilereg.service.PictureService;
 /**
  * Controller for pictures.
  */
+@Slf4j
 @Controller
 @RequestMapping("/pictures")
 public class PictureController {
-    
+
     @Autowired
     private PictureRepository pictureRepository;
 
@@ -31,8 +31,6 @@ public class PictureController {
 
     @Autowired
     private ItemPictureRepository itemPictureRepository;
-
-    private Log logger = LogFactory.getLog(PictureController.class);
 
     /*
     @RequestMapping({"", "/", "/view"})
@@ -48,7 +46,7 @@ public class PictureController {
         Picture picture = pictureRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid picture Id:" + id));
         model.addAttribute("picture", picture);
-        
+
         return "pictures-view";
     }
 
@@ -60,20 +58,20 @@ public class PictureController {
     @GetMapping("/delete/{id}")
     public String deletePicture(@PathVariable("id") int id, Model model) {
         Picture picture = pictureRepository.findById(id).orElseThrow(()
-		-> new IllegalArgumentException("Invalid picture Id:" + id));
+                -> new IllegalArgumentException("Invalid picture Id:" + id));
         Iterable<ItemPicture> itempics = itemPictureRepository.findByPictureid(id);
         ItemPicture returnItem = new ItemPicture();
         for (ItemPicture itempic : itempics) {
             returnItem = itempic;
-            logger.debug(String.format("Deleting relation %s", itempic));
+            log.debug("Deleting relation {}", itempic);
             itemPictureRepository.delete(itempic);
         }
         pictureRepository.delete(picture);
-        logger.info(String.format("Deleted picture Id %d", id));
+        log.info("Deleted picture Id {}", id);
 
         String filename = picture.getOriginal();
         filename = filename.substring(filename.lastIndexOf('/') + 1);
-        logger.debug(String.format("Deleted filename: %s", filename));
+        log.debug("Deleted filename: {}", filename);
         pictureService.delete(filename);
 
         return String.format("redirect:/items/view/%d", returnItem.getItemid());

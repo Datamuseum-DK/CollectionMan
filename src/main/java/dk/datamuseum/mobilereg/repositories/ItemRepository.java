@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ItemRepository extends CrudRepository<Item, Integer> {
-    
+
     /**
      * Do a full text search on items.
      * Searches headline and description.
@@ -27,7 +27,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      */
     @Query("SELECT i FROM Item i WHERE i.headline LIKE %?1% OR i.description LIKE %?1% OR i.itemserialno LIKE %?1% ORDER BY i.headline")
     Page<Item> findByFulltextContaining(String query, Pageable pageable);
-    
+
     /**
      * Get all locations. I.e., all containers that are the top of
      * the hierarchy.
@@ -111,7 +111,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * @param maxLevel - the level of the item you want to see possible containers for.
      * @return an iteration of items - potentially with no members.
      */
-    @Query(value="SELECT i FROM Item i JOIN i.itemClass c WHERE i.placementid = ?1 AND c.level < ?2 ORDER BY i.headline")
+    @Query(value = "SELECT i FROM Item i JOIN i.itemClass c WHERE i.placementid = ?1 AND c.level < ?2 ORDER BY i.headline")
     Iterable<Item> findContainers(int parentid, int maxLevel);
 
     /**
@@ -126,6 +126,7 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * Lookup item on QR code.
      *
      * @param id - qr code.
+     * @return the item.
      */
     Item getByQrcode(int id);
 

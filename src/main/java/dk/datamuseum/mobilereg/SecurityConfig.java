@@ -2,8 +2,8 @@ package dk.datamuseum.mobilereg;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,16 +28,21 @@ import org.springframework.security.web.SecurityFilterChain;
  * What can be accessed without authentication, what needs authentication.
  * The security relies heavily on @PreAuthorize.
  */
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 //@Profile("!test")
 public class SecurityConfig {
 
-    private Log logger = LogFactory.getLog(SecurityConfig.class);
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    /**
+     * Constructor.
+     */
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     /**
      * Set up protection of paths using forms-based login.
@@ -98,11 +103,11 @@ public class SecurityConfig {
                             "OIDC_USER", userAuthority.getIdToken(), userAuthority.getUserInfo());
                 } else if (authority instanceof OAuth2UserAuthority) {
                     OAuth2UserAuthority userAuthority = (OAuth2UserAuthority) authority;
-                    logger.info(String.format("Username: %s", userAuthority.getUserNameAttributeName()));
+                    log.info("Username: {}", userAuthority.getUserNameAttributeName());
                     mappedAuthority = new OAuth2UserAuthority(
                             "OAUTH2_USER", userAuthority.getAttributes());
                 } else {
-                    logger.info(String.format("Authority: %s", authority.toString()));
+                    log.info("Authority: {}", authority.toString());
                     mappedAuthority = authority;
                 }
 
