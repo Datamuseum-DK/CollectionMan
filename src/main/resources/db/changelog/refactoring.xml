@@ -18,11 +18,27 @@
       </column>
     </addColumn>
   </changeSet>
+
   <changeSet author="roug" id="refh3" dbms="h2">
     <sql>UPDATE pictures_dj SET itemid=(SELECT items_id FROM items_itempicture WHERE pictureid=pictures_id)</sql>
   </changeSet>
+
   <changeSet author="roug" id="ref03" dbms="!h2">
     <sql>UPDATE pictures_dj JOIN items_itempicture ON pictureid=pictures_id SET itemid=items_id</sql>
+  </changeSet>
+
+  <changeSet author="roug" id="ref04">
+    <preConditions onFail="MARK_RAN">
+      <tableExists tableName="django_migrations" />
+    </preConditions>
+    <dropTable tableName="django_migrations"/>
+    <dropTable tableName="django_session"/>
+  </changeSet>
+
+  <changeSet author="roug" id="ref05">
+    <comment>Replace the items_itempicture with a view.</comment>
+    <dropTable tableName="items_itempicture"/>
+    <createView viewName="items_itempicture">SELECT pictureid AS id, itemid AS items_id, pictureid AS pictures_id FROM pictures_dj</createView>
   </changeSet>
 
 </databaseChangeLog>

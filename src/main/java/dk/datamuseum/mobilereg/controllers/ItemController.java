@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,6 @@ import dk.datamuseum.mobilereg.entities.Donor;
 import dk.datamuseum.mobilereg.entities.CaseFile;
 import dk.datamuseum.mobilereg.entities.Item;
 import dk.datamuseum.mobilereg.entities.ItemClass;
-import dk.datamuseum.mobilereg.entities.ItemPicture;
 import dk.datamuseum.mobilereg.entities.Picture;
 import dk.datamuseum.mobilereg.entities.Producer;
 import dk.datamuseum.mobilereg.entities.Sted;
@@ -42,7 +40,6 @@ import dk.datamuseum.mobilereg.repositories.FileRepository;
 import dk.datamuseum.mobilereg.repositories.DonorRepository;
 import dk.datamuseum.mobilereg.repositories.ItemRepository;
 import dk.datamuseum.mobilereg.repositories.ItemClassRepository;
-import dk.datamuseum.mobilereg.repositories.ItemPictureRepository;
 import dk.datamuseum.mobilereg.repositories.PictureRepository;
 import dk.datamuseum.mobilereg.repositories.ProducerRepository;
 import dk.datamuseum.mobilereg.repositories.StedRepository;
@@ -59,16 +56,6 @@ import static dk.datamuseum.mobilereg.service.RichTextService.richText;
 @RequestMapping("/items")
 public class ItemController {
 
-    /** Pattern for URLs. */
-    static Pattern urlPattern = Pattern.compile("(http|ftp|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:;/~+#-]*[\\w@?^=%&/~+#;])");
-    static String  urlReplacement = "<a href='$0'>$0</a>";
-    /** Pattern for Item numbers. */
-    static Pattern itemPattern = Pattern.compile("(^|\\G|[\\s\\p{Punct}&&[^/]])(1[01]0[01]\\d{4})([\\s\\p{Punct}]|$)", Pattern.MULTILINE);
-    static String  itemReplacement = "$1<a href='$2'>$2</a>$3";
-    
-    static Pattern bitsPattern = Pattern.compile("\\[\\[bits:(300[01]\\d{4})\\]\\]", Pattern.MULTILINE|Pattern.CASE_INSENSITIVE);
-    static String  bitsReplacement = "<a href='https://ta.ddhf.dk/wiki/Bits:$1'>Bits:$1</a>";
-
     @Autowired
     private DonorRepository donorRepository;
     @Autowired
@@ -77,8 +64,6 @@ public class ItemController {
     private ItemRepository itemRepository;
     @Autowired
     private ItemClassRepository itemClassRepository;
-    @Autowired
-    private ItemPictureRepository itemPictureRepository;
     @Autowired
     private PictureRepository pictureRepository;
     @Autowired
@@ -625,24 +610,6 @@ public class ItemController {
         return "qrresult";
     }
 
-    /*
-     * Produce HTML with detected links. A simple markdown syntax.
-     * item numbers are detected, URLs are detected.
-     *
-     * @param plainText - the text field from the database.
-     * @return HTML escaped text with some HTML tags.
-     */
-    /*
-    private String richText(String plainText) {
-        String richDesc = HtmlUtils.htmlEscape(plainText, "UTF-8");
-        richDesc = urlPattern.matcher(richDesc).replaceAll(urlReplacement);
-        richDesc = itemPattern.matcher(richDesc).replaceAll(itemReplacement);
-        richDesc = bitsPattern.matcher(richDesc).replaceAll(bitsReplacement);
-
-        return richDesc;
-    }
-    */
-
     private void enrichTextareas(Item item) {
         item.setDescription(richText(item.getDescription()));
         item.setItemextrainfo(richText(item.getItemextrainfo()));
@@ -724,7 +691,7 @@ public class ItemController {
         picture.setOriginal("");
         picture.setMedium("");
         picture.setLow("");
-        picture.setItemid(id);
+        picture.setItem(item);
         pictureRepository.save(picture);
 
         var pictureId = picture.getPictureid();
@@ -732,11 +699,6 @@ public class ItemController {
         picture.setMedium(String.format("picturemedium/%d.jpg", pictureId));
         picture.setLow(String.format("picturelow/%d.jpg", pictureId));
         pictureRepository.save(picture);
-
-        ItemPicture itemPicture = new ItemPicture();
-        itemPicture.setItemid(id);
-        itemPicture.setPictureid(pictureId);
-        itemPictureRepository.save(itemPicture);
 
         log.info("Upload of {} to picture id {}", myFile.getOriginalFilename(), pictureId);
         pictureService.store(myFile, pictureId);

@@ -6,7 +6,8 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -64,10 +65,7 @@ public class Picture {
     @Column(name = "picturelow")
     private String low;
 
-    @Column(name = "itemid")
-    private Integer itemid;
-
-    /* Reference to variable in Item.java */
-    @ManyToMany(mappedBy = "pictures")
-    private List<Item> items;
+    @ManyToOne
+    @JoinColumn(name = "itemid")
+    private Item item;
 }

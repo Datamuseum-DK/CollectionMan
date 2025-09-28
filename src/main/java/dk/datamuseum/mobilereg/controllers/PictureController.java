@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import dk.datamuseum.mobilereg.entities.ItemPicture;
+import dk.datamuseum.mobilereg.entities.Item;
 import dk.datamuseum.mobilereg.entities.Picture;
-import dk.datamuseum.mobilereg.repositories.ItemPictureRepository;
 import dk.datamuseum.mobilereg.repositories.PictureRepository;
 import dk.datamuseum.mobilereg.service.PictureService;
 
@@ -28,9 +27,6 @@ public class PictureController {
 
     @Autowired
     private PictureService pictureService;
-
-    @Autowired
-    private ItemPictureRepository itemPictureRepository;
 
     /*
     @RequestMapping({"", "/", "/view"})
@@ -52,20 +48,14 @@ public class PictureController {
 
     /**
      * Delete picture.
-     * TODO: Remove many-to-many relation.
+     * This also removes the physical files in the picture service.
      */
     @PreAuthorize("hasAuthority('DELETE_PICTURES')")
     @GetMapping("/delete/{id}")
     public String deletePicture(@PathVariable("id") int id, Model model) {
         Picture picture = pictureRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid picture Id:" + id));
-        Iterable<ItemPicture> itempics = itemPictureRepository.findByPictureid(id);
-        ItemPicture returnItem = new ItemPicture();
-        for (ItemPicture itempic : itempics) {
-            returnItem = itempic;
-            log.debug("Deleting relation {}", itempic);
-            itemPictureRepository.delete(itempic);
-        }
+        Item returnItem = picture.getItem();
         pictureRepository.delete(picture);
         log.info("Deleted picture Id {}", id);
 
@@ -74,6 +64,6 @@ public class PictureController {
         log.debug("Deleted filename: {}", filename);
         pictureService.delete(filename);
 
-        return String.format("redirect:/items/view/%d", returnItem.getItemid());
+        return String.format("redirect:/items/view/%d", returnItem.getId());
     }
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -254,13 +255,7 @@ public class Item {
         )
     List<Subject> subjects;
 
-    // itempicture         = models.ManyToManyField(Pictures, verbose_name="billeder" , null=True, blank=True)
-    @ManyToMany
-    @JoinTable(
-        name="items_itempicture",
-        joinColumns=@JoinColumn(name="items_id", referencedColumnName = "itemid"),
-        inverseJoinColumns=@JoinColumn(name="pictures_id", referencedColumnName = "pictureid")
-        )
+    @OneToMany(mappedBy = "item")
     List<Picture> pictures;
 
     @ManyToOne
