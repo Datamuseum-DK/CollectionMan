@@ -20,6 +20,7 @@
           <button id="search" type="submit" form="editform" formaction="items.html" th:formaction="@{/items}">Liste</button>
           <button id="rediger" type="submit" form="editform" formaction="item-edit.html" th:formaction="@{/items/edit}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Rediger</button>
           <button id="flyt" type="submit" formaction="item-move.html" th:formaction="@{/items/move}" th:unless="${item.itemClass.getLevel() eq 0}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Flyt</button>
+          <button th:unless="${item.qrcode}" type="submit" form="editform" formaction="addqrform.html" th:formaction="@{/items/addqrform(id=${item.id})}">Scan QR</button>
           <button type="submit" sec:authorize="hasAuthority('ADD_ITEMS')" form="createform" th:if="${types[0].getLevel() gt item.itemClass.getLevel()}">Opret heri</button>
           <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="editform" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}" onclick="return confirm('Er du sikker?')">Slet</button>
           <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
@@ -60,6 +61,8 @@
           <dd th:unless="${#strings.isEmpty(item.itemmodeltype)}" th:text="${item.itemmodeltype}">GNT5601</dd>
           <dt th:unless="${#strings.isEmpty(item.itemserialno)}">Serienr.</dt>
           <dd th:unless="${#strings.isEmpty(item.itemserialno)}" th:text="${item.itemserialno}">131-006077-8</dd>
+          <dt th:if="${item.qrcode}">QR kode</dt>
+          <dd th:if="${item.qrcode}" th:text="${item.qrcode}">59001111</dd>
           <dt>Beskrivelse</dt>
           <dd class="multiline" th:utext="${#strings.trim(item.description)}">Rank Xerox type 860 tekstbehandlingsanlæg
 med 2 stk 8" diskettedrev, tastatur og skærm.
@@ -73,13 +76,6 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dt th:if="${item.itemdatingfrom}">Datering</dt>
           <dd th:if="${item.itemdatingfrom}">Indenfor <span th:remove="tag" th:text="${#temporals.format(item.itemdatingfrom,'yyyy-MM-dd')}">1982-10-11</span>
           <span th:if="${item.itemdatingto}" th:remove="tag" th:text="${' til ' + #temporals.format(item.itemdatingto,'yyyy-MM-dd')}">1992-09-31</span>
-          </dd>
-          <dt>QR kode</dt>
-          <dd>
-            <span th:if="${item.qrcode}" th:text="${item.qrcode}">59001111</span>
-            <span th:unless="${item.qrcode}">
-              <a href="addqrform.html" th:href="@{/items/addqrform(id=${item.id})}">Scan og tildel</a>
-            </span>
           </dd>
           <dt>Emnegrupper</dt>
           <dd th:remove="all-but-first">

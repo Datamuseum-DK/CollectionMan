@@ -1,8 +1,9 @@
 body {
   max-width: 1024px;
+  font-family: "Open Sans", Helvetica, serif;
 }
 body #content, main, button, textarea, select, input {
-  font-size: 14pt;
+  font-size: 13pt;
 }
 
 label.required {
@@ -46,7 +47,7 @@ footer a, footer a:visited {
 }
 
 label {
-  font-size: 16pt;
+  font-size: 120%;
 }
 
 .fielderror {
@@ -217,13 +218,13 @@ table.datatable {
 /* QR scanning end */
 
 dl.factsheet dd a.subject  {
-  background-color: lightblue;
-  border-radius: 1ex;
-  color: inherit;
-  text-decoration: none;
-  padding-left: 0.3em;
+  padding-left: 0.0em;
   padding-right: 0.3em;
   margin-right: 0.2em;
+}
+
+dl.factsheet dd a.subject::before {
+  content: "#";
 }
 
 /* Admonitions */
@@ -266,10 +267,14 @@ dl.factsheet dd a.subject  {
   }
   #actions button {
     width: 5em;
+    border-radius: 1ex;
+    background-color: lightblue;
     margin: 1px 0 1ex 0;
   }
   #actions button#delete {
     margin-top: 2em;
+    background-color: red;
+    color: white;
   }
 
   dl.factsheet {

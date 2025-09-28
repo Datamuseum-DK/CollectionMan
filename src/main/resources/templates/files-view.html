@@ -3,6 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <head th:insert="~{layout :: headerFragment (webtitle=${caseFile.title})}">
     <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
   </head>
   <body>
@@ -31,7 +32,7 @@ En beskrivelse her.
 </dd>
         <dt>Aktiv</dt>
         <dd th:text="${caseFile.status}">True</dd>
-        <dt>Dateringsperiode</dt>
+        <dt>Daterings&shy;periode</dt>
         <dd><span th:text="${caseFile.datingfrom}">1956-06-09</span> - 
                   <span th:text="${caseFile.datingto}">1980-01-01</span>
               </dd>
