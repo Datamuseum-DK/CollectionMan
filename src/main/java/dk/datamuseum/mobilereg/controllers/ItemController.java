@@ -515,6 +515,35 @@ public class ItemController {
         return "items";
     }
 
+    /**
+     * Run a search and return results.
+     *
+     * @param query - query string.
+     * @param model - Additional attributes used by the web form.
+     * @param page - page number of result list.
+     * @param size - size of page in number of items.
+     * @return name of Thymeleaf template or redirection to factsheet of item.
+     */
+    @RequestMapping({"/nosubjects"})
+    @PreAuthorize("hasAuthority('VIEW_ITEMS')")
+    public String showNoSubjects(
+            Model model,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "50") int size) {
+
+        List<Item> items = new ArrayList<Item>();
+        Pageable paging = PageRequest.of(page - 1, size);
+        Page<Item> pagedItems =  itemRepository.findBySubjectsIsNullOrderByHeadline(paging);
+
+        items = pagedItems.getContent();
+        model.addAttribute("items", items);
+        model.addAttribute("currentPage", pagedItems.getNumber() + 1);
+        model.addAttribute("totalItems", pagedItems.getTotalElements());
+        model.addAttribute("totalPages", pagedItems.getTotalPages());
+        model.addAttribute("pageSize", size);
+        return "nosubjects";
+    }
+    
     /*
      * Get rid of URL part.
      * Also works if the string is just a number.

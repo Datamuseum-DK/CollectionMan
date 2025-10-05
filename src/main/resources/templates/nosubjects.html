@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Genstande uden emnegrupper')}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <main>
+      <table th:if="${not #lists.isEmpty(items)}">
+        <tbody th:remove="all-but-first">
+          <tr th:each="item : ${items}">
+            <td>
+                <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}" th:text="${item.headline}">Flyttekasse RC34</a>
+            </td>
+            <td th:text="${item.itemClass.name}"></td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">Flyttekasse RM10</a>
+            </td>
+            <td>Filler</td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">Friden EC-132 regnemaskine</a>
+            </td>
+            <td>Filler</td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">Friden Flexowriter</a>
+            </td>
+            <td>Filler</td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">Friden regnemaskine</a>
+            </td>
+            <td>Filler</td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">ICL 1501 intelligent terminal</a>
+            </td>
+            <td>Filler</td>
+          </tr>
+        </tbody>
+      </table>
+      <p th:if="${#lists.isEmpty(items)}" class="system-msg">
+      Ingen genstande fundet
+      </p>
+    </main>
+    <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+          <a th:replace="~{paging :: paging(1, '&lt;&lt;', 'Første Side')}">&lt;&lt;</a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+          <a th:replace="~{paging :: paging(${currentPage - 1}, 'Forr', 'Forrige Side')}">Forr</a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
+          <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
+          <a th:replace="~{paging :: paging(${page}, ${page}, 'Side ' + ${page})}">#</a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
+          <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+          <a th:replace="~{paging :: paging(${currentPage + 1},'Næste', 'Næste Side')}">Næste</a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+          <a th:replace="~{paging :: paging(${totalPages}, '&gt;&gt;', 'Sidste Side')}">&gt;&gt;</a>
+        </li>
+      </ul>
+    </nav>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

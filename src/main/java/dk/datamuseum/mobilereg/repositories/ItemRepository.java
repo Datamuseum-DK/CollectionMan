@@ -137,4 +137,6 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      */
     //@Query(value="SELECT TOP 50 i FROM Item i ORDER BY i.lastmodified DESC")
     Iterable<Item> findFirst50ByOrderByLastmodifiedDesc();
+
+    Page<Item> findBySubjectsIsNullOrderByHeadline(Pageable pageable);
 }

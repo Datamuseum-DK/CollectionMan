@@ -22,18 +22,21 @@ import java.util.Set;
 
 /**
  * UserDetailsService providing information from the registration database.
+ * Class does not check the password. This is done in the DaoAuthenticationProvider.
  */
 @Slf4j
 @Service
 public class RegbaseUserDetailsService implements UserDetailsService {
 
-    private PermissionRepository permissionRepository;
+    private final PermissionRepository permissionRepository;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     /**
      * Constructor.
      *
+     * @param permissionRepository - repository for direct permissions.
+     * @param userRepository - registration database.
      */
     public RegbaseUserDetailsService(PermissionRepository permissionRepository,
                     UserRepository userRepository) {
@@ -41,7 +44,7 @@ public class RegbaseUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    /**
+    /*
      * Create an Authority from a role.
      *
      * @param role - the role entity.
@@ -51,7 +54,7 @@ public class RegbaseUserDetailsService implements UserDetailsService {
         return new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase());
     }
 
-    /**
+    /*
      * Create an Authority from a permission.
      *
      * @param permission - the permission entity.
@@ -61,7 +64,7 @@ public class RegbaseUserDetailsService implements UserDetailsService {
         return new SimpleGrantedAuthority(permission.getCodename().toUpperCase());
     }
 
-    /**
+    /*
      * Add roles and permissions from roles.
      */
     private void addRolesFromDB(User user, Set<SimpleGrantedAuthority> authorities) {
@@ -76,6 +79,9 @@ public class RegbaseUserDetailsService implements UserDetailsService {
         }
     }
 
+    /*
+     * If user is a super user, then get all possible permissions.
+     */
     private Iterable<Permission> allPermissions() {
         return permissionRepository.findAll();
     }
@@ -102,14 +108,10 @@ public class RegbaseUserDetailsService implements UserDetailsService {
             user = userRepository.findByEmail(username);
         }
 
-        if (user != null && user.isActive()) {
+        if (user != null) {
             Set <SimpleGrantedAuthority> authorities = new HashSet<>();
 
             authorities.add(new SimpleGrantedAuthority("ROLE_VIEWER"));
-
-            if (user.isStaff()) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_STAFF"));
-            }
 
             if (user.isSuperuser()) {
                 authorities.add(new SimpleGrantedAuthority("ROLE_SUPERUSER"));
@@ -123,19 +125,13 @@ public class RegbaseUserDetailsService implements UserDetailsService {
 
             return new org.springframework.security.core.userdetails.User(user.getUsername(),
                     user.getPassword(),
+                    user.isActive(), // enabled
+                    true, // accountNonExpired
+                    true, // credentialsNonExpired
+                    true, // accountNonLocked
                     authorities);
         } else {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
     }
-
-    // Unused stream version
-    /*
-    private Set <SimpleGrantedAuthority> mapRolesToAuthorities(Collection <Role> roles) {
-        Set <SimpleGrantedAuthority> mapRoles = roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()))
-                .collect(Collectors.toSet());
-        return mapRoles;
-    }
-    */
 }
