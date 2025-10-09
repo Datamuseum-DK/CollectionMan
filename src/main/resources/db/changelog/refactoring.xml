@@ -41,4 +41,11 @@
     <createView viewName="items_itempicture">SELECT pictureid AS id, itemid AS items_id, pictureid AS pictures_id FROM pictures_dj</createView>
   </changeSet>
 
+  <changeSet author="roug" id="ref06">
+    <comment>Remove the is_staff flag to use real roles.</comment>
+    <dropColumn tableName="auth_user">
+      <column name="is_staff"/>
+    </dropColumn>
+  </changeSet>
+
 </databaseChangeLog>

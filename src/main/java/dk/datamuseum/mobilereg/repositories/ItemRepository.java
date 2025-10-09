@@ -90,14 +90,16 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * All items belonging to a file.
      *
      * @param id - item id.
-     * @return a list of items - potentially with no members.
+     * @param pageable - information about which page the user wants returned.
+     * @return a page of items - potentially with no members.
      */
-    List<Item> findByFileidOrderByHeadline(int id);
+    Page<Item> findByFileidOrderByHeadline(int id, Pageable pageable);
 
     /**
      * All items belonging to a container.
      *
      * @param id - container id.
+     * @param pageable - information about which page the user wants returned.
      * @return a page of hits.
      */
     Page<Item> findByPlacementidOrderByHeadline(int id, Pageable pageable);
@@ -138,5 +140,10 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
     //@Query(value="SELECT TOP 50 i FROM Item i ORDER BY i.lastmodified DESC")
     Iterable<Item> findFirst50ByOrderByLastmodifiedDesc();
 
+    /**
+     * List all items without a subject.
+     *
+     * @param pageable - information about which page the user wants returned.
+     */
     Page<Item> findBySubjectsIsNullOrderByHeadline(Pageable pageable);
 }

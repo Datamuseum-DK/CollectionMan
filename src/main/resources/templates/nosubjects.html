@@ -12,6 +12,7 @@
         <a href="index.html">DDHF mobilregistrering</a>
       </h1>
     </header>
+    <h2>Genstande uden emnegrupper</h2>
     <main>
       <table th:if="${not #lists.isEmpty(items)}">
         <tbody th:remove="all-but-first">
@@ -60,10 +61,10 @@
     <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
       <ul class="pagination justify-content-center">
         <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-<a class="page-link" th:href="@{/items/nosubjects(page=1,size=${pageSize})}" th:title="'Første Side'" rel="tooltip" th:text="'&lt;&lt;'">Page 1</a>
+<a class="page-link" href="#" th:href="@{/nosubjects(page=1,size=${pageSize})}" th:title="'Første Side'" rel="tooltip" th:text="'&lt;&lt;'">&lt;&lt;</a>
         </li>
         <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-<a class="page-link" th:href="@{/items/nosubjects(page=${currentPage - 1},size=${pageSize})}" th:title="'Forrige side'" rel="tooltip" th:text="'&lt;'">Forrige side</a>
+<a class="page-link" href="#" th:href="@{/nosubjects(page=${currentPage - 1},size=${pageSize})}" th:title="'Forrige side'" rel="tooltip" th:text="'&lt;'">&lt;</a>
         </li>
 
         <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
@@ -71,17 +72,17 @@
         </li>
 
         <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
-<a class="page-link" th:href="@{/items/nosubjects(page=${page},size=${pageSize})}" th:title="'Side ' + ${page}" rel="tooltip" th:text="${page}">Side N</a>
+<a class="page-link" th:href="@{/nosubjects(page=${page},size=${pageSize})}" th:title="'Side ' + ${page}" rel="tooltip" th:text="${page}">N</a>
         </li>
 
         <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
           <a class="page-link" href="#">...</a>
         </li>
         <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-<a class="page-link" th:href="@{/items/nosubjects(page=${currentPage + 1},size=${pageSize})}" th:title="'Næste Side'" rel="tooltip" th:text="'&gt;'">Næste</a>
+<a class="page-link" href="#" th:href="@{/nosubjects(page=${currentPage + 1},size=${pageSize})}" th:title="'Næste Side'" rel="tooltip" th:text="'&gt;'">&gt;</a>
         </li>
         <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-<a class="page-link" th:href="@{/items/nosubjects(page=${totalPages},size=${pageSize})}" th:title="'Sidste Side'" rel="tooltip" th:text="'&gt;&gt;'">Sidste</a>
+<a class="page-link" href="#" th:href="@{/nosubjects(page=${totalPages},size=${pageSize})}" th:title="'Sidste Side'" rel="tooltip" th:text="'&gt;&gt;'">&gt;&gt;</a>
         </li>
       </ul>
     </nav>

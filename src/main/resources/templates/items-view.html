@@ -119,7 +119,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
                 <a th:replace="~{paging :: children(1, '&lt;&lt;', 'Første Side')}">&lt;&lt;</a>
               </li>
               <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-                <a th:replace="~{paging :: children(${currentPage - 1}, 'Forr', 'Forrige Side')}">Forr.</a>
+                <a th:replace="~{paging :: children(${currentPage - 1}, '&lt;', 'Forrige Side')}">&lt;</a>
               </li>
               <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
                 <a class="page-link" href="#">...</a>
@@ -131,7 +131,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
                 <a class="page-link" href="#">...</a>
               </li>
               <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                <a th:replace="~{paging :: children(${currentPage + 1},'Næste', 'Næste Side')}">Næste</a>
+                <a th:replace="~{paging :: children(${currentPage + 1},'&gt;', 'Næste Side')}">&gt;</a>
               </li>
               <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
                 <a th:replace="~{paging :: children(${totalPages}, '&gt;&gt;', 'Sidste Side')}">&gt;&gt;</a>

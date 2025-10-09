@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <head th:insert="~{layout :: headerFragment}">
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
@@ -12,6 +12,9 @@
       </h1>
     </header>
     <main>
+      <form id="actions" method="get" sec:authorize="hasAuthority('LOCAL_USER')">
+        <button id="changepassword" type="submit" formaction="changepassword.html" th:formaction="@{/changepassword}">Skift kodeord</button>
+      </form>
       <h2>Min profil: <em th:text="${#authentication.name}">login</em></h2>
       <h3>Autoriteter</h3>
       <ol>
@@ -19,7 +22,6 @@
           <span th:text="${val}" th:remove="tag">SCOPE_read:user</span>
         </li>
       </ol>
-
       <!--
       <h3>Attributter</h3>
       <ul>

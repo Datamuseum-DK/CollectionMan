@@ -42,18 +42,15 @@
         <div><label class="leader">Aktiv</label><input type="checkbox" th:field="*{active}" checked="checked"/> Ja
           <span th:if="${#fields.hasErrors('active')}" th:errors="*{active}" class="fielderror">Error</span>
         </div>
-        <div><label class="leader">Staff</label><input type="checkbox" th:field="*{staff}"/> Ja
-          <span th:if="${#fields.hasErrors('staff')}" th:errors="*{staff}" class="fielderror">Error</span>
-        </div>
         <div><label class="leader">Superbruger</label><input type="checkbox" th:field="*{superuser}"/> Ja
           <span th:if="${#fields.hasErrors('superuser')}" th:errors="*{superuser}" class="fielderror">Error</span>
         </div>
         <h3>Roller</h3>
-        <select th:field="*{roles}" id="id_roles" multiple="multiple">
-          <option value="237" th:each="r : ${allRoles}" th:value="${r.id}" th:text="${r.name}">Staff</option>
+        <select th:field="*{roles}" id="id_roles" multiple="multiple" th:remove="all-but-first">
+          <option value="237" th:each="r : ${allRoles}" th:value="${r.id}" th:text="${r.name}">Registrant</option>
         </select>
         <h3>Rettigheder</h3>
-        <select th:field="*{permissions}" id="id_permissions" multiple="multiple">
+        <select th:field="*{permissions}" id="id_permissions" multiple="multiple" th:remove="all-but-first">
           <option value="237" th:each="p : ${allPermissions}" th:value="${p.id}" th:text="${p.name}">Can add groups</option>
         </select>
         <div>

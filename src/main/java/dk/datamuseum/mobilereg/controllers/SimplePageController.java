@@ -77,9 +77,7 @@ public class SimplePageController {
      */
     @RequestMapping(value = "/userprofile")
     public String userprofile(Authentication authentication) {
-        //Principal principal = authentication.getPrincipal();
-        //log.info(principal.getAttributes());
-        log.info("Authorities: {}", authentication.getAuthorities());
+        log.debug("Authorities: {}", authentication.getAuthorities());
         return "userprofile";
     }
 

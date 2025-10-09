@@ -3,6 +3,7 @@ package dk.datamuseum.mobilereg.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,8 @@ import dk.datamuseum.mobilereg.repositories.UserRepository;
 @Slf4j
 @Controller
 public class PasswordController {
+
+    private static int MIN_LENGTH = 8;
 
     private final UserRepository userRepository;
 
@@ -42,7 +45,7 @@ public class PasswordController {
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/changepassword")
-    public String about(Model model) {
+    public String changepassword(Model model) {
         return "changepassword";
     }
 
@@ -54,10 +57,35 @@ public class PasswordController {
      */
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/updatepassword")
-    public String about(String orgpasswd, String passwd1, String passwd2, Model model) {
-        if (!passwd1.equals(passwd2)) {
+    public String updatepassword(String orgpasswd, String passwd1, String passwd2,
+            Model model, Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        String username = principal.toString();
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        }
+        // UserDetails loadedUser = userDetailsService().loadUserByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid user Name:" + username);
+        }
+        // Check correct password
+        if (!passwordEncoder.matches(orgpasswd, user.getPassword())) {
+            model.addAttribute("message", "Forkert kodeord");
             return "changepassword";
         }
+        if (!passwd1.equals(passwd2)) {
+            model.addAttribute("message", "Der er forskel på kodeordene");
+            return "changepassword";
+        }
+        if (passwd1.length() < MIN_LENGTH) {
+            model.addAttribute("message", String.format("Kodeordet skal være mindst %d tegn", MIN_LENGTH));
+            return "changepassword";
+        }
+        user.setPassword(passwordEncoder.encode(passwd1));
+        userRepository.save(user);
+        log.info("Changed password for user Id {}", user.getId());
+
         return "redirect:userprofile";
     }
 }

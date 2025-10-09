@@ -42,7 +42,7 @@ public class User {
 
     //@NotNull(message = "Angiv om brugeren er superuser")
     @Column(name = "is_superuser")
-    private boolean superuser;   // Should be TINYINT
+    private boolean superuser;
 
     @NotBlank
     @Column(length = 150)
@@ -60,13 +60,9 @@ public class User {
     @Column(name = "email", length = 254)
     private String email;
 
-    //@NotNull(message = "Angiv om brugeren er TA")
-    @Column(name = "is_staff")
-    private boolean staff;   // Should be TINYINT
-
     //@NotNull(message = "Angiv om brugeren er aktiv")
     @Column(name = "is_active")
-    private boolean active;   // Should be TINYINT
+    private boolean active;
 
     @CreatedDate
     @Column(name = "date_joined")

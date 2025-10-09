@@ -138,7 +138,7 @@ public class UserController {
     }
 
     /**
-     * Update user by a staff member. Not for user updating own password.
+     * Update user by an account manager. Not for users updating own password.
      *
      * @param id - User id
      * @param user - User entitity

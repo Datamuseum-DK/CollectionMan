@@ -2,10 +2,15 @@ package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
 //import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,10 +18,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import dk.datamuseum.mobilereg.entities.CaseFile;
 import dk.datamuseum.mobilereg.repositories.FileRepository;
-//import dk.datamuseum.mobilereg.entities.Item;
+import dk.datamuseum.mobilereg.entities.Item;
 import dk.datamuseum.mobilereg.repositories.ItemRepository;
 
 /**
@@ -76,15 +82,30 @@ public class FileController {
     /**
      * Show the factsheet of a case file.
      *
+     * @param id - file id.
      * @param model - Additional attributes used by the web form.
+     * @param page - page number of paged results.
+     * @param size - number of results on a single page.
+     * @return name of Thymeleaf template.
      */
     @PreAuthorize("hasAuthority('VIEW_FILES')")
     @GetMapping("/view/{id}")
-    public String showFactsheet(@PathVariable("id") int id, Model model) {
+    public String showFactsheet(@PathVariable("id") int id,
+            Model model,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "50") int size) {
         CaseFile caseFile = fileRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
         model.addAttribute("caseFile", caseFile);
-        model.addAttribute("items", itemRepository.findByFileidOrderByHeadline(id));
-        
+        Pageable paging = PageRequest.of(page - 1, size);
+        Page<Item> pagedItems =  itemRepository.findByFileidOrderByHeadline(id, paging);
+        model.addAttribute("currentPage", pagedItems.getNumber() + 1);
+        model.addAttribute("totalItems", pagedItems.getTotalElements());
+        model.addAttribute("totalPages", pagedItems.getTotalPages());
+        model.addAttribute("pageSize", size);
+        List<Item> items = new ArrayList<Item>();
+        items = pagedItems.getContent();
+        model.addAttribute("items", items);
+
         return "files-view";
     }
 

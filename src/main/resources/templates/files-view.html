@@ -7,12 +7,13 @@
     <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
   </head>
   <body>
+  <style th:replace="~{items-preview :: style}"></style>
     <header th:insert="~{layout :: bannerFragment}">
       <h1>
         <a href="index.html">DDHF mobilregistrering</a>
       </h1>
     </header>
-    <section id="content">
+    <main>
       <form id="actions">
         <button id="search" type="submit" form="actions" formaction="files.html" th:formaction="@{/files}">Liste</button>
         <button sec:authorize="hasAuthority('CHANGE_FILES')" id="rediger" type="submit" form="actions" formaction="files-edit.html" th:formaction="@{/files/edit/{id}(id=${caseFile.id})}">Rediger</button>
@@ -32,7 +33,7 @@ En beskrivelse her.
 </dd>
         <dt>Aktiv</dt>
         <dd th:text="${caseFile.status}">True</dd>
-        <dt>Daterings&shy;periode</dt>
+        <dt>Daterings&#xAD;periode</dt>
         <dd><span th:text="${caseFile.datingfrom}">1956-06-09</span> - 
                   <span th:text="${caseFile.datingto}">1980-01-01</span>
               </dd>
@@ -44,7 +45,7 @@ En beskrivelse her.
         <dd th:text="${#temporals.format(caseFile.lastmodified,'yyyy-MM-dd HH:mm')}">2025-01-09 15:46</dd>
       </dl>
       <h3>Genstande</h3>
-      <dl>
+      <dl th:replace="~{items-preview :: preview(${items})}">
         <div th:remove="tag" th:each="item : ${items}">
           <dt>
             <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}" th:text="${item.headline}">Flyttekasse 38</a>
@@ -54,7 +55,35 @@ En beskrivelse her.
 </dd>
         </div>
       </dl>
-    </section>
+    </main>
+    <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+<a class="page-link" href="#" th:href="@{/files/view/{id}(id=${caseFile.id},page=1,size=${pageSize})}" th:title="'Første Side'" rel="tooltip" th:text="'&lt;&lt;'">&lt;&lt;</a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+<a class="page-link" href="#" th:href="@{/files/view/{id}(id=${caseFile.id},page=${currentPage - 1},size=${pageSize})}" th:title="'Forrige side'" rel="tooltip" th:text="'&lt;'">&lt;</a>
+        </li>
+
+        <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
+          <a class="page-link" href="#">...</a>
+        </li>
+
+        <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
+<a class="page-link" th:href="@{/files/view/{id}(id=${caseFile.id},page=${page},size=${pageSize})}" th:title="'Side ' + ${page}" rel="tooltip" th:text="${page}">N</a>
+        </li>
+
+        <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
+          <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+<a class="page-link" href="#" th:href="@{/files/view/{id}(id=${caseFile.id},page=${currentPage + 1},size=${pageSize})}" th:title="'Næste Side'" rel="tooltip" th:text="'&gt;'">&gt;</a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+<a class="page-link" href="#" th:href="@{/files/view/{id}(id=${caseFile.id},page=${totalPages},size=${pageSize})}" th:title="'Sidste Side'" rel="tooltip" th:text="'&gt;&gt;'">&gt;&gt;</a>
+        </li>
+      </ul>
+    </nav>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
     </footer>

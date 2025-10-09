@@ -111,6 +111,7 @@ public class RegbaseUserDetailsService implements UserDetailsService {
         if (user != null) {
             Set <SimpleGrantedAuthority> authorities = new HashSet<>();
 
+            authorities.add(new SimpleGrantedAuthority("LOCAL_USER"));
             authorities.add(new SimpleGrantedAuthority("ROLE_VIEWER"));
 
             if (user.isSuperuser()) {

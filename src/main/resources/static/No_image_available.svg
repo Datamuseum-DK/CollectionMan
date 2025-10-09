@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" height="300px" width="300px" version="1.1" viewBox="-300 -300 600 600" font-family="Bitstream Vera Sans,Liberation Sans, Arial, sans-serif" font-size="72" text-anchor="middle">
+  <circle stroke="#AAA" stroke-width="10" r="280" fill="#FFF"/>
+  <switch style="fill:#444;">
+    <text id="trsvg3-de" systemLanguage="de"><tspan x="0" y="-8" id="trsvg1-de">KEIN BILD</tspan><tspan x="0" y="80" id="trsvg2-de">VERF&#xDC;GBAR</tspan></text>
+    <text id="trsvg3-en" systemLanguage="en"><tspan x="0" y="-8" id="trsvg1-en">NO IMAGE</tspan><tspan x="0" y="80" id="trsvg2-en">AVAILABLE</tspan></text>
+    <text id="trsvg3-es" systemLanguage="es"><tspan x="0" y="-8" id="trsvg1-es">IMAGEN NO</tspan><tspan x="0" y="80" id="trsvg2-es">DISPONIBLE</tspan></text>
+    <text id="trsvg3-id" systemLanguage="id"><tspan x="0" y="-8" id="trsvg1-id">GAMBAR TAK</tspan><tspan x="0" y="80" id="trsvg2-id">TERSEDIA</tspan></text>
+    <text id="trsvg3-ro" systemLanguage="ro"><tspan x="0" y="-8" id="trsvg1-ro">IMAGINE</tspan><tspan x="0" y="80" id="trsvg2-ro">INDISPONIBIL&#x102;</tspan></text>
+    <text id="trsvg3-da" systemLanguage="da"><tspan x="0" y="-8" id="trsvg1-da">INTET</tspan><tspan x="0" y="80" id="trsvg2-da">BILLEDE</tspan></text>
+    <text id="trsvg3-fr" systemLanguage="fr"><tspan x="0" y="-8" id="trsvg1-fr">AUCUNE IMAGE</tspan><tspan x="0" y="80" id="trsvg2-fr">DISPONIBLE</tspan></text>
+    <text id="trsvg3"><tspan x="0" y="-8" id="trsvg1">INTET</tspan><tspan x="0" y="80" id="trsvg2">BILLEDE</tspan></text>
+  </switch>
+</svg>

@@ -13,8 +13,18 @@
       </h1>
     </header>
     <section id="content">
-      <h2>Brugeradministration</h2>
+      <h2>Specialsider</h2>
+      <h3>Vedligeholdelsessider</h3>
       <menu>
+        <li sec:authorize="hasAuthority('VIEW_ITEMS')">
+          <a href="nosubjects.html" th:href="@{nosubjects}">Genstande uden emnegrupper</a>
+        </li>
+      </menu>
+      <h3>Kontohåndtering</h3>
+      <menu>
+        <li sec:authorize="hasAuthority('LOCAL_USER')">
+          <a href="changepassword.html" th:href="@{/changepassword}">Skift kodeord</a>
+        </li>
         <li sec:authorize="hasAuthority('VIEW_USER')">
           <a href="users.html" th:href="@{users}">Brugere</a>
         </li>

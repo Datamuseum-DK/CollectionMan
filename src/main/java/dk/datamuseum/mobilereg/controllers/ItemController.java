@@ -244,7 +244,10 @@ public class ItemController {
         Item item = itemRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + id));
         model.addAttribute("item", item);
-        model.addAttribute("files", fileRepository.findByOrderByTitle());
+        //model.addAttribute("files", fileRepository.findByStatusOrderByTitle(true));
+        CaseFile file = fileRepository.findById(item.getFileid())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
+        model.addAttribute("casefile", file);
 
         return "item-edit";
     }
@@ -524,6 +527,7 @@ public class ItemController {
      * @param size - size of page in number of items.
      * @return name of Thymeleaf template or redirection to factsheet of item.
      */
+    /*
     @RequestMapping({"/nosubjects"})
     @PreAuthorize("hasAuthority('VIEW_ITEMS')")
     public String showNoSubjects(
@@ -543,6 +547,7 @@ public class ItemController {
         model.addAttribute("pageSize", size);
         return "nosubjects";
     }
+    */
     
     /*
      * Get rid of URL part.

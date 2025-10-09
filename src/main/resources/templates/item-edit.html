@@ -46,10 +46,11 @@
           </div>
           <div>
             <label class="leader required" for="fileid">Sag:</label>
-            <select name="fileid" id="fileid" th:field="*{fileid}" th:remove="all-but-first">
-              <option value="15" th:each="c : ${files}" th:value="${c.id}" th:text="${c.title}">ALCATEL effekter</option>
-              <option value="61">Carl Christian Danielsen (2021-2022 donation)</option>
-              <option value="29">Dataco udstyr fra DSB Informatik</option>
+            <select name="fileid" id="fileid" th:field="*{fileid}" th:readonly="${!casefile.status}">
+              <option value="1" th:value="${casefile.id}" th:if="${!casefile.status}" th:text="${casefile.title}">Filetitle</option>
+              <option th:if="${casefile.status}" value="15" th:each="c : ${files}" th:value="${c.id}" th:text="${c.title}">ALCATEL effekter</option>
+              <option value="61" th:remove="all">Carl Christian Danielsen (2021-2022 donation)</option>
+              <option value="29" th:remove="all">Dataco udstyr fra DSB Informatik</option>
             </select>
             <span th:if="${#fields.hasErrors('fileid')}" th:errors="*{fileid}" class="fielderror">Error</span>
           </div>

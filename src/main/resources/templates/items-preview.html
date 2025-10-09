@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Genstande:'+${q})}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <style th:fragment="style">
+.preview li {
+  border: none;
+  display: inline-block;
+  width: 96px;
+  padding:2px;
+  margin: 0;
+  height: 128px;
+  overflow: hidden;
+  font-size: 65%;
+}
+.preview .imgframe {
+  width:96px;
+  height:96px;
+  /*border: 1px solid black;*/
+  align-content: center;
+}
+.preview img {
+  display: block;
+  margin: auto;
+  max-width:96px;
+  max-height:96px;
+}
+</style>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <search title="Søg på betegnelse, beskrivelse, serienr., genstandsid og QR kode">
+      <form id="search" action="items.html" method="get" th:action="@{/items}">
+        <p>
+          <input type="text" id="query" autofocus="autofocus" name="q" value="" th:value="${q}"/>
+          <input type="submit" value="Filtrer"/>
+        </p>
+      </form>
+    </search>
+    <!--/*/ <th:block th:fragment="preview(items)"> /*/-->
+      <menu class="preview" th:remove="all-but-first" th:if="${not #lists.isEmpty(items)}">
+        <li th:each="item : ${items}">
+          <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}">
+            <div class="imgframe">
+            <img src="../static/testimages/1836.jpg" th:src="${not #lists.isEmpty(item.pictures)}? @{/media/{p}(p=${item.pictures[0].low})}:@{/No_image_available.svg}"/>
+            </div>
+            <div th:text="${item.headline}">Flyttekasse RC34</div>
+          </a>
+        </li>
+        <li>
+          <a href="items-view.html">
+            <div class="imgframe">
+            <img src="../static/No_image_available.svg"/>
+            </div>
+            <div>Flyttekasse RM10</div>
+          </a>
+        </li>
+        <li>
+          <a href="items-view.html">
+           <div class="imgframe">
+            <img src="../static/No_image_available.svg"/>
+            </div>
+            <div>Friden EC-132 regnemaskine</div>
+          </a>
+        </li>
+        <li>
+          <a href="items-view.html">
+           <div class="imgframe">
+            <img src="../static/No_image_available.svg"/>
+            </div>
+            <div>Friden Flexowriter</div>
+          </a>
+        </li>
+        <li>
+          <a href="items-view.html">
+           <div class="imgframe">
+            <img src="../static/testimages/5.jpg"/>
+          </div>
+            <div>Friden regnemaskine</div>
+          </a>
+        </li>
+        <li>
+          <a href="items-view.html">
+           <div class="imgframe">
+            <img src="../static/No_image_available.svg"/>
+          </div>
+            <div>ICL 1501 intelligent terminal</div>
+          </a>
+        </li>
+      </menu>
+      <p th:if="${#lists.isEmpty(items)}" class="system-msg">
+      Ingen genstande fundet
+      </p>
+    <!--/*/ </th:block> /*/-->
+    <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+          <a th:replace="~{paging :: paging(1, '&lt;&lt;', 'Første Side')}">&lt;&lt;</a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+          <a th:replace="~{paging :: paging(${currentPage - 1}, '&lt;', 'Forrige Side')}">&lt;</a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
+          <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
+          <a th:replace="~{paging :: paging(${page}, ${page}, 'Side ' + ${page})}">#</a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
+          <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+          <a th:replace="~{paging :: paging(${currentPage + 1},'&gt;', 'Næste Side')}">&gt;</a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+          <a th:replace="~{paging :: paging(${totalPages}, '&gt;&gt;', 'Sidste Side')}">&gt;&gt;</a>
+        </li>
+      </ul>
+    </nav>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

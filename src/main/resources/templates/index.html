@@ -39,8 +39,8 @@
         <li sec:authorize="hasAuthority('VIEW_STED')">
           <a href="places.html" th:href="@{places}">Brugssteder</a>
         </li>
-        <li sec:authorize="hasAuthority('VIEW_USER')">
-          <a href="administration.html" th:href="@{administration}">Brugeradministration</a>
+        <li sec:authorize="isAuthenticated()">
+          <a href="administration.html" th:href="@{administration}">Specialsider</a>
         </li>
         <li sec:authorize="isAuthenticated()">
           <a href="userprofile.html" th:href="@{userprofile}">Brugerprofil</a>
