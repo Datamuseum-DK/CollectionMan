@@ -41,7 +41,7 @@
       <fieldset id="Identifikation" class="tabcontent" style="display:block">
         <legend>Identifikation</legend>
         <dl class="factsheet">
-          <dt>Nr.</dt>
+          <dt>Genstand nr.</dt>
           <dd><span th:text="${item.id}">11000937</span> (<span th:text="${statuses[item.itemdeleted]}">Godkendt</span>
           <span th:text="${#strings.toLowerCase(item.itemClass.name)}">artefakt</span>)
         </dd>
@@ -63,7 +63,7 @@
           <dd th:unless="${#strings.isEmpty(item.itemserialno)}" th:text="${item.itemserialno}">131-006077-8</dd>
           <dt th:if="${item.qrcode}">QR kode</dt>
           <dd th:if="${item.qrcode}" th:text="${item.qrcode}">59001111</dd>
-          <dt>Beskrivelse</dt>
+          <dt class="multiline">Beskrivelse</dt>
           <dd class="multiline" th:utext="${#strings.trim(item.description)}">Rank Xerox type 860 tekstbehandlingsanlæg
 med 2 stk 8" diskettedrev, tastatur og skærm.
 Product codes X994, X995 og X996.
@@ -158,11 +158,11 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
       <fieldset id="Brugsaktivitet" class="tabcontent">
         <legend>Brugsaktivitet</legend>
         <dl class="factsheet">
-          <dt>Brugt af</dt>
+          <dt class="multiline">Brugt af</dt>
           <dd class="multiline" th:utext="${item.itemusedby}">Brugsen</dd>
-          <dt>Til hvad</dt>
+          <dt class="multiline">Til hvad</dt>
           <dd class="multiline" th:text="${item.itemusedfor}">Kontrabøger</dd>
-          <dt>Brugt hvor</dt>
+          <dt class="multiline">Brugt hvor</dt>
           <dd class="multiline" th:text="${item.itemusedwhere}">Ja, hvor henne?</dd>
           <dt>Område</dt>
           <dd>
@@ -173,13 +173,13 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
       <fieldset id="Notater" class="tabcontent">
         <legend>Notater</legend>
         <dl class="factsheet">
-          <dt title="Særlige oplysninger om genstandens proveniens">Ekstra info</dt>
+          <dt class="multiline" title="Særlige oplysninger om genstandens proveniens">Særlige oplysninger</dt>
           <dd class="multiline" th:utext="${item.itemextrainfo}">Tekst her</dd>
-          <dt>Restaurering</dt>
+          <dt class="multiline" >Restaurering</dt>
           <dd class="multiline" th:utext="${item.itemrestoration}">Tekst her</dd>
-          <dt title="Litteraturhenvisninger">Litteratur</dt>
+          <dt class="multiline" title="Litteraturhenvisninger">Litteratur</dt>
           <dd class="multiline" th:utext="${item.itemreferences}">Tekst her</dd>
-          <dt>Bemærkninger</dt>
+          <dt class="multiline">Bemærkninger (intern)</dt>
           <dd class="multiline" th:utext="${item.itemremarks}">Kommentarer</dd>
         </dl>
       </fieldset>

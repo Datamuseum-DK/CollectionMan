@@ -285,10 +285,14 @@ dl.factsheet dd a.subject::before {
   dl.factsheet dt {
     box-sizing: border-box;
     margin: 0;
-    text-align: right;
+    text-align: left;
     padding-right: 0.5ex;
     width: 7em;
     font-weight: bold;
+  }
+  dl.factsheet dt.multiline {
+    width: 100%;
+    text-align: left;
   }
 
   dl.factsheet dd {
