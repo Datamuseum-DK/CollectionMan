@@ -18,20 +18,20 @@
         <fieldset>
           <legend>Navigere hierarkisk</legend>
           <button th:if="${placementid}" type="submit" name="placementid" th:value="${placementid}" th:text="${placename}">Sandby</button>
-          <div th:each="place : ${places}" th:value="${place.id}">
-            <div>
-              <a href="items-move-nav.html?itemid=21000937&amp;placementid=10000041" th:href="@{move-nav(itemid=${itemid},placementid=${place.id})}" th:text="${place.headline}">Pallereol A</a>
-            </div>
-            <div th:remove="all">
-              <a href="items-move-nav.html?itemid=21000937&amp;placementid=10000042">Pallereol B</a>
-            </div>
-            <div th:remove="all">
-              <a href="items-move-nav.html?itemid=21000937&amp;placementid=10000043">Pallereol C</a>
-            </div>
-            <div th:remove="all">
-              <a href="items-move-nav.html?itemid=21000937&amp;placementid=10000044">Pallereol D</a>
-            </div>
-          </div>
+          <ul class="navselect">
+          <li th:each="place : ${places}" th:value="${place.id}">
+            <a href="items-move-nav.html?itemid=21000937&amp;placementid=10000041" th:href="@{move-nav(itemid=${itemid},placementid=${place.id})}" th:text="${place.headline}">Pallereol A</a>
+          </li>
+          <li th:remove="all">
+            <a href="items-move-nav.html?itemid=21000937&amp;placementid=10000042">Pallereol B</a>
+          </li>
+          <li th:remove="all">
+            <a href="items-move-nav.html?itemid=21000937&amp;placementid=10000043">Pallereol C</a>
+          </li>
+          <li th:remove="all">
+            <a href="items-move-nav.html?itemid=21000937&amp;placementid=10000044">Pallereol D</a>
+          </li>
+          </ul>
         </fieldset>
       </form>
     </section>

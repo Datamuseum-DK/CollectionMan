@@ -27,11 +27,19 @@ import dk.datamuseum.mobilereg.repositories.RoleRepository;
 @RequestMapping("/roles")
 public class RoleController {
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
-    private PermissionRepository permissionRepository;
+    private final PermissionRepository permissionRepository;
+
+    /**
+     * Constructor.
+     */
+    public RoleController(
+                RoleRepository roleRepository,
+                PermissionRepository permissionRepository) {
+        this.roleRepository = roleRepository;
+        this.permissionRepository = permissionRepository;
+    }
 
     @ModelAttribute("allPermissions")
     public Iterable<Permission> allPermissions() {

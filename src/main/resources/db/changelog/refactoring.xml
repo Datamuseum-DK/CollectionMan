@@ -48,4 +48,52 @@
     </dropColumn>
   </changeSet>
 
+  <!-- Version 6.2.0 -->
+  <changeSet author="roug" id="ref07">
+    <comment>Create statuses table</comment>
+    <renameColumn 
+            tableName="items"
+            columnDataType="int"
+            newColumnName="itemstatus"
+            oldColumnName="itemdeleted"
+            remarks="Registration status"/>
+    <createTable tableName="item_statuses">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="name" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="visible" type="BOOLEAN" defaultValueBoolean="false">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <insert tableName="item_statuses">
+      <column name="id" valueNumeric="0"/>
+      <column name="name" value="Offentlig"/>
+      <column name="visible" valueBoolean="true"/>
+    </insert>
+    <insert tableName="item_statuses">
+      <column name="id" valueNumeric="1"/>
+      <column name="name" value="Klar"/>
+      <column name="visible" valueBoolean="false"/>
+    </insert>
+    <insert tableName="item_statuses">
+      <column name="id" valueNumeric="2"/>
+      <column name="name" value="Kladde"/>
+      <column name="visible" valueBoolean="false"/>
+    </insert>
+    <insert tableName="item_statuses">
+      <column name="id" valueNumeric="3"/>
+      <column name="name" value="Udgået"/>
+      <column name="visible" valueBoolean="false"/>
+    </insert>
+    <insert tableName="item_statuses">
+      <column name="id" valueNumeric="4"/>
+      <column name="name" value="Intern"/>
+      <column name="visible" valueBoolean="false"/>
+    </insert>
+  </changeSet>
+
 </databaseChangeLog>

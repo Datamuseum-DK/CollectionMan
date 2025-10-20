@@ -23,8 +23,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class FileOpsController {
 
-    @Autowired
-    private PictureService pictureService;
+    private final PictureService pictureService;
+
+    /**
+     * Constructor.
+     */
+    public FileOpsController(PictureService pictureService) {
+        this.pictureService = pictureService;
+    }
 
     /**
      * Download a file.

@@ -27,10 +27,20 @@ import dk.datamuseum.mobilereg.repositories.ItemRepository;
 @RequestMapping("/donors")
 public class DonorController {
 
-    @Autowired
-    private DonorRepository donorRepository;
-    @Autowired
-    private ItemRepository itemRepository;
+
+    private final DonorRepository donorRepository;
+
+    private final ItemRepository itemRepository;
+
+    /**
+     * Constructor.
+     */
+    public DonorController(
+            DonorRepository donorRepository,
+            ItemRepository itemRepository) {
+        this.donorRepository = donorRepository;
+        this.itemRepository = itemRepository;
+    }
 
     /**
      * List donors, either all or filtered.

@@ -22,11 +22,19 @@ import dk.datamuseum.mobilereg.service.PictureService;
 @RequestMapping("/pictures")
 public class PictureController {
 
-    @Autowired
-    private PictureRepository pictureRepository;
+    private final PictureRepository pictureRepository;
 
-    @Autowired
-    private PictureService pictureService;
+    private final PictureService pictureService;
+
+    /**
+     * Constructor.
+     */
+    public PictureController(
+                PictureRepository pictureRepository,
+                PictureService pictureService) {
+        this.pictureRepository = pictureRepository;
+        this.pictureService = pictureService;
+    }
 
     /*
     @RequestMapping({"", "/", "/view"})

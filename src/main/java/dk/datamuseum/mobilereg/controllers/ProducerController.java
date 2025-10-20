@@ -25,10 +25,18 @@ import dk.datamuseum.mobilereg.repositories.ProducerRepository;
 @RequestMapping("/producers")
 public class ProducerController {
     
-    @Autowired
-    private ProducerRepository producerRepository;
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ProducerRepository producerRepository;
+    private final ItemRepository itemRepository;
+
+    /**
+     * Constructor.
+     */
+    public ProducerController(
+                ProducerRepository producerRepository,
+                ItemRepository itemRepository) {
+        this.producerRepository = producerRepository;
+        this.itemRepository = itemRepository;
+    }
 
     /**
      * List producers, either all or filtered.

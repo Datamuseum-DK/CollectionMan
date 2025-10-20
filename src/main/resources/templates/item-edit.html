@@ -55,8 +55,10 @@
             <span th:if="${#fields.hasErrors('fileid')}" th:errors="*{fileid}" class="fielderror">Error</span>
           </div>
           <div>
-            <label class="leader required" for="id_itemdeleted">Status:</label>
-            <select th:field="*{itemdeleted}" name="itemdeleted" id="id_itemdeleted">
+            <label class="leader required" for="id_itemstatus">Status:</label>
+            <select th:field="*{itemStatus}" name="itemStatus" id="id_itemstatus">
+            <option value="0" th:value="${status.id}" th:text="${status.name}" th:each="status: ${statuses}">Sandby</option>
+<!--
               <optgroup label="Publiseret">
                 <option value="0" th:selected="${itemdeleted} == 0">godkendt</option>
               </optgroup>
@@ -68,8 +70,9 @@
                 <option value="3" th:selected="${itemdeleted} == 3">udgået</option>
                 <option value="4" th:selected="${itemdeleted} == 4">intern</option>
               </optgroup>
+-->
             </select>
-            <span th:if="${#fields.hasErrors('itemdeleted')}" th:errors="*{itemdeleted}" class="fielderror">Error</span>
+            <span th:if="${#fields.hasErrors('itemStatus')}" th:errors="*{itemStatus}" class="fielderror">Error</span>
           </div>
           <div>
             <label class="leader" for="id_subjects">Emnegrupper:</label>

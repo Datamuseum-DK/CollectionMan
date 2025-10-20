@@ -47,10 +47,12 @@
             </select>
           </div>
           <div>
-            <label class="leader required" for="id_itemdeleted">Status:</label>
-            <select th:field="*{itemdeleted}" name="itemdeleted" id="id_itemdeleted">
+            <label class="leader required" for="id_itemstatus">Status:</label>
+            <select th:field="*{itemStatus}" name="itemstatus" id="id_itemstatus">
+              <option value="0" th:value="${status.id}" th:text="${status.name}" th:each="status: ${statuses}">Offentlig</option>
+              <!--
               <optgroup label="Publiseret">
-                <option value="0" th:selected="true" selected="selected">godkendt</option>
+                <option value="0" th:selected="true" selected="selected">Kladde</option>
               </optgroup>
               <optgroup label="Redaktion">
                 <option value="1">klar</option>
@@ -60,8 +62,9 @@
                 <option value="3">udgået</option>
                 <option value="4">intern</option>
               </optgroup>
+              -->
             </select>
-            <span th:if="${#fields.hasErrors('itemdeleted')}" th:errors="*{itemdeleted}" class="fielderror">Error</span>
+            <span th:if="${#fields.hasErrors('itemStatus')}" th:errors="*{itemStatus}" class="fielderror">Error</span>
           </div>
 
           <div>
@@ -129,15 +132,13 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
       </p>
           <div>
             <label class="required leader">Måde:</label>
-            <th:block th:remove="all-but-first">
               <label th:each="t : ${acquiretypes}">
                 <input th:field="*{itemacquiretype}" type="radio" value="0" th:value="${t.ordinal}" th:selected="${t == itemacquiretype}?'selected'"/>
                 <th:block th:text="${t}">Ukendt</th:block>
               </label>
-              <label><input name="gavetype" type="radio" value="1" checked="checked"/>Gave</label>
-              <label><input name="gavetype" type="radio" value="3"/>Køb</label>
-              <label><input name="gavetype" type="radio" value="4"/>Deponering</label>
-            </th:block>
+              <label th:remove="all"><input name="gavetype" type="radio" value="1" checked="checked"/>Gave</label>
+              <label th:remove="all"><input name="gavetype" type="radio" value="3"/>Køb</label>
+              <label th:remove="all"><input name="gavetype" type="radio" value="4"/>Deponering</label>
             <span th:if="${#fields.hasErrors('itemacquiretype')}" th:errors="*{itemacquiretype}" class="fielderror">Error</span>
           </div>
           <div>

@@ -33,10 +33,19 @@ import dk.datamuseum.mobilereg.repositories.ItemRepository;
 @RequestMapping("/files")
 public class FileController {
     
-    @Autowired
-    private FileRepository fileRepository;
-    @Autowired
-    private ItemRepository itemRepository;
+    private final FileRepository fileRepository;
+
+    private final ItemRepository itemRepository;
+
+    /**
+     * Constructor.
+     */
+    public FileController(
+                FileRepository fileRepository,
+                ItemRepository itemRepository) {
+        this.fileRepository = fileRepository;
+        this.itemRepository = itemRepository;
+    }
 
     /**
      * View list of case files.

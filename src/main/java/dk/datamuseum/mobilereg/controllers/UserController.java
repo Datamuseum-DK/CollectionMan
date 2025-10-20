@@ -31,17 +31,27 @@ import dk.datamuseum.mobilereg.repositories.UserRepository;
 @RequestMapping("/users")
 public class UserController {
     
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
-    private PermissionRepository permissionRepository;
+    private final PermissionRepository permissionRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    /**
+     * Constructor.
+     */
+    public UserController(
+                RoleRepository roleRepository,
+                PermissionRepository permissionRepository,
+                UserRepository userRepository,
+                PasswordEncoder passwordEncoder) {
+        this.roleRepository = roleRepository;
+        this.permissionRepository = permissionRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     /**
      * View all possible permissions.

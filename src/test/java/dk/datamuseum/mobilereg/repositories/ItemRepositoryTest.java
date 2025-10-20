@@ -3,6 +3,7 @@ package dk.datamuseum.mobilereg.repositories;
 import dk.datamuseum.mobilereg.entities.CaseFile;
 import dk.datamuseum.mobilereg.entities.Item;
 import dk.datamuseum.mobilereg.entities.ItemClass;
+import dk.datamuseum.mobilereg.entities.ItemStatus;
 import dk.datamuseum.mobilereg.entities.Picture;
 import dk.datamuseum.mobilereg.entities.Subject;
 
@@ -31,6 +32,9 @@ class ItemRepositoryTest {
     @Autowired
     private ItemClassRepository itemClassRepository;
 
+    @Autowired
+    private ItemStatusRepository itemStatusRepository;
+
     @Test
     void readThenSaveItem() {
         Optional<Item> optionalItem = itemRepository.findById(10000001);
@@ -52,11 +56,13 @@ class ItemRepositoryTest {
         CaseFile caseFile = fileRepository.findById(1).orElseThrow(()
                 -> new IllegalArgumentException("FileCase id not find"));
 
+        ItemStatus itemStatus = itemStatusRepository.findById(0).orElseThrow(()
+                -> new IllegalArgumentException("ItemStatus id not find"));
         // given
         Item item = new Item();
         //item.setId(1);
         //item.setItemtemporary(0);
-        item.setItemdeleted(0);
+        //item.setItemdeleted(0);
         item.setHeadline("item");
         item.setDescription("item");
         item.setItemsize("");
@@ -77,6 +83,7 @@ class ItemRepositoryTest {
         item.setItemacquiretype(1);
         item.setPictures(new ArrayList<Picture>());
         item.setSubjects(new ArrayList<Subject>());
+        item.setItemStatus(itemStatus);
         item.setLastmodified(LocalDateTime.parse("2014-04-30T06:20:38"));
         item.setItemdatingfrom(LocalDate.parse("1950-01-01"));
         item.setItemdatingto(LocalDate.parse("1969-12-31"));

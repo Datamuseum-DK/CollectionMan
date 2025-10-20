@@ -31,6 +31,7 @@ import dk.datamuseum.mobilereg.entities.Donor;
 import dk.datamuseum.mobilereg.entities.CaseFile;
 import dk.datamuseum.mobilereg.entities.Item;
 import dk.datamuseum.mobilereg.entities.ItemClass;
+import dk.datamuseum.mobilereg.entities.ItemStatus;
 import dk.datamuseum.mobilereg.entities.Picture;
 import dk.datamuseum.mobilereg.entities.Producer;
 import dk.datamuseum.mobilereg.entities.Sted;
@@ -40,6 +41,7 @@ import dk.datamuseum.mobilereg.repositories.FileRepository;
 import dk.datamuseum.mobilereg.repositories.DonorRepository;
 import dk.datamuseum.mobilereg.repositories.ItemRepository;
 import dk.datamuseum.mobilereg.repositories.ItemClassRepository;
+import dk.datamuseum.mobilereg.repositories.ItemStatusRepository;
 import dk.datamuseum.mobilereg.repositories.PictureRepository;
 import dk.datamuseum.mobilereg.repositories.ProducerRepository;
 import dk.datamuseum.mobilereg.repositories.StedRepository;
@@ -56,26 +58,56 @@ import static dk.datamuseum.mobilereg.service.RichTextService.richText;
 @RequestMapping("/items")
 public class ItemController {
 
-    @Autowired
-    private DonorRepository donorRepository;
-    @Autowired
-    private FileRepository fileRepository;
-    @Autowired
-    private ItemRepository itemRepository;
-    @Autowired
-    private ItemClassRepository itemClassRepository;
-    @Autowired
-    private PictureRepository pictureRepository;
-    @Autowired
-    private PictureService pictureService;
-    @Autowired
-    private ProducerRepository producerRepository;
-    @Autowired
-    private StedRepository stedRepository;
-    @Autowired
-    private SubjectRepository subjectRepository;
-    @Autowired
-    private MobileRegProperties properties;
+
+    private final DonorRepository donorRepository;
+
+    private final FileRepository fileRepository;
+
+    private final ItemRepository itemRepository;
+
+    private final ItemClassRepository itemClassRepository;
+
+    private final ItemStatusRepository itemStatusRepository;
+
+    private final PictureRepository pictureRepository;
+
+    private final PictureService pictureService;
+
+    private final ProducerRepository producerRepository;
+
+    private final StedRepository stedRepository;
+
+    private final SubjectRepository subjectRepository;
+
+    private final MobileRegProperties properties;
+
+    /**
+     * Constructor.
+     */
+    public ItemController(
+            DonorRepository donorRepository,
+            FileRepository fileRepository,
+            ItemRepository itemRepository,
+            ItemClassRepository itemClassRepository,
+            ItemStatusRepository itemStatusRepository,
+            PictureRepository pictureRepository,
+            PictureService pictureService,
+            ProducerRepository producerRepository,
+            StedRepository stedRepository,
+            SubjectRepository subjectRepository,
+            MobileRegProperties properties) {
+        this.donorRepository = donorRepository;
+        this.fileRepository = fileRepository;
+        this.itemRepository = itemRepository;
+        this.itemClassRepository = itemClassRepository;
+        this.itemStatusRepository = itemStatusRepository;
+        this.pictureRepository = pictureRepository;
+        this.pictureService = pictureService;
+        this.producerRepository = producerRepository;
+        this.stedRepository = stedRepository;
+        this.subjectRepository = subjectRepository;
+        this.properties = properties;
+    }
 
     /**
      * Get the items class level. 0 is topmost container.
@@ -169,11 +201,8 @@ public class ItemController {
      * List all item statuses.
      */
     @ModelAttribute("statuses")
-    public String[] statuses() {
-        String[] itemStatuses = {
-          "Godkendt", "Klar", "Kladde", "Udgået", "Intern"
-        };
-        return itemStatuses;
+    public Iterable<ItemStatus> statuses() {
+        return itemStatusRepository.findAll();
     }
 
     /**
@@ -458,6 +487,17 @@ public class ItemController {
     @PreAuthorize("hasAuthority('DELETE_ITEMS')")
     public String deleteItem(@PathVariable("id") int id, Model model) {
         Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
+        // Delete files
+        for (Picture picture : item.getPictures()) {
+            String filename = picture.getOriginal();
+            filename = filename.substring(filename.lastIndexOf('/') + 1);
+            pictureService.delete(filename);
+            log.debug("Deleted filename: {}", filename);
+
+            pictureRepository.delete(picture);
+            log.info("Deleted picture Id {}", picture.getPictureid());
+        }
+
         itemRepository.delete(item);
         log.info(String.format("Deleted item Id %d", id));
         return "redirect:/items";

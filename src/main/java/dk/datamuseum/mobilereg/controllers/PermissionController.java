@@ -18,8 +18,14 @@ import dk.datamuseum.mobilereg.repositories.PermissionRepository;
 @RequestMapping("/permissions")
 public class PermissionController {
     
-    @Autowired
-    private PermissionRepository permissionRepository;
+    private final PermissionRepository permissionRepository;
+
+    /**
+     * Constructor.
+     */
+    public PermissionController(PermissionRepository permissionRepository) {
+        this.permissionRepository = permissionRepository;
+    }
 
     /**
      * Show list of built-in permissions.

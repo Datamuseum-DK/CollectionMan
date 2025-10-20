@@ -20,8 +20,14 @@ import dk.datamuseum.mobilereg.repositories.ItemRepository;
 @Controller
 public class LocationsController {
     
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+
+    /**
+     * Constructor.
+     */
+    public LocationsController(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
 
     @RequestMapping({"/locations"})
     public String locationList(Model model) {

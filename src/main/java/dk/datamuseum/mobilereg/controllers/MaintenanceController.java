@@ -47,12 +47,24 @@ import static dk.datamuseum.mobilereg.service.RichTextService.richText;
 //@RequestMapping("/")
 public class MaintenanceController {
 
-    @Autowired
-    private ItemRepository itemRepository;
-    @Autowired
-    private PictureRepository pictureRepository;
-    @Autowired
-    private PictureService pictureService;
+
+    private final ItemRepository itemRepository;
+
+    private final PictureRepository pictureRepository;
+
+    private final PictureService pictureService;
+
+    /**
+     * Constructor.
+     */
+    public MaintenanceController(
+                ItemRepository itemRepository,
+                PictureRepository pictureRepository,
+                PictureService pictureService) {
+        this.itemRepository = itemRepository;
+        this.pictureRepository = pictureRepository;
+        this.pictureService = pictureService;
+    }
 
     /**
      * Run a search and return results.

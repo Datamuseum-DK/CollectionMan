@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
+//import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -70,11 +71,12 @@ public class Item {
     //@Column(length=255)
     //private String olditemid;
 
-    // itemdeleted         = models.IntegerField(verbose_name="status", choices=status_as, null=True, default=0)
-    @ColumnDefault("0")
-    @Column(nullable = false)
-    @NotNull(message = "Der skal angives en status")
-    private Integer itemdeleted;
+    //@ColumnDefault("0")
+    //@Column(nullable = false)
+    //@NotNull(message = "Der skal angives en status")
+    @ManyToOne
+    @JoinColumn(name="itemstatus", nullable=false)
+    private ItemStatus itemStatus;
 
     // itemheadline        = models.CharField('betegnelse', max_length=255, blank=False, db_index=True)
     @Column(name = "itemheadline", length=255)
@@ -274,7 +276,7 @@ public class Item {
      */
     public Item() {
         //setIteminternal(0);
-        setItemdeleted(0); // Godkendt
+        //setItemdeleted(0); // Godkendt
         //setItemtemporary(0);
         //setItemClass(1);
         //setOlditemid("");

@@ -32,18 +32,20 @@
       <form method="post" action="items-move-nav.html" th:action="@{/items/updateplace/{id}(id=${itemid})}">
         <fieldset>
           <legend>Navigere hierarkisk</legend>
-          <div th:each="place : ${places}">
+          <ul class="navselect">
+          <li th:each="place : ${places}">
             <a href="items-move-nav.html?itemid=10000041" th:href="@{move-nav(itemid=${itemid},placementid=${place.id})}" th:text="${place.headline}">Sandby</a>
-          </div>
-          <div th:remove="all">
+          </li>
+          <li th:remove="all">
             <a href="items-move-nav.html?itemid=10000042">Tapeten</a>
-          </div>
-          <div th:remove="all">
+          </li>
+          <li th:remove="all">
             <a href="items-move-nav.html?itemid=10000043">Renge</a>
-          </div>
-          <div th:remove="all">
+          </li>
+          <li th:remove="all">
             <a href="items-move-nav.html?itemid=10000044">Ukendt</a>
-          </div>
+          </li>
+          </ul>
         </fieldset>
       </form>
     </section>

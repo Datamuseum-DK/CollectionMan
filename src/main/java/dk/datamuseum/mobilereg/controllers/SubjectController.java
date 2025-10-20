@@ -25,10 +25,20 @@ import dk.datamuseum.mobilereg.repositories.SubjectRepository;
 @RequestMapping("/subjects")
 public class SubjectController {
     
-    @Autowired
-    private SubjectRepository subjectRepository;
-    @Autowired
-    private ItemRepository itemRepository;
+
+    private final SubjectRepository subjectRepository;
+
+    private final ItemRepository itemRepository;
+
+    /**
+     * Constructor.
+     */
+    public SubjectController(
+                SubjectRepository subjectRepository,
+                ItemRepository itemRepository) {
+        this.subjectRepository = subjectRepository;
+        this.itemRepository = itemRepository;
+    }
 
     @PreAuthorize("hasAuthority('VIEW_SUBJECTS')")
     @RequestMapping({"", "/", "/view"})

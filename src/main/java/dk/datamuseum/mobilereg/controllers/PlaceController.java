@@ -26,10 +26,20 @@ import dk.datamuseum.mobilereg.repositories.ItemRepository;
 @RequestMapping("/places")
 public class PlaceController {
     
-    @Autowired
-    private StedRepository placeRepository;
-    @Autowired
-    private ItemRepository itemRepository;
+
+    private final StedRepository placeRepository;
+
+    private final ItemRepository itemRepository;
+
+    /**
+     * Constructor.
+     */
+    public PlaceController(
+                StedRepository placeRepository,
+                ItemRepository itemRepository) {
+        this.placeRepository = placeRepository;
+        this.itemRepository = itemRepository;
+    }
 
     @PreAuthorize("hasAuthority('VIEW_STED')")
     @RequestMapping({"", "/", "/view"})

@@ -48,7 +48,8 @@ public class SecurityConfig {
     @Profile("!oauth")
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/", "/css/**", "/js/**", "/favicon.svg", "/login", "/about").permitAll()
+            .requestMatchers("/", "/css/**", "/js/**", "/favicon.svg",
+                    "/login", "/about", "/api/**").permitAll()
             .requestMatchers("/userprofile").authenticated()
             .anyRequest().hasAuthority("ROLE_VIEWER")
             )

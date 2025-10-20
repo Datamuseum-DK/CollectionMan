@@ -22,7 +22,7 @@
           <button id="flyt" type="submit" formaction="item-move.html" th:formaction="@{/items/move}" th:unless="${item.itemClass.getLevel() eq 0}" sec:authorize="hasAuthority('CHANGE_ITEMS')">Flyt</button>
           <button th:unless="${item.qrcode}" type="submit" form="editform" formaction="addqrform.html" th:formaction="@{/items/addqrform(id=${item.id})}">Scan QR</button>
           <button type="submit" sec:authorize="hasAuthority('ADD_ITEMS')" form="createform" th:if="${types[0].getLevel() gt item.itemClass.getLevel()}">Opret heri</button>
-          <button sec:authorize="hasAuthority('DELETE_ITEMS')" id="delete" type="submit" form="editform" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}" onclick="return confirm('Er du sikker?')">Slet</button>
+          <button sec:authorize="hasAuthority('DELETE_ITEMS')" th:if="${#lists.isEmpty(children)}" id="delete" type="submit" form="editform" formaction="items.html" th:formaction="@{/items/delete/{id}(id=${item.id})}" onclick="return confirm('Er du sikker?')">Slet</button>
           <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
         </form>
         <form id="createform" style="display:none" action="item-addform.html" th:action="@{/items/addform}" sec:authorize="hasAuthority('ADD_ITEMS')" method="post">
@@ -42,7 +42,7 @@
         <legend>Identifikation</legend>
         <dl class="factsheet">
           <dt>Genstand nr.</dt>
-          <dd><span th:text="${item.id}">11000937</span> (<span th:text="${statuses[item.itemdeleted]}">Godkendt</span>
+          <dd><span th:text="${item.id}">11000937</span> (<span th:text="${item.itemStatus.name}">Godkendt</span>
           <span th:text="${#strings.toLowerCase(item.itemClass.name)}">artefakt</span>)
         </dd>
           <dt>Sag</dt>
@@ -103,7 +103,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <input id="submitButton" type="submit" value="Upload"/>
           </div>
         </form>
-        <div th:if="${not #lists.isEmpty(children)}">
+        <div th:unless="${#lists.isEmpty(children)}">
           <h2>Genstande</h2>
           <dl>
             <div th:remove="tag" th:each="child : ${children}">
