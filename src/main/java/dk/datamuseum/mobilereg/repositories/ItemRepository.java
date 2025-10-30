@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * existsById, findAll, findById, save.
  */
 @Repository
-public interface ItemRepository extends CrudRepository<Item, Integer> {
+public interface ItemRepository extends ListCrudRepository<Item, Integer> {
 
     /**
      * Do a full text search on items.

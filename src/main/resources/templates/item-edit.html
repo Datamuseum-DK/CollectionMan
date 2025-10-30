@@ -280,7 +280,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <label class="leader" for="donorid">Donator:</label>
             <select id="donorid" th:field="*{donorid}">
               <option value="">-------</option>
-              <option value="237" th:each="d : ${donors}" th:value="${d.id}" th:text="${d.title}">Motorola micro systems</option>
+              <option value="237" th:each="d : ${donors}" th:value="${d.id}" th:text="${d.displayname}">Motorola micro systems</option>
               <option value="274" th:remove="all">Nixdorf Computer</option>
               <option value="64" selected="selected" th:remove="all">Rank Xerox</option>
               <option value="285" th:remove="all">SC Metric A/S</option>

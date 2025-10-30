@@ -50,7 +50,7 @@ public class Donor {
     @Column(name = "donatorposition")
     private String position;
 
-    @NotBlank(message = "Name is mandatory")
+    //@NotBlank(message = "Name is mandatory")
     @Column(name = "donatorname")
     private String name;
 
@@ -64,7 +64,9 @@ public class Donor {
     private String email;
 
     //@Formula("if(donatorinstitution in ('', '-'), donatorname, concat(donatorname,', ',donatorinstitution)) AS title")
-    @Formula("CASE WHEN donatorinstitution IN ('', '-') THEN donatorname ELSE concat(donatorname,', ',donatorinstitution) END")
-    private String title;
+    @Formula("CASE WHEN donatorinstitution IN ('', '-') THEN donatorname"
+        + " WHEN donatorname IN ('','-') THEN donatorinstitution"
+        + " ELSE concat(donatorname,', ',donatorinstitution) END")
+    private String displayname;
 
 }

@@ -16,9 +16,9 @@
       <h2>Opret donor</h2>
       <form id="editfactsheet" action="donors-view.html" th:action="@{adddonor}" th:object="${donor}" method="post">
         <div>
-          <label class="head required">Navn
+          <label class="leader">Navn
+          <input type="text" th:field="*{name}" value="Pippi Langstrømpe"/>
           <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fielderror">Field is mandatory</span></label>
-          <input type="text" th:field="*{name}" value="Pippi Langstrømpe" class="fullwidth"/>
         </div>
         <div>
           <label class="leader" for="position">Stilling</label>

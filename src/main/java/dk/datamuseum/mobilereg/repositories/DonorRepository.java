@@ -3,7 +3,7 @@ package dk.datamuseum.mobilereg.repositories;
 import dk.datamuseum.mobilereg.entities.Donor;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * existsById, findAll, findById, save.
  */
 @Repository
-public interface DonorRepository extends CrudRepository<Donor, Integer> {
+public interface DonorRepository extends ListCrudRepository<Donor, Integer> {
     /**
      * List all producers and order by name.
      */

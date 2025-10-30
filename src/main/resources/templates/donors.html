@@ -27,16 +27,14 @@
         <thead>
           <tr>
             <th scope="col">Navn</th>
-            <th scope="col">Institution</th>
             <th scope="col">Oprettet</th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="donor : ${donors}">
             <td>
-              <a href="donors-view.html" th:href="@{/donors/view/{id}(id=${donor.id})}" th:text="${#strings.defaultString(donor.name, '(mangler)')}">Arne Lindvig Hansen</a>
+              <a href="donors-view.html" th:href="@{/donors/view/{id}(id=${donor.id})}" th:text="${#strings.defaultString(donor.displayname, '(mangler)')}">Arne Lindvig Hansen</a>
             </td>
-            <td th:text="${donor.institution}">TDC Erhverv</td>
             <td th:text="${#temporals.format(donor.created,'yyyy-MM-dd')}">2012-05-06</td>
           </tr>
         </tbody>

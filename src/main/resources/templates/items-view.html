@@ -145,7 +145,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         <dl class="factsheet">
           <dt th:if="${donor.isPresent()}">Donator</dt>
           <dd th:if="${donor.isPresent()}">
-            <a href="donors-view.html" th:href="@{/donors/view/{id}(id=${donor.get().getId()})}" th:text="${donor.get().getTitle()}">SAS Data Seniorklub</a>
+            <a href="donors-view.html" th:href="@{/donors/view/{id}(id=${donor.get().getId()})}" th:text="${donor.get().getDisplayname()}">SAS Data Seniorklub</a>
           </dd>
           <dt title="Modtagelsesdato">Modtaget</dt>
           <dd><span th:remove="tag" th:text="${#temporals.format(item.itemreceived,'yyyy-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemreceivedby}">fvn</span></dd>
