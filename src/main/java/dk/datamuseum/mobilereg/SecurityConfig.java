@@ -49,7 +49,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
             .requestMatchers("/", "/css/**", "/js/**", "/favicon.svg",
-                    "/login", "/about", "/api/**").permitAll()
+                    "/login", "/about").permitAll()
             .requestMatchers("/userprofile").authenticated()
             .anyRequest().hasAuthority("ROLE_VIEWER")
             )
@@ -57,6 +57,7 @@ public class SecurityConfig {
                     .permitAll()
             )
             .logout((logout) -> logout.permitAll())
+            .httpBasic()
             ;
         return http.build();
     }

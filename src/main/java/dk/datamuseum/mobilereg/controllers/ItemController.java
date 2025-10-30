@@ -765,7 +765,7 @@ public class ItemController {
         picture.setOriginal("");
         picture.setMedium("");
         picture.setLow("");
-        picture.setItem(item);
+        picture.setItemid(id);
         pictureRepository.save(picture);
 
         var pictureId = picture.getPictureid();

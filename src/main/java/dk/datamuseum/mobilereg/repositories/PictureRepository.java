@@ -4,6 +4,7 @@ import dk.datamuseum.mobilereg.entities.Picture;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,5 +13,5 @@ import org.springframework.stereotype.Repository;
  * @see <a href="https://docs.spring.io/spring-data/data-commons/docs/3.0.0/reference/html/#repositories">Working with Spring Data Repositories</a>
  */
 @Repository
-public interface PictureRepository extends CrudRepository<Picture, Integer> {
+public interface PictureRepository extends ListCrudRepository<Picture, Integer> {
 }

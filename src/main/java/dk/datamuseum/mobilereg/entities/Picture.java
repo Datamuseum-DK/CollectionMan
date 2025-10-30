@@ -65,7 +65,12 @@ public class Picture {
     @Column(name = "picturelow")
     private String low;
 
-    @ManyToOne
-    @JoinColumn(name = "itemid")
-    private Item item;
+    //@ManyToOne
+    //@JoinColumn(name = "itemid")
+    //private Item item;
+    private Integer itemid;
+
+    public String getFilename() {
+        return original.substring(original.lastIndexOf('/') + 1);
+    }
 }

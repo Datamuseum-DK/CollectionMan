@@ -63,7 +63,7 @@ public class PictureController {
     public String deletePicture(@PathVariable("id") int id, Model model) {
         Picture picture = pictureRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid picture Id:" + id));
-        Item returnItem = picture.getItem();
+        Integer returnItem = picture.getItemid();
         pictureRepository.delete(picture);
         log.info("Deleted picture Id {}", id);
 
@@ -72,6 +72,6 @@ public class PictureController {
         log.debug("Deleted filename: {}", filename);
         pictureService.delete(filename);
 
-        return String.format("redirect:/items/view/%d", returnItem.getId());
+        return String.format("redirect:/items/view/%d", returnItem);
     }
 }

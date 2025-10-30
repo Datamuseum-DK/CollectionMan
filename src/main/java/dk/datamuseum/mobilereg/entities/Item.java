@@ -257,7 +257,7 @@ public class Item {
         )
     List<Subject> subjects;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "itemid")
     List<Picture> pictures;
 
     @ManyToOne

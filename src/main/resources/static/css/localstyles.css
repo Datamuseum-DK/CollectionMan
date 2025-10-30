@@ -242,6 +242,15 @@ dl.factsheet dd a.subject::before {
     font-weight: bold;
 }
 
+#gatekeeper {
+    width:1em;
+    float:right
+}
+
+#gatekeeper a:link {
+    text-decoration: none;
+}
+
 /* Beginning of media styles */
 @media (max-width: 480px) {
   dl.factsheet dd {

@@ -106,3 +106,15 @@ mysql:
         memory: 768Mi
         cpu: 750m
 ```
+
+## API
+
+There is a HATEOAS compliant web services API available at /api/v1alpha. From there you can explore the methods.
+It requires Basic authentication. Here is how it can be done with `curl` and `wget`:
+```
+curl http://reg:testkode@localhost:8080/api/v1alpha
+curl -u reg:testkode http://localhost:8080/api/v1alpha
+wget --user=reg --password=testkode  http://localhost:8080/api/v1alpha
+```
+Best practice is to create a functional account that only has the permissions it needs.
+

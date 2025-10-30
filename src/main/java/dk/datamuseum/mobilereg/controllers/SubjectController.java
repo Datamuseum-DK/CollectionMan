@@ -53,6 +53,7 @@ public class SubjectController {
     public String showFactsheet(@PathVariable("id") int subjectid, Model model) {
         Subject subject = subjectRepository.findById(subjectid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid subject Id:" + subjectid));
+        model.addAttribute("items", itemRepository.findBySubjectOrderByHeadline(subjectid));
         model.addAttribute("subject", subject);
 
         return "subjects-view";

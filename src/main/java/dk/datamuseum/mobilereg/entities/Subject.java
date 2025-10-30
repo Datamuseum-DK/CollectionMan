@@ -60,9 +60,9 @@ public class Subject {
     private String description;
 
     /* Reference to variable in Item.java */
-    @ManyToMany(mappedBy = "subjects")
-    @OrderBy(value = "headline ASC")
-    private List<Item> items;
+    // @ManyToMany(mappedBy = "subjects")
+    // @OrderBy(value = "headline ASC")
+    // private List<Item> items;
 
     @Formula("(SELECT COUNT(*) FROM items_itemsubject iis WHERE iis.subjects_id = subjectid)")
     private Long totalItems;

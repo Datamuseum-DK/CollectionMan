@@ -146,4 +146,12 @@ public interface ItemRepository extends CrudRepository<Item, Integer> {
      * @param pageable - information about which page the user wants returned.
      */
     Page<Item> findBySubjectsIsNullOrderByHeadline(Pageable pageable);
+
+    /**
+     * List all items that have a specified subjectid.
+     *
+     * @param subjectid - the numeric subject id.
+     */
+    @Query(value = "SELECT i FROM Item i JOIN i.subjects s WHERE s.subjectid = ?1 ORDER BY i.headline")
+    Iterable<Item> findBySubjectOrderByHeadline(int subjectid);
 }
