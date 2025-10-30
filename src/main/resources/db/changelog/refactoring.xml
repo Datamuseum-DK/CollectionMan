@@ -96,4 +96,10 @@
     </insert>
   </changeSet>
 
+  <changeSet author="roug" id="ref08">
+    <addColumn tableName="items">
+      <column name="lastmodifiedby" type="VARCHAR(32)" afterColumn="lastmodified"/>
+    </addColumn>
+  </changeSet>
+
 </databaseChangeLog>

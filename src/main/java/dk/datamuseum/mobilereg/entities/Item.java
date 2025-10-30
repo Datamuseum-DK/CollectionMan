@@ -25,6 +25,7 @@ import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -167,6 +168,10 @@ public class Item {
     @LastModifiedDate
     @Column
     private LocalDateTime lastmodified;
+
+    @LastModifiedBy
+    @Column
+    private String lastmodifiedby;
 
     // itemthanksletter    = models.DateField(verbose_name="takkebrev afsendt", null=True, blank=True)
     //@Column
