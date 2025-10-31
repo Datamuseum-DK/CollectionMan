@@ -70,7 +70,7 @@ of the art customer service.
     </main>
     <!-- container -->
     <footer th:fragment="footerFragment">
-      <div id="gatekeeper" title="RSS kommer her"><a href="https://www.imdb.com/title/tt0113957/">π</a></div>
+      <div id="gatekeeper" title="RSS kommer her"><a href="https://en.wikipedia.org/wiki/The_Net_(1995_film)">π</a></div>
       <p sec:authorize="isAuthenticated()">Log ud: <a th:href="@{/logout}" href="login.html" th:text="${#authentication.name}">Bob</a></p>
       <p sec:authorize="not isAuthenticated()">Bruger: <a th:href="@{/login}" href="login.html">Anonym</a></p>
     </footer>
