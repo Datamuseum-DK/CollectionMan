@@ -56,7 +56,7 @@ class ItemRepositoryTest {
         CaseFile caseFile = fileRepository.findById(1).orElseThrow(()
                 -> new IllegalArgumentException("FileCase id not find"));
 
-        ItemStatus itemStatus = itemStatusRepository.findById(0).orElseThrow(()
+        ItemStatus itemStatus = itemStatusRepository.findById(1).orElseThrow(()
                 -> new IllegalArgumentException("ItemStatus id not find"));
         // given
         Item item = new Item();

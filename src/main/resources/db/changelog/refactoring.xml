@@ -49,7 +49,7 @@
   </changeSet>
 
   <!-- Version 6.2.0 -->
-  <changeSet author="roug" id="ref07">
+  <changeSet author="roug" id="v6.2.0-1">
     <comment>Create statuses table</comment>
     <renameColumn 
             tableName="items"
@@ -57,6 +57,9 @@
             newColumnName="itemstatus"
             oldColumnName="itemdeleted"
             remarks="Registration status"/>
+
+    <sql>UPDATE items SET itemstatus = itemstatus + 1</sql>
+
     <createTable tableName="item_statuses">
       <column autoIncrement="true" name="id" type="INT">
         <constraints nullable="false" primaryKey="true"/>
@@ -70,33 +73,33 @@
     </createTable>
 
     <insert tableName="item_statuses">
-      <column name="id" valueNumeric="0"/>
+      <column name="id" valueNumeric="1"/>
       <column name="name" value="Offentlig"/>
       <column name="visible" valueBoolean="true"/>
     </insert>
     <insert tableName="item_statuses">
-      <column name="id" valueNumeric="1"/>
+      <column name="id" valueNumeric="2"/>
       <column name="name" value="Klar"/>
       <column name="visible" valueBoolean="false"/>
     </insert>
     <insert tableName="item_statuses">
-      <column name="id" valueNumeric="2"/>
+      <column name="id" valueNumeric="3"/>
       <column name="name" value="Kladde"/>
       <column name="visible" valueBoolean="false"/>
     </insert>
     <insert tableName="item_statuses">
-      <column name="id" valueNumeric="3"/>
+      <column name="id" valueNumeric="4"/>
       <column name="name" value="Udgået"/>
       <column name="visible" valueBoolean="false"/>
     </insert>
     <insert tableName="item_statuses">
-      <column name="id" valueNumeric="4"/>
+      <column name="id" valueNumeric="5"/>
       <column name="name" value="Intern"/>
       <column name="visible" valueBoolean="false"/>
     </insert>
   </changeSet>
 
-  <changeSet author="roug" id="ref08">
+  <changeSet author="roug" id="v6.2.0-2">
     <addColumn tableName="items">
       <column name="lastmodifiedby" type="VARCHAR(32)" afterColumn="lastmodified"/>
     </addColumn>
