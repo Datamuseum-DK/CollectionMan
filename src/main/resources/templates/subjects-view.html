@@ -31,30 +31,8 @@ th:formaction="@{/subjects/delete/{id}(id=${subject.subjectid})}" onclick="retur
           </div>
         </dl>
         <div th:if="${not #lists.isEmpty(items)}">
-        <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
-          <ul class="pagination">
-            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-              <a th:replace="~{paging :: items(1, '&lt;&lt;', 'Første Side')}">&lt;&lt;</a>
-            </li>
-            <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-              <a th:replace="~{paging :: items(${currentPage - 1}, 'Forr', 'Forrige Side')}">Forr.</a>
-            </li>
-            <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
-              <a class="page-link" href="#">...</a>
-            </li>
-            <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
-              <a th:replace="~{paging :: items(${page}, ${page}, 'Side ' + ${page})}">#</a>
-            </li>
-            <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
-              <a class="page-link" href="#">...</a>
-            </li>
-            <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-              <a th:replace="~{paging :: items(${currentPage + 1},'Næste', 'Næste Side')}">Næste</a>
-            </li>
-            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-              <a th:replace="~{paging :: items(${totalPages}, '&gt;&gt;', 'Sidste Side')}">&gt;&gt;</a>
-            </li>
-          </ul>
+        <nav aria-label="Pagination" th:replace="~{paging :: pagination(@{subjects/view/{id}(id=${subject.subjectid})})}">
+        Navigation here.
         </nav>
       </div>
     </main>

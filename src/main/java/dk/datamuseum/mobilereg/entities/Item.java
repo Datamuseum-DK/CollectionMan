@@ -81,7 +81,7 @@ public class Item {
 
     // itemheadline        = models.CharField('betegnelse', max_length=255, blank=False, db_index=True)
     @Column(name = "itemheadline", length=255)
-    @NotBlank(message = "Headline is mandatory")
+    //@NotBlank(message = "Headline is mandatory")
     private String headline;
     
     // itemdescription     = models.TextField('beskrivelse', default='', blank=True)

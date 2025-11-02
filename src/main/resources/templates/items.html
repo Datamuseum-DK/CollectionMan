@@ -67,30 +67,8 @@
       Ingen genstande fundet
       </p>
     </main>
-    <nav aria-label="Pagination" th:if="${totalPages &gt; 0}">
-      <ul class="pagination justify-content-center">
-        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-          <a th:replace="~{paging :: paging(1, '&lt;&lt;', 'Første Side')}">&lt;&lt;</a>
-        </li>
-        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-          <a th:replace="~{paging :: paging(${currentPage - 1}, '&lt;', 'Forrige Side')}">&lt;</a>
-        </li>
-        <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
-          <a class="page-link" href="#">...</a>
-        </li>
-        <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
-          <a th:replace="~{paging :: paging(${page}, ${page}, 'Side ' + ${page})}">#</a>
-        </li>
-        <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
-          <a class="page-link" href="#">...</a>
-        </li>
-        <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-          <a th:replace="~{paging :: paging(${currentPage + 1},'&gt;', 'Næste Side')}">&gt;</a>
-        </li>
-        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-          <a th:replace="~{paging :: paging(${totalPages}, '&gt;&gt;', 'Sidste Side')}">&gt;&gt;</a>
-        </li>
-      </ul>
+    <nav aria-label="Pagination" th:replace="~{paging :: pagination(@{/items(q=${q!=null? q : ''})})}">
+    Navigation here.
     </nav>
     <footer th:replace="~{layout :: footerFragment}">
     Footer

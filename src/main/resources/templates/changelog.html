@@ -12,7 +12,7 @@
       </h1>
     </header>
     <section id="content">
-      <div th:switch="${changeditems}">
+      <div th:switch="${items}">
         <h2 th:case="null">Ingen ændringer</h2>
         <div th:case="*">
           <h2>Seneste ændringer</h2>
@@ -28,7 +28,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr th:each="item : ${changeditems}">
+              <tr th:each="item : ${items}">
                 <td th:text="${#temporals.format(item.lastmodified,'yyyy-MM-dd HH:mm:ss')}">2012-05-06 14:55:12</td>
                 <td th:text="${item.lastmodifiedby}">SMR</td>
                 <td>
@@ -40,6 +40,37 @@
               </tr>
             </tbody>
           </table>
+        <nav aria-label="Pagination" th:if="${totalPages &gt; 0}" th:replace="~{paging :: pagination(@{changelog})}">
+    <ul class="pagination">
+      <li class="page-item disabled">
+        <a class="page-link"
+    href="changelog.html?page=1"
+    title="Første Side" rel="tooltip">&lt;&lt;</a>
+      </li>
+      <li class="page-item font-weight-bold disabled">
+        <a class="page-link"
+    href="changelog.html?page=0"
+    title="Forrige Side" rel="tooltip">&lt;</a>
+      </li>
+      
+      <li class="page-item active">
+        <a class="page-link"
+    href="changelog.html?page=1"
+    title="Side 1" rel="tooltip">1</a>
+      </li>
+      
+      <li class="page-item font-weight-bold disabled">
+        <a class="page-link"
+    href="changelog.html?page=2"
+    title="Næste Side" rel="tooltip">&gt;</a>
+      </li>
+      <li class="page-item disabled">
+        <a class="page-link"
+    href="changelog.html?page=1"
+    title="Sidste Side" rel="tooltip">&gt;&gt;</a>
+      </li>
+    </ul>
+        </nav>
         </div>
       </div>
     </section>

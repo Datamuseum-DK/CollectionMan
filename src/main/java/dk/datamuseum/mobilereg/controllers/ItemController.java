@@ -8,12 +8,13 @@ import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -117,6 +118,17 @@ public class ItemController {
      */
     private Integer getItemLevel(Item item) {
         return item.getItemClass().getLevel();
+    }
+
+    /*
+     * Returns true if it headline was generated.
+     */
+    private boolean createHeadlineIfEmpty(Item item) {
+        if (!StringUtils.hasText(item.getHeadline())) {
+            item.setHeadline(String.format("%s %d", item.getItemClass().getName(), item.getId()));
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -256,6 +268,9 @@ public class ItemController {
         }
         checkItemFit(item);
         itemRepository.save(item);
+        if (createHeadlineIfEmpty(item)) {
+            itemRepository.save(item);
+        }
         return String.format("redirect:/items/view/%d", item.getId());
     }
 
@@ -472,6 +487,7 @@ public class ItemController {
         item.setPictures(itemInDB.getPictures());
         item.setPlacementid(itemInDB.getPlacementid());
         checkItemFit(item);
+        createHeadlineIfEmpty(item);
         itemRepository.save(item);
         return String.format("redirect:/items/view/%d", id);
     }

@@ -82,8 +82,8 @@
               <option value="99" selected="selected" th:remove="all">Programmerbare regnemaskiner</option>
             </select>
           </div>
-          <label class="head required" for="headline">Betegnelse:</label>
-          <input type="text" id="headline" value="Xerox 860 tekstbehandlingsanlæg" th:field="*{headline}" class="fullwidth"/>
+          <label class="head" for="headline">Betegnelse:</label>
+          <input type="text" id="headline" placeholder="Får type + genstandsnummer hvis blank" th:field="*{headline}" class="fullwidth"/>
           <span th:if="${#fields.hasErrors('headline')}" th:errors="*{headline}" class="fielderror">Error</span>
           <div>
             <label class="head" for="description">Beskrivelse:</label>
@@ -171,9 +171,9 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
           <label class="head" for="itemusedby">Brugt af:</label>
           <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}">Brugsen</textarea>
           <label class="head" for="itemusedfor">Til hvad:</label>
-          <textarea id="itemusedfor" cols="40" rows="5" th:field="*{itemusedfor}">Kontrabøger</textarea>
+          <textarea placeholder="Under udfasning" id="itemusedfor" cols="40" rows="5" th:field="*{itemusedfor}">Kontrabøger</textarea>
           <label class="head" for="itemusedfor">Brugt hvor:</label>
-          <textarea id="itemusedwhere" cols="40" rows="5" th:field="*{itemusedwhere}">Ja, hvor henne?</textarea>
+          <textarea placeholder="Under udfasning" id="itemusedwhere" cols="40" rows="5" th:field="*{itemusedwhere}">Ja, hvor henne?</textarea>
           <div>
             <label class="leader" for="itemusedwhereid">Geografisk område:</label>
             <select id="itemusedwhereid" th:field="*{itemusedwhereid}">

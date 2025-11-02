@@ -138,8 +138,15 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
      *
      * @return an iteration of items - potentially with no members.
      */
-    //@Query(value="SELECT TOP 50 i FROM Item i ORDER BY i.lastmodified DESC")
     Iterable<Item> findFirst50ByOrderByLastmodifiedDesc();
+
+    /**
+     * All items sorted by last modification.
+     *
+     * @param pageable - information about which page the user wants returned.
+     * @return a page of items - potentially with no members.
+     */
+    Page<Item> findAllByOrderByLastmodifiedDesc(Pageable pageable);
 
     /**
      * List all items without a subject.
