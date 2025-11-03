@@ -31,7 +31,7 @@ th:formaction="@{/subjects/delete/{id}(id=${subject.subjectid})}" onclick="retur
           </div>
         </dl>
         <div th:if="${not #lists.isEmpty(items)}">
-        <nav aria-label="Pagination" th:replace="~{paging :: pagination(@{subjects/view/{id}(id=${subject.subjectid})})}">
+        <nav aria-label="Pagination" th:replace="~{paging :: pagination('/subjects/view/' + ${subject.subjectid})}">
         Navigation here.
         </nav>
       </div>

@@ -56,7 +56,7 @@ En beskrivelse her.
         </div>
       </dl>
     </main>
-    <nav aria-label="Pagination" th:replace="~{paging :: pagination(@{/files/view/{id}(id=${caseFile.id})})}">
+    <nav aria-label="Pagination" th:replace="~{paging :: pagination('/files/view/' + ${caseFile.id})}">
     Navigation here.
     </nav>
 

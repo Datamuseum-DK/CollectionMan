@@ -67,7 +67,7 @@
       Ingen genstande fundet
       </p>
     </main>
-    <nav aria-label="Pagination" th:replace="~{paging :: pagination(@{/items(q=${q!=null? q : ''})})}">
+    <nav aria-label="Pagination" th:replace="~{paging :: pagination('/items?q=' + ${q})}">
     Navigation here.
     </nav>
     <footer th:replace="~{layout :: footerFragment}">
