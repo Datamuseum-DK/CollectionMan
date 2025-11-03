@@ -103,6 +103,7 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
      * @param pageable - information about which page the user wants returned.
      * @return a page of hits.
      */
+    @Query(value = "SELECT i FROM Item i JOIN i.itemClass c WHERE i.placementid = ?1 ORDER BY c.level, i.headline")
     Page<Item> findByPlacementidOrderByHeadline(int id, Pageable pageable);
 
     /**
