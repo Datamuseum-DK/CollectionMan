@@ -109,6 +109,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <div th:remove="tag" th:each="child : ${children}">
               <dt>
                 <a href="items-view.html" th:href="@{/items/view/{id}(id=${child.id})}" th:text="${child.headline}">Flyttekasse 38</a>
+                <small th:text="'(' + ${child.itemStatus.name} + ' ' + ${#strings.toLowerCase(child.itemClass.name)} + ')'">(Intern flyttekasse)</small>
               </dt>
               <dd th:text="${#strings.abbreviate(child.description, 160)}">3 stk DDE710 tastaturer (Facit A3400) 1 stk PC-tastatur</dd>
             </div>

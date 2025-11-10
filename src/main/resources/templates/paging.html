@@ -1,6 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="da">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${webtitle}?:#{app.title}">DDHF genstandsdatabase</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/tabstyles.css" th:href="@{/css/tabstyles.css}"/>
+    <script th:src="@{/js/tabops.js}" src="../static/js/tabops.js"><![CDATA[ ]]></script>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <main>
 <!--
   <a th:fragment="paging(pageNum, label, tooltip)" class="page-link"
     th:href="@{/items(q=${q!=null? q : ''},page=${pageNum},size=${pageSize})}"
@@ -12,36 +28,52 @@
     th:title="${tooltip}" rel="tooltip"
     th:text="${label}">Child page #</a>
 -->
-  <a th:fragment="pagelink(pageNum, label, tooltip)" class="page-link"
-    th:href="@{${view}(page=${pageNum},size=${pageSize})}"
-    th:title="${tooltip}" rel="tooltip"
-    th:text="${label}">Child page #</a>
-
-  <nav aria-label="Pagination" th:fragment="pagination(view)" th:if="${totalPages &gt; 1}">
-    <ul class="pagination">
-      <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-        <a th:replace="~{paging :: pagelink(1, '&lt;&lt;', 'Første Side')}">&lt;&lt;</a>
-      </li>
-      <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-        <a th:replace="~{paging :: pagelink(${currentPage - 1}, '&lt;', 'Forrige Side')}">&lt;</a>
-      </li>
-      <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
-        <a class="page-link" href="#">...</a>
-      </li>
-      <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
-        <a th:replace="~{paging :: pagelink(${page}, ${page}, 'Side ' + ${page})}">#</a>
-      </li>
-      <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
-        <a class="page-link" href="#">...</a>
-      </li>
-      <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-        <a th:replace="~{paging :: pagelink(${currentPage + 1},'&gt;', 'Næste Side')}">&gt;</a>
-      </li>
-      <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-        <a th:replace="~{paging :: pagelink(${totalPages}, '&gt;&gt;', 'Sidste Side')}">&gt;&gt;</a>
-      </li>
-    </ul>
-  </nav>
-
-</body>
+      <p>
+        <a th:fragment="pagelink(pageNum, label, tooltip)" class="page-link" th:href="@{${view}(page=${pageNum},size=${pageSize})}" th:title="${tooltip}" rel="tooltip" th:text="${label}">Child page #</a>
+      </p>
+      <h2>Brugssteder</h2>
+      <ul th:remove="all-but-first">
+        <li th:each="place : ${places}">
+          <div><a href="places-view.html" th:href="@{/places/view/{id}(id=${place.id})}" th:text="${place.stednavn}">Guldborgsund Kommune</a>
+                    (<span th:text="${place.totalItems}">4</span>)
+              </div>
+        </li>
+        <li>
+          <div><a href="places-view.html">Præstø Kommune</a> (<span>12</span>)</div>
+        </li>
+      </ul>
+      <nav aria-label="Pagination" th:fragment="pagination(view)" th:if="${totalPages &gt; 1}">
+        <ul class="pagination">
+          <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+            <a href="#" class="page-link" th:replace="~{paging :: pagelink(1, '1 ⏮', 'Første Side')}">1 ⏮</a>
+          </li>
+          <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${currentPage - 1}, '⏴', 'Forrige Side')}">⏴</a>
+          </li>
+          <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
+            <a class="page-link" href="#">...</a>
+          </li>
+          <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
+            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${page}, ${page}, 'Side ' + ${page})}">#</a>
+          </li>
+          <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
+            <a class="page-link" href="#">...</a>
+          </li>
+          <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${currentPage + 1},'⏵', 'Næste Side')}">⏵</a>
+          </li>
+          <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${totalPages}, '⏭ ' + ${totalPages}, 'Sidste Side')}">⏭ 14</a>
+          </li>
+        </ul>
+      </nav>
+    </main>
+    <!-- container -->
+    <footer th:replace="~{layout :: footerFragment}">
+      <div id="gatekeeper" title="RSS kommer her">
+        <a href="https://en.wikipedia.org/wiki/The_Net_(1995_film)">π</a>
+      </div>
+      <p sec:authorize="isAuthenticated()">Log ud: <a th:href="@{/logout}" href="login.html" th:text="${#authentication.name}">Bob</a></p>
+    </footer>
+  </body>
 </html>

@@ -142,6 +142,9 @@ table.datatable {
 }
 .pagination li {
   display: inline-block;
+min-width: 3em;
+text-align: center;
+
 }
 .page-link {
   padding:.5rem .75rem;
@@ -152,6 +155,9 @@ table.datatable {
   margin:0;
   transition:all 250ms cubic-bezier(.27,.01,.38,1.06)
 }
+.page-link:link {
+  text-decoration: none;
+}
 .page-link:focus,.page-link:hover {
   color:#0056b3;
   background-color:#f5f5f6;
@@ -160,6 +166,7 @@ table.datatable {
 .page-item {
   box-shadow:0 .125rem .9375rem rgba(90,97,105,.1),0 .125rem .1875rem rgba(90,97,105,.15)
 }
+/*
 .page-item:first-child {
   border-top-left-radius:.375rem;
   border-bottom-left-radius:.375rem;
@@ -170,6 +177,7 @@ table.datatable {
   border-bottom-right-radius:.375rem;
   overflow:hidden
 }
+*/
 .page-item:last-child .page-link {
   border-right:none
 }

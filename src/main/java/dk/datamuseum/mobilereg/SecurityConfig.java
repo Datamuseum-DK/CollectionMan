@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -57,7 +58,7 @@ public class SecurityConfig {
                     .permitAll()
             )
             .logout((logout) -> logout.permitAll())
-            .httpBasic()
+            .httpBasic(Customizer.withDefaults())
             ;
         return http.build();
     }
