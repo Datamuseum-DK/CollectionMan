@@ -187,6 +187,7 @@ text-align: center;
   border-color:#007bff
 }
 .page-item.disabled .page-link {
+  pointer-events: none;
   color:#a8aeb4;
   background-color:#fff;
   border-color:#dfe1e3

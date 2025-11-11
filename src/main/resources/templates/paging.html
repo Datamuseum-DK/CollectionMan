@@ -47,20 +47,26 @@
           <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
             <a href="#" class="page-link" th:replace="~{paging :: pagelink(1, '1 ⏮', 'Første Side')}">1 ⏮</a>
           </li>
-          <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${currentPage - 1}, '⏴', 'Forrige Side')}">⏴</a>
+          <li class="page-item disabled" th:unless="${currentPage - 5 &gt; 1}">
+            <a class="page-link" href="#" >...</a>
           </li>
-          <li class="page-item disabled" th:if="${currentPage - 2 &gt; 1}">
-            <a class="page-link" href="#">...</a>
+          <li class="page-item" th:if="${currentPage - 5 &gt; 1}">
+            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${currentPage - 5}, ${currentPage - 5}, 'Side ' + ${currentPage - 5})}">-5</a>
           </li>
-          <li class="page-item" th:classappend="${page == currentPage} ? 'active'" th:each="page : ${#numbers.sequence(currentPage &gt; 2 ? currentPage - 2 : 1, currentPage + 2 &lt; totalPages ? currentPage + 2 : totalPages)}">
-            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${page}, ${page}, 'Side ' + ${page})}">#</a>
+          <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${currentPage - 1}, '⯇', 'Forrige Side')}">⯇</a>
           </li>
-          <li class="page-item disabled" th:if="${currentPage + 2 &lt; totalPages}">
-            <a class="page-link" href="#">...</a>
+          <li class="page-item" th:classappend="'active'">
+            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${currentPage}, ${currentPage}, 'Side ' + ${currentPage})}">#</a>
           </li>
-          <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${currentPage + 1},'⏵', 'Næste Side')}">⏵</a>
+          <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${currentPage + 1},'⯈', 'Næste Side')}">⯈</a>
+          </li>
+          <li class="page-item" th:if="${currentPage + 5 &lt; totalPages}">
+            <a class="page-link" href="#" th:replace="~{paging :: pagelink(${currentPage + 5}, ${currentPage + 5}, 'Side ' + ${currentPage + 5})}">+5</a>
+          </li>
+          <li class="page-item disabled" th:unless="${currentPage + 5 &lt; totalPages}">
+            <a class="page-link" href="#" >...</a>
           </li>
           <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
             <a class="page-link" href="#" th:replace="~{paging :: pagelink(${totalPages}, '⏭ ' + ${totalPages}, 'Sidste Side')}">⏭ 14</a>
