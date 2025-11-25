@@ -57,8 +57,8 @@
           <div>
             <label class="leader required" for="id_itemstatus">Status:</label>
             <select th:field="*{itemStatus}" name="itemStatus" id="id_itemstatus">
-            <option value="0" th:value="${status.id}" th:text="${status.name}" th:each="status: ${statuses}">Sandby</option>
-<!--
+              <option value="0" th:value="${status.id}" th:text="${status.name}" th:each="status: ${statuses}">Sandby</option>
+              <!--
               <optgroup label="Publiseret">
                 <option value="0" th:selected="${itemdeleted} == 0">godkendt</option>
               </optgroup>
@@ -213,7 +213,7 @@
               <option value="138">UNIX</option>
               <option value="56">Videobåndoptagere</option>
               <option value="66">Virksomhedspapirer</option>
-              </select>
+            </select>
           </div>
           <label class="leader required" for="headline">Betegnelse:</label>
           <input type="text" id="headline" value="Xerox 860 tekstbehandlingsanlæg" th:field="*{headline}" class="fullwidth"/>
@@ -267,13 +267,13 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <legend>Erhvervelse</legend>
           <div>
             <label class="leader required">Måde:</label>
-              <label th:each="t : ${acquiretypes}">
-                <input  name="itemacquiretype" th:field="*{itemacquiretype}" type="radio" value="0" th:value="${t.ordinal}" th:checked="${t.ordinal == itemacquiretype}"/>
-                <span th:remove="tag" th:text="${#strings.capitalize(#strings.toLowerCase(t))}">Ukendt</span>
-              </label>
-              <label th:remove="all"><input name="itemacquiretype" type="radio" value="1" checked="checked"/>Gave</label>
-              <label th:remove="all"><input name="itemacquiretype" type="radio" value="3"/>Køb</label>
-              <label th:remove="all"><input name="itemacquiretype" type="radio" value="4"/>Deponering</label>
+            <label th:each="t : ${acquiretypes}">
+              <input name="itemacquiretype" th:field="*{itemacquiretype}" type="radio" value="0" th:value="${t.ordinal}" th:checked="${t.ordinal == itemacquiretype}"/>
+              <span th:remove="tag" th:text="${#strings.capitalize(#strings.toLowerCase(t))}">Ukendt</span>
+            </label>
+            <label th:remove="all"><input name="itemacquiretype" type="radio" value="1" checked="checked"/>Gave</label>
+            <label th:remove="all"><input name="itemacquiretype" type="radio" value="3"/>Køb</label>
+            <label th:remove="all"><input name="itemacquiretype" type="radio" value="4"/>Deponering</label>
             <span th:if="${#fields.hasErrors('itemacquiretype')}" th:errors="*{itemacquiretype}" class="fielderror">Error</span>
           </div>
           <div>
@@ -303,12 +303,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         </fieldset>
         <fieldset id="Brugsaktivitet" class="tabcontent">
           <legend>Brugsaktivitet</legend>
-          <label class="leader" for="itemusedby">Brugt af:</label>
+          <label class="leader" for="itemusedby" title="Brugt af hvem, til hvad, hvor">Brugsbeskrivelse:</label>
           <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}">Brugsen</textarea>
-          <label class="leader" for="itemusedfor">Til hvad:</label>
-          <textarea placeholder="Under udfasning" id="itemusedfor" cols="40" rows="5" th:field="*{itemusedfor}">Kontrabøger</textarea>
-          <label class="leader" for="itemusedwhere">Brugt hvor:</label>
-          <textarea placeholder="Under udfasning" id="itemusedwhere" cols="40" rows="5" th:field="*{itemusedwhere}">Ja, hvor henne?</textarea>
           <div>
             <label class="leader" for="itemusedwhereid">Geografisk område:</label>
             <select id="itemusedwhereid" th:field="*{itemusedwhereid}">
@@ -316,16 +312,20 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
               <option value="9" th:each="s : ${steder}" th:value="${s.id}" th:text="${s.stednavn}" th:selected="${s.id == itemusedwhereid}">København</option>
             </select>
           </div>
+          <!--/*
           <div>
             <label class="leader" for="itemusedfrom">Start på brug indenfor:</label>
             <input id="itemusedfrom" type="date" value="1982-10-11" th:field="*{itemusedfrom}"/>
             <label for="itemusedto">til:</label>
             <input id="itemusedto" type="date" value="1983-10-11" th:field="*{itemusedto}"/>
           </div>
-          <label class="leader" for="itemusedendfrom" title="Udgået af brug/nedtaget fra">Brug på brug indenfor:</label>
-          <input id="itemusedendfrom" type="date" value="1982-10-11" th:field="*{itemusedendfrom}"/>
-          <label for="itemusedendto">til:</label>
-          <input id="itemusedendto" type="date" value="1982-10-11" th:field="*{itemusedendto}"/>
+          <div>
+            <label class="leader" for="itemusedendfrom" title="Udgået af brug/nedtaget fra">Brug på brug indenfor:</label>
+            <input id="itemusedendfrom" type="date" value="1982-10-11" th:field="*{itemusedendfrom}"/>
+            <label for="itemusedendto">til:</label>
+            <input id="itemusedendto" type="date" value="1982-10-11" th:field="*{itemusedendto}"/>
+          </div>
+          */-->
         </fieldset>
         <fieldset id="Notater" class="tabcontent">
           <legend>Notater</legend>

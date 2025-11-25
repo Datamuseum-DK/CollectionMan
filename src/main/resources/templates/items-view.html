@@ -86,9 +86,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         <h2>Billeder</h2>
         <form action="items-view.html" th:action="@{/items/pictureupload}" method="post" enctype="multipart/form-data" onsubmit="submitButton.disabled = true; return true;">
           <div th:remove="all-but-first">
-            <a href="#" th:each="picture : ${item.pictures}" th:href="@{/pictures/view/{p}(p=${picture.pictureid})}">
-              <img src="../../../test/resources/static/testpicture1.jpg" th:src="@{/media/{p}(p=${picture.low})}"/>
-            </a>
+            <a href="#" th:each="picture : ${item.pictures}" th:href="@{/pictures/view/{p}(p=${picture.pictureid})}"><img th:title="'Lagt op ' + ${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}" src="../../../test/resources/static/testpicture1.jpg" th:src="@{/media/{p}(p=${picture.low})}"/></a>
             <a href="picture/pictureoriginal/DSC_8078.JPG">
               <img src="../../../test/resources/static/testpicture2.jpg"/>
             </a>
@@ -132,17 +130,25 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd th:text="${#temporals.format(item.itemdepositeduntil,'yyyy-MM-dd')}">2032-09-16</dd>
           <dt>Lånt indtil</dt>
           <dd th:text="${#temporals.format(item.itemborroweduntil,'yyyy-MM-dd')}">2027-10-16</dd>
+          <dt title="Registrerings dato">Registreret</dt>
+          <dd><span th:remove="tag" th:text="${#temporals.format(item.itemregistered,'yyyy-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemregisteredby}">fvn</span></dd>
         </dl>
       </fieldset>
       <fieldset id="Brugsaktivitet" class="tabcontent">
         <legend>Brugsaktivitet</legend>
         <dl class="factsheet">
-          <dt class="multiline">Brugt af</dt>
+          <dt class="multiline" title="Beskrivelse af hvem, hvad, hvor">Brugsbeskrivelse</dt>
           <dd class="multiline" th:utext="${item.itemusedby}">Brugsen</dd>
-          <dt class="multiline">Til hvad</dt>
-          <dd class="multiline" th:text="${item.itemusedfor}">Kontrabøger</dd>
-          <dt class="multiline">Brugt hvor</dt>
-          <dd class="multiline" th:text="${item.itemusedwhere}">Ja, hvor henne?</dd>
+          <!--/*
+          <dt class="multiline">Start på brug</dt>
+          <dd class="multiline" th:if="${item.itemusedfrom}">Indenfor <span th:remove="tag" th:text="${#temporals.format(item.itemusedfrom,'yyyy-MM-dd')}">1982-10-11</span>
+          <span th:if="${item.itemusedto}" th:remove="tag" th:text="${' til ' + #temporals.format(item.itemusedto,'yyyy-MM-dd')}">1992-09-31</span>
+          </dd>
+          <dt class="multiline">Slut på brug</dt>
+          <dd class="multiline" th:if="${item.itemusedendfrom}">Indenfor <span th:remove="tag" th:text="${#temporals.format(item.itemusedendfrom,'yyyy-MM-dd')}">1982-10-11</span>
+          <span th:if="${item.itemusedendto}" th:remove="tag" th:text="${' til ' + #temporals.format(item.itemusedendto,'yyyy-MM-dd')}">1992-09-31</span>
+          </dd>
+          */-->
           <dt>Område</dt>
           <dd>
             <span th:each="s : ${steder}" th:if="${s.id == item.itemusedwhereid}" th:text="${s.stednavn}">København</span>

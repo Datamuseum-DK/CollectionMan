@@ -2,9 +2,11 @@ package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -260,12 +263,15 @@ public class ItemController {
      */
     @PostMapping("/additem")
     @PreAuthorize("hasAuthority('ADD_ITEMS')")
-    public String addItem(@Valid Item item, BindingResult result, Model model) {
+    public String addItem(@Valid Item item, BindingResult result, Model model,
+       Authentication authentication) {
         log.debug("Evaluating item {}", item.toString());
         if (result.hasErrors()) {
             log.debug("Result {}", result.toString());
             return "item-addform";
         }
+        item.setItemusedfor("");
+        item.setItemusedwhere("");
         checkItemFit(item);
         itemRepository.save(item);
         if (createHeadlineIfEmpty(item)) {
@@ -486,6 +492,10 @@ public class ItemController {
                 -> new IllegalArgumentException("Invalid item Id:" + id));
         item.setPictures(itemInDB.getPictures());
         item.setPlacementid(itemInDB.getPlacementid());
+        item.setItemregistered(itemInDB.getItemregistered());
+        item.setItemregisteredby(itemInDB.getItemregisteredby());
+        item.setItemusedfor(itemInDB.getItemusedfor());
+        item.setItemusedwhere(itemInDB.getItemusedwhere());
         checkItemFit(item);
         createHeadlineIfEmpty(item);
         itemRepository.save(item);

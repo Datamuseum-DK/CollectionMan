@@ -155,11 +155,13 @@ public class Item {
     private String itemreceivedby;
 
     // itemregistered      = models.DateField(verbose_name="registreringsdato", null=True, blank=True)
+    @CreatedDate
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate itemregistered;
 
     // itemregisteredby    = models.CharField(max_length=12, null=True, blank=True, verbose_name="oprettet af")
+    @CreatedBy
     @Column
     @ColumnDefault("")
     private String itemregisteredby;

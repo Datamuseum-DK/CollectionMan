@@ -66,7 +66,6 @@
             </select>
             <span th:if="${#fields.hasErrors('itemStatus')}" th:errors="*{itemStatus}" class="fielderror">Error</span>
           </div>
-
           <div>
             <label class="required leader" for="placementid">Lokation:</label>
             <select id="placementid" th:field="*{placementid}" th:remove="all-but-first">
@@ -132,13 +131,13 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
       </p>
           <div>
             <label class="required leader">Måde:</label>
-              <label th:each="t : ${acquiretypes}">
-                <input th:field="*{itemacquiretype}" type="radio" value="0" th:value="${t.ordinal}" th:selected="${t == itemacquiretype}?'selected'"/>
-                <th:block th:text="${t}">Ukendt</th:block>
-              </label>
-              <label th:remove="all"><input name="gavetype" type="radio" value="1" checked="checked"/>Gave</label>
-              <label th:remove="all"><input name="gavetype" type="radio" value="3"/>Køb</label>
-              <label th:remove="all"><input name="gavetype" type="radio" value="4"/>Deponering</label>
+            <label th:each="t : ${acquiretypes}">
+              <input th:field="*{itemacquiretype}" type="radio" value="0" th:value="${t.ordinal}" th:selected="${t == itemacquiretype}?'selected'"/>
+              <th:block th:text="${t}">Ukendt</th:block>
+            </label>
+            <label th:remove="all"><input name="gavetype" type="radio" value="1" checked="checked"/>Gave</label>
+            <label th:remove="all"><input name="gavetype" type="radio" value="3"/>Køb</label>
+            <label th:remove="all"><input name="gavetype" type="radio" value="4"/>Deponering</label>
             <span th:if="${#fields.hasErrors('itemacquiretype')}" th:errors="*{itemacquiretype}" class="fielderror">Error</span>
           </div>
           <div>
@@ -160,20 +159,16 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
             <input id="itemborroweduntil" type="date" value="1982-10-11" th:field="*{itemborroweduntil}"/>
           </div>
           <div>
-          <label class="leader" for="itemreceived">Modtagelsesdato:</label>
-          <input id="itemreceived" type="date" value="2009-01-30" th:field="*{itemreceived}"/>
-          <label for="itemreceivedby">af:</label>
-          <input type="text" id="itemreceivedby" value="" th:field="*{itemreceivedby}" size="12"/>
+            <label class="leader" for="itemreceived">Modtagelsesdato:</label>
+            <input id="itemreceived" type="date" value="2009-01-30" th:field="*{itemreceived}"/>
+            <label for="itemreceivedby">af:</label>
+            <input type="text" id="itemreceivedby" value="" th:field="*{itemreceivedby}" size="12"/>
           </div>
         </fieldset>
         <fieldset id="Brugsaktivitet" class="tabcontent">
           <legend>Brugsaktivitet</legend>
-          <label class="head" for="itemusedby">Brugt af:</label>
+          <label class="head" for="itemusedby" title="Brugt af hvem, til hvad, hvor">Brugsbeskrivelse:</label>
           <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}">Brugsen</textarea>
-          <label class="head" for="itemusedfor">Til hvad:</label>
-          <textarea placeholder="Under udfasning" id="itemusedfor" cols="40" rows="5" th:field="*{itemusedfor}">Kontrabøger</textarea>
-          <label class="head" for="itemusedfor">Brugt hvor:</label>
-          <textarea placeholder="Under udfasning" id="itemusedwhere" cols="40" rows="5" th:field="*{itemusedwhere}">Ja, hvor henne?</textarea>
           <div>
             <label class="leader" for="itemusedwhereid">Geografisk område:</label>
             <select id="itemusedwhereid" th:field="*{itemusedwhereid}">
@@ -182,16 +177,20 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
               <option value="10" th:remove="all">Odense</option>
             </select>
           </div>
+          <!--/*
           <div>
             <label class="leader" for="itemusedfrom">Start på brug indenfor:</label>
             <input id="itemusedfrom" type="date" value="1982-10-11" th:field="*{itemusedfrom}"/>
             <label for="itemusedto">til</label>
             <input id="itemusedto" type="date" value="1983-10-11" th:field="*{itemusedto}"/>
           </div>
-          <label class="leader" for="itemusedendfrom">Slut på brug indenfor:</label>
-          <input id="itemusedendfrom" type="date" value="1982-10-11" th:field="*{itemusedendfrom}"/>
-          <label for="itemusedendto">til</label>
-          <input id="itemusedendto" type="date" value="1982-10-11" th:field="*{itemusedendto}"/>
+          <div>
+            <label class="leader" for="itemusedendfrom">Slut på brug indenfor:</label>
+            <input id="itemusedendfrom" type="date" value="1982-10-11" th:field="*{itemusedendfrom}"/>
+            <label for="itemusedendto">til</label>
+            <input id="itemusedendto" type="date" value="1982-10-11" th:field="*{itemusedendto}"/>
+          </div>
+          */-->
         </fieldset>
         <fieldset id="Notater" class="tabcontent">
           <legend>Notater</legend>

@@ -38,7 +38,8 @@ Man opretter en genstand ved at:
 Husk at sagen skal være åben.</li>
           <li>Derefter vælger man en lokation man vil oprette genstanden i. Det kan f.eks. være Charlotteskolen.
 Man går ind via <i>Lokationer</i> og vælger <i>Opret heri</i></li>
-<li>Når genstanden er oprettet kan man sætte en ubrugt QR etiket på, og derefter skanne den.</li>
+          <li>For artefakter skriver man hvad det er, f.eks. "Data General NOVA3". For containere kan man vælge at betegnelsesfeltet stå tomt.</li>
+          <li>Når genstanden er oprettet kan man sætte en ubrugt QR etiket på, og derefter skanne den.</li>
         </ol>
       </details>
       <details>
@@ -58,11 +59,43 @@ i databasen, og klikker på 'Opret heri'. Derefter udfylder man
 formularen. Dette virker også for paller og pallereoler.
 </p>
       </details>
-      <details>
+      <!-- <details>
         <summary>Web-API</summary>
         <p>
 Der er mulighed for at bruge et JSON API på &lt;URL&gt;/api/v1alpha. Det kræver at man logger ind med Basic Authentication.
         </p>
+      </details> -->
+      <h2>Ofte stillede spørgsmål</h2>
+      <details>
+        <summary>Hvor sætter man QR mærkaten?</summary>
+        <p>
+Hvis genstanden står på magasin placeres den synligt. Store mærkater på store ting.
+Limen er en type, som ikke binder kraftigt
+og mærkaten kan fjernes uden at efterlade limrester. 
+Hvis genstanden står i museumsudstillingen placeres den på et sted,
+der ikke er synligt for publikum. F.eks. bagsiden eller undersiden.
+Hvis dette ikke er muligt, så fjernes mærkaten.
+        </p>
+      </details>
+      <details>
+        <summary>Kan man skifte en QR kode?</summary>
+        <p>
+Ja, QR koder er ikke permanente. De kan falde af eller blive beskadiget.
+Husk at registrere ændringen.
+        </p>
+      </details>
+      <details>
+        <summary>Sletter man tømte paller i databasen?</summary>
+        <p>
+Sålænge pallen eksisterer fysisk og har en etiket eller QR kode skal den <em>ikke</em> slettes i genstandsregistreringen.
+Man skriver istedet "tom" i beskrivelsen og fjerner evt. billeder.
+Det er for at andre kan begynde at bruge den ved at flytte artefakter over på den.
+        </p>
+      </details>
+      <details>
+        <summary>Hvornår sletter man en artefakt?</summary>
+        <p>Det gør man kun, hvis der <em>ikke</em> er en fysisk artefakt, og man ikke ønsker at huske dens historie.
+        F.eks. hvis museet har givet en minidatamat til et andet museum skal dens status sættes til "Udgået".</p>
       </details>
       <h2>Teknologi</h2>
       <p>
