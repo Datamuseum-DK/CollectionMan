@@ -19,8 +19,8 @@
       <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'Identifikation')">Identifikation</button>
         <button class="tablinks" onclick="openTab(event, 'Erhvervelse')">Erhvervelse</button>
-        <button class="tablinks" onclick="openTab(event, 'Brugsaktivitet')">Brug</button>
         <button class="tablinks" onclick="openTab(event, 'Notater')">Notater</button>
+        <button class="tablinks" onclick="openTab(event, 'Internt')">Internt</button>
       </div>
       <form id="editfactsheet" action="item-addform2.html" method="post" th:object="${item}" th:action="@{/items/additem}">
         <fieldset id="Identifikation" class="tabcontent" style="display:block">
@@ -165,8 +165,8 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
             <input type="text" id="itemreceivedby" value="" th:field="*{itemreceivedby}" size="12"/>
           </div>
         </fieldset>
-        <fieldset id="Brugsaktivitet" class="tabcontent">
-          <legend>Brugsaktivitet</legend>
+        <fieldset id="Notater" class="tabcontent">
+          <legend>Notater</legend>
           <label class="head" for="itemusedby" title="Brugt af hvem, til hvad, hvor">Brugsbeskrivelse:</label>
           <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}">Brugsen</textarea>
           <div>
@@ -177,29 +177,15 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
               <option value="10" th:remove="all">Odense</option>
             </select>
           </div>
-          <!--/*
-          <div>
-            <label class="leader" for="itemusedfrom">Start på brug indenfor:</label>
-            <input id="itemusedfrom" type="date" value="1982-10-11" th:field="*{itemusedfrom}"/>
-            <label for="itemusedto">til</label>
-            <input id="itemusedto" type="date" value="1983-10-11" th:field="*{itemusedto}"/>
-          </div>
-          <div>
-            <label class="leader" for="itemusedendfrom">Slut på brug indenfor:</label>
-            <input id="itemusedendfrom" type="date" value="1982-10-11" th:field="*{itemusedendfrom}"/>
-            <label for="itemusedendto">til</label>
-            <input id="itemusedendto" type="date" value="1982-10-11" th:field="*{itemusedendto}"/>
-          </div>
-          */-->
-        </fieldset>
-        <fieldset id="Notater" class="tabcontent">
-          <legend>Notater</legend>
           <label class="head" for="itemextrainfo">Særlige oplysninger:</label>
           <textarea id="itemextrainfo" cols="40" rows="5" th:field="*{itemextrainfo}">Tekst her</textarea>
-          <label class="head" for="itemrestoration">Restaurering:</label>
-          <textarea id="itemrestoration" cols="40" rows="5" th:field="*{itemrestoration}">Tekst her</textarea>
           <label class="head" for="itemreferences">Litteraturhenvisninger:</label>
           <textarea id="itemreferences" cols="40" rows="5" th:field="*{itemreferences}">Tekst her</textarea>
+        </fieldset>
+        <fieldset id="Internt" class="tabcontent">
+          <legend>Internt</legend>
+          <label class="head" for="itemrestoration">Restaurering:</label>
+          <textarea id="itemrestoration" cols="40" rows="5" th:field="*{itemrestoration}">Tekst her</textarea>
           <label class="head" for="itemremarks">Bemærkninger (intern):</label>
           <textarea id="itemremarks" cols="40" rows="5" th:field="*{itemremarks}">Kommentarer</textarea>
         </fieldset>
