@@ -66,20 +66,34 @@ public class PlaceController {
         return "redirect:/places";
     }
     
+    /**
+     * Show factsheet.
+     *
+     * @param id - place id.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
+     */
     @PreAuthorize("hasAuthority('VIEW_STED')")
     @GetMapping("/view/{id}")
-    public String showFactsheet(@PathVariable("id") int id, Model model) {
-        Sted place = placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid place Id:" + id));
+    public String showFactsheet(@PathVariable("id") int id, Model model) throws NotFoundException {
+        Sted place = placeRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid place Id:" + id));
         model.addAttribute("place", place);
         model.addAttribute("items", itemRepository.findByItemusedwhereidOrderByHeadline(id));
         
         return "places-view";
     }
 
+    /**
+     * Show update form.
+     *
+     * @param id - place id.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template.
+     */
     @PreAuthorize("hasAuthority('CHANGE_STED')")
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") int id, Model model) {
-        Sted place = placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid place Id:" + id));
+    public String showUpdateForm(@PathVariable("id") int id, Model model) throws NotFoundException {
+        Sted place = placeRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid place Id:" + id));
         model.addAttribute("place", place);
         
         return "places-edit";

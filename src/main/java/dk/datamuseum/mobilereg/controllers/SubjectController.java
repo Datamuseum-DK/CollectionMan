@@ -50,9 +50,9 @@ public class SubjectController {
 
     @PreAuthorize("hasAuthority('VIEW_SUBJECTS')")
     @GetMapping("/view/{id}")
-    public String showFactsheet(@PathVariable("id") int subjectid, Model model) {
+    public String showFactsheet(@PathVariable("id") int subjectid, Model model) throws NotFoundException {
         Subject subject = subjectRepository.findById(subjectid).orElseThrow(()
-                -> new IllegalArgumentException("Invalid subject Id:" + subjectid));
+                -> new NotFoundException("Unknown subject Id:" + subjectid));
         model.addAttribute("items", itemRepository.findBySubjectOrderByHeadline(subjectid));
         model.addAttribute("subject", subject);
 
@@ -80,8 +80,8 @@ public class SubjectController {
 
     @PreAuthorize("hasAuthority('CHANGE_SUBJECTS')")
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") int id, Model model) {
-        Subject subject = subjectRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid subject Id:" + id));
+    public String showUpdateForm(@PathVariable("id") int id, Model model) throws NotFoundException {
+        Subject subject = subjectRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid subject Id:" + id));
         model.addAttribute("subject", subject);
 
         return "subjects-edit";

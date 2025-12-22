@@ -124,8 +124,8 @@ public class UserController {
      */
     @GetMapping("/view/{id}")
     @PreAuthorize("hasAuthority('VIEW_USER')")
-    public String showFactsheet(@PathVariable("id") int id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+    public String showFactsheet(@PathVariable("id") int id, Model model) throws NotFoundException {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Unknown user Id:" + id));
         model.addAttribute("user", user);
         
         return "users-view";
@@ -139,8 +139,8 @@ public class UserController {
      */
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasAuthority('CHANGE_USER')")
-    public String showUpdateForm(@PathVariable("id") int id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+    public String showUpdateForm(@PathVariable("id") int id, Model model) throws NotFoundException {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid user Id:" + id));
         user.setPassword("");  // Don't show hashed password on form.
         model.addAttribute("user", user);
         

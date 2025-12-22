@@ -63,7 +63,7 @@ public class FileOpsController {
         try {
             contentLength = resource.contentLength();
         } catch (IOException ex) {
-            throw new NotFoundException(0);
+            throw new NotFoundException("File not found");
         }
         return ResponseEntity.ok()
             .headers(headers)

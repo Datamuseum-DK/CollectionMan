@@ -58,7 +58,7 @@ public class PasswordController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/updatepassword")
     public String updatepassword(String orgpasswd, String passwd1, String passwd2,
-            Model model, Authentication authentication) {
+            Model model, Authentication authentication) throws NotFoundException {
         Object principal = authentication.getPrincipal();
         String username = principal.toString();
         if (principal instanceof UserDetails) {
@@ -67,7 +67,7 @@ public class PasswordController {
         // UserDetails loadedUser = userDetailsService().loadUserByUsername(username);
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new IllegalArgumentException("Invalid user Name:" + username);
+            throw new NotFoundException("Invalid user Name:" + username);
         }
         // Check correct password
         if (!passwordEncoder.matches(orgpasswd, user.getPassword())) {

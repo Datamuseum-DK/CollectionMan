@@ -55,9 +55,9 @@ public class RoleController {
 
     @PreAuthorize("hasAuthority('VIEW_GROUP')")
     @GetMapping("/view/{id}")
-    public String showFactsheet(@PathVariable("id") int roleid, Model model) {
+    public String showFactsheet(@PathVariable("id") int roleid, Model model) throws NotFoundException {
         Role role = roleRepository.findById(roleid).orElseThrow(()
-                -> new IllegalArgumentException("Invalid role Id:" + roleid));
+                -> new NotFoundException("Unknown role Id:" + roleid));
         model.addAttribute("role", role);
         return "roles-view";
     }

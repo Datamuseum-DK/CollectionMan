@@ -1,7 +1,6 @@
 package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
-//import java.time.LocalDateTime;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,8 +93,8 @@ public class DonorController {
      */
     @PreAuthorize("hasAuthority('VIEW_DONATORS')")
     @GetMapping("/view/{id}")
-    public String showFactsheet(@PathVariable("id") int id, Model model) {
-        Donor donor = donorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
+    public String showFactsheet(@PathVariable("id") int id, Model model) throws NotFoundException {
+        Donor donor = donorRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid donor Id:" + id));
         model.addAttribute("donor", donor);
         model.addAttribute("items", itemRepository.findByDonoridOrderByHeadline(id));
 
@@ -111,8 +110,8 @@ public class DonorController {
      */
     @PreAuthorize("hasAuthority('CHANGE_DONATORS')")
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") int id, Model model) {
-        Donor donor = donorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
+    public String showUpdateForm(@PathVariable("id") int id, Model model) throws NotFoundException {
+        Donor donor = donorRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid donor Id:" + id));
         model.addAttribute("donor", donor);
 
         return "donors-edit";

@@ -101,7 +101,7 @@ public class V1RestController {
     @GetMapping("/donors/{id}")
     EntityModel<Donor> oneDonor(@PathVariable Integer id) {
         Donor donor = donorRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(id));
+                .orElseThrow(() -> new NotFoundException("Unknown donor id: " + id));
         return donorAddlinks(donor);
     }
 
@@ -136,7 +136,7 @@ public class V1RestController {
     @GetMapping("/producers/{id}")
     EntityModel<Producer> oneProducer(@PathVariable Integer id) {
         Producer producer = producerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(id));
+                .orElseThrow(() -> new NotFoundException("Unknown producer id: " + id));
         return producerAddlinks(producer);
     }
 
@@ -156,7 +156,7 @@ public class V1RestController {
     @GetMapping("/pictures/{id}")
     EntityModel<Picture> onePicture(@PathVariable Integer id) {
         Picture picture = pictureRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(id));
+                .orElseThrow(() -> new NotFoundException("Unknown picture id: " + id));
         return pictureAddlinks(picture);
     }
 
@@ -217,7 +217,7 @@ public class V1RestController {
     @GetMapping("/items/{id}")
     EntityModel<Item> oneItem(@PathVariable Integer id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(id));
+                .orElseThrow(() -> new NotFoundException("Unknown item id: " + id));
 
         return itemAddlinks(item);
     }

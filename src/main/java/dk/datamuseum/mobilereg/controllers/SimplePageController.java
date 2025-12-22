@@ -105,8 +105,8 @@ public class SimplePageController {
      * @return view name
      */
     /*
-    @RequestMapping(value = "/error")
-    public String error(Model model) {
+    @RequestMapping("/error")
+    public String handleError() {
         return "error";
     }
     */

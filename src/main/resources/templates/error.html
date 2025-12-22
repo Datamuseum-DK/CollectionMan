@@ -12,26 +12,15 @@
       </h1>
     </header>
     <section id="content">
-      <h2>Fejl</h2>
+      <h1 th:text="|${httpStatus.value} - ${httpStatus.reasonPhrase}|">404</h1>
       <p th:if="${url}">
-		<b>Side:</b> <span th:text="${url}">Page URL</span>
+		<b>URL:</b> <span th:text="${url}">Page URL</span>
 	</p>
 
 	<p th:if="${timestamp}" id='created'>
 		<b>Tidspunkt:</b> <span th:text="${timestamp}">Timestamp</span>
 	</p>
-
-	<p th:if="${status}">
-		<b>Svarkode:</b> <span th:text="${status}">status-code</span> <span
-			th:if="${error}" th:text="'('+${error}+')'">error ...</span>
-	</p>
-        <!--
-        <div th:text="'Exception: ' + ${exception.message}">${exception.message}</div>
-	<ul>
-            <li th:each="ste : ${exception.stackTrace}">
-            <span th:text="${ste}" th:remove="tag">${ste}</span></li>
-	</ul>
-        -->
+	<p th:if="${errorMessage}" class="system-msg" th:text="${errorMessage}">error ...</p>
     </section>
     <footer th:replace="~{layout :: footerFragment}">
     Footer

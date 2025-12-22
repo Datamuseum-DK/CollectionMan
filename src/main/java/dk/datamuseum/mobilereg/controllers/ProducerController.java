@@ -57,9 +57,10 @@ public class ProducerController {
 
     @PreAuthorize("hasAuthority('VIEW_PRODUCERS')")
     @GetMapping("/view/{id}")
-    public String showFactsheet(@PathVariable("id") int producerid, Model model) {
+    public String showFactsheet(@PathVariable("id") int producerid,
+            Model model) throws NotFoundException {
         Producer producer = producerRepository.findById(producerid).orElseThrow(()
-                -> new IllegalArgumentException("Invalid producer Id:" + producerid));
+                -> new NotFoundException("Invalid producer Id:" + producerid));
         model.addAttribute("producer", producer);
         model.addAttribute("items", itemRepository.findByProduceridOrderByHeadline(producerid));
 
@@ -87,8 +88,9 @@ public class ProducerController {
 
     @PreAuthorize("hasAuthority('CHANGE_PRODUCERS')")
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") int id, Model model) {
-        Producer producer = producerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid producer Id:" + id));
+    public String showUpdateForm(@PathVariable("id") int id, Model model) 
+                throws NotFoundException {
+        Producer producer = producerRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid producer Id:" + id));
         model.addAttribute("producer", producer);
         
         return "producers-edit";
@@ -105,7 +107,8 @@ public class ProducerController {
      */
     @PreAuthorize("hasAuthority('CHANGE_PRODUCERS')")
     @PostMapping("/update/{id}")
-    public String updateProducer(@PathVariable("id") int id, @Valid Producer producer, BindingResult result, Model model) {
+    public String updateProducer(@PathVariable("id") int id,
+            @Valid Producer producer, BindingResult result, Model model) {
         model.addAttribute("producer", producer);
         if (result.hasErrors()) {
             producer.setProducerid(id);

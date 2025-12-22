@@ -270,8 +270,8 @@ public class ItemController {
             log.debug("Result {}", result.toString());
             return "item-addform";
         }
-        item.setItemusedfor("");
-        item.setItemusedwhere("");
+        //item.setItemusedfor("");
+        //item.setItemusedwhere("");
         checkItemFit(item);
         itemRepository.save(item);
         if (createHeadlineIfEmpty(item)) {
@@ -289,10 +289,10 @@ public class ItemController {
      */
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
-    public String showUpdateForm(int id, Model model) {
+    public String showUpdateForm(int id, Model model) throws NotFoundException {
         log.info("Edit form for {}", id);
         Item item = itemRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("Invalid item Id:" + id));
+                -> new NotFoundException("Invalid item Id:" + id));
         model.addAttribute("item", item);
         //model.addAttribute("files", fileRepository.findByStatusOrderByTitle(true));
         CaseFile file = fileRepository.findById(item.getFileid())
@@ -312,9 +312,9 @@ public class ItemController {
      */
     @GetMapping("/move")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
-    public String showMoveForm(int id, Model model) {
+    public String showMoveForm(int id, Model model) throws NotFoundException {
         Item item = itemRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("Invalid item Id:" + id));
+                -> new NotFoundException("Invalid item Id:" + id));
         int level = getItemLevel(item);
         model.addAttribute("level", level);
         model.addAttribute("places", itemRepository.findByPlacementidNull());
@@ -458,7 +458,8 @@ public class ItemController {
         Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + itemid));
         Integer cleanId = evaluateQRString(placementid);
-        Item parentItem = itemRepository.getByQrcode(cleanId);
+        Item parentItem = itemRepository.getByQrcode(cleanId).orElseThrow(()
+                -> new IllegalArgumentException("QR-koden er ikke registreret:" + cleanId));
 
         checkItemFit(itemInDB, parentItem);
         itemInDB.setPlacementid(parentItem.getId());
@@ -494,8 +495,8 @@ public class ItemController {
         item.setPlacementid(itemInDB.getPlacementid());
         item.setItemregistered(itemInDB.getItemregistered());
         item.setItemregisteredby(itemInDB.getItemregisteredby());
-        item.setItemusedfor(itemInDB.getItemusedfor());
-        item.setItemusedwhere(itemInDB.getItemusedwhere());
+        //item.setItemusedfor(itemInDB.getItemusedfor());
+        //item.setItemusedwhere(itemInDB.getItemusedwhere());
         checkItemFit(item);
         createHeadlineIfEmpty(item);
         itemRepository.save(item);
@@ -674,9 +675,9 @@ public class ItemController {
         if (query == null)
             throw new IllegalArgumentException("No QR code");
         Integer cleanId = evaluateQRString(query);
-        Item duplicateItem = itemRepository.getByQrcode(cleanId);
-        if (duplicateItem != null) {
-            throw new IllegalArgumentException("QR code already assigned to item Id: " + duplicateItem.getId());
+        Optional<Item> duplicateItem = itemRepository.getByQrcode(cleanId);
+        if (duplicateItem.isPresent()) {
+            throw new IllegalArgumentException("QR code already assigned to item Id: " + duplicateItem.get().getId());
         }
         Item directitem = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item Id: " + id));
@@ -702,9 +703,9 @@ public class ItemController {
         if (query == null)
             throw new IllegalArgumentException("No QR code");
         Integer cleanId = evaluateQRString(query);
-        Item directitem = itemRepository.getByQrcode(cleanId);
-        if (directitem != null) {
-            return String.format("redirect:/items/view/%d", directitem.getId());
+        Optional<Item> directitem = itemRepository.getByQrcode(cleanId);
+        if (directitem.isPresent()) {
+            return String.format("redirect:/items/view/%d", directitem.get().getId());
         }
         model.addAttribute("qr", cleanId);
         return "qrresult";
@@ -733,9 +734,9 @@ public class ItemController {
     public String itemFactsheet(@PathVariable("id") int id,
             Model model,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "50") int size) {
+            @RequestParam(defaultValue = "50") int size) throws NotFoundException {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
+                .orElseThrow(() -> new NotFoundException("Invalid item Id:" + id));
 
         enrichTextareas(item);
         model.addAttribute("item", item);

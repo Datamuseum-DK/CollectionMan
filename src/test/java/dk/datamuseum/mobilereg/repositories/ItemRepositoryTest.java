@@ -73,8 +73,8 @@ class ItemRepositoryTest {
         item.setItemClass(itemClass);
         item.setItemreceivedby("SMR");
         item.setItemusedby("SMR");
-        item.setItemusedfor("");
-        item.setItemusedwhere("");
+        //item.setItemusedfor("");
+        //item.setItemusedwhere("");
         item.setItemextrainfo("");
         item.setItemrestoration("");
         item.setItemreferences("");

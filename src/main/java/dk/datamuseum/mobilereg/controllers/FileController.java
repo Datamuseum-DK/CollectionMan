@@ -102,8 +102,8 @@ public class FileController {
     public String showFactsheet(@PathVariable("id") int id,
             Model model,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "50") int size) {
-        CaseFile caseFile = fileRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
+            @RequestParam(defaultValue = "50") int size) throws NotFoundException {
+        CaseFile caseFile = fileRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid file Id:" + id));
         model.addAttribute("caseFile", caseFile);
         Pageable paging = PageRequest.of(page - 1, size);
         Page<Item> pagedItems =  itemRepository.findByFileidOrderByHeadline(id, paging);
@@ -125,8 +125,8 @@ public class FileController {
      */
     @PreAuthorize("hasAuthority('CHANGE_FILES')")
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") int id, Model model) {
-        CaseFile caseFile = fileRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
+    public String showUpdateForm(@PathVariable("id") int id, Model model) throws NotFoundException {
+        CaseFile caseFile = fileRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid file Id:" + id));
         model.addAttribute("caseFile", caseFile);
         
         return "files-edit";

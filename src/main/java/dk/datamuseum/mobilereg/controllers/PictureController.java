@@ -46,9 +46,9 @@ public class PictureController {
 
     @PreAuthorize("hasAuthority('VIEW_PICTURES')")
     @GetMapping("/view/{id}")
-    public String showFactsheet(@PathVariable("id") int id, Model model) {
+    public String showFactsheet(@PathVariable("id") int id, Model model) throws NotFoundException {
         Picture picture = pictureRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("Invalid picture Id:" + id));
+                -> new NotFoundException("Invalid picture Id:" + id));
         model.addAttribute("picture", picture);
 
         return "pictures-view";

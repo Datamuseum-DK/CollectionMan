@@ -198,37 +198,39 @@ public class Item {
     private String itemusedby;
 
     // itemusedfor         = models.TextField("til hvad", blank=True)
-    @Column(length=65535)
-    @ColumnDefault("")
-    private String itemusedfor;
+    // @Column(length=65535)
+    // @ColumnDefault("")
+    // private String itemusedfor;
 
     // itemusedwhere       = models.TextField("hvor", blank=True)
-    @Column(length=65535)
-    @ColumnDefault("")
-    private String itemusedwhere;
+    // @Column(length=65535)
+    // @ColumnDefault("")
+    // private String itemusedwhere;
 
-    // itemusedwhereid     = models.ForeignKey(Sted, null=True, blank=True, db_column='itemusedwhereid', verbose_name="brugt i geografisk område", on_delete=models.CASCADE)
+    // itemusedwhereid     = models.ForeignKey(Sted, null=True, blank=True,
+    //  db_column='itemusedwhereid', verbose_name="brugt i geografisk område",
+    //  on_delete=models.CASCADE)
     //@ManyToOne
     //@JoinColumn(name="itemusedwhereid", nullable=true)
     //private Sted usedwhere;
     private Integer itemusedwhereid;
 
     // itemusedfrom        = models.DateField(verbose_name="brugt fra", null=True, blank=True)
-    @Column
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate itemusedfrom;
+    // @Column
+    // @DateTimeFormat(pattern = "yyyy-MM-dd")
+    // private LocalDate itemusedfrom;
     // itemusedto          = models.DateField(verbose_name="brugt indtil", null=True, blank=True)
-    @Column
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate itemusedto;
+    // @Column
+    // @DateTimeFormat(pattern = "yyyy-MM-dd")
+    // private LocalDate itemusedto;
     // itemusedendfrom     = models.DateField(verbose_name="udgået af brug/nedtaget", null=True, blank=True)
-    @Column
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate itemusedendfrom;
+    // @Column
+    // @DateTimeFormat(pattern = "yyyy-MM-dd")
+    // private LocalDate itemusedendfrom;
     // itemusedendto       = models.DateField(verbose_name="udgået af brug/nedtaget", null=True, blank=True)
-    @Column
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate itemusedendto;
+    // @Column
+    // @DateTimeFormat(pattern = "yyyy-MM-dd")
+    // private LocalDate itemusedendto;
 
     // itemextrainfo       = models.TextField("særlige oplysninger", blank=True)
     @Column(length=65535)

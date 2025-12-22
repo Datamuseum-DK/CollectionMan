@@ -105,4 +105,16 @@
     </addColumn>
   </changeSet>
 
+  <!-- Version 6.2.0 -->
+  <changeSet author="roug" id="v6.3.0">
+    <dropColumn tableName="items">
+      <column name="itemusedfor"/>
+      <column name="itemusedwhere"/>
+      <column name="itemusedfrom"/>
+      <column name="itemusedto"/>
+      <column name="itemusedendfrom"/>
+      <column name="itemusedendto"/>
+    </dropColumn>
+  </changeSet>
+
 </databaseChangeLog>
