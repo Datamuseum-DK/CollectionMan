@@ -167,8 +167,8 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
         </fieldset>
         <fieldset id="Notater" class="tabcontent">
           <legend>Notater</legend>
-          <label class="head" for="itemusedby" title="Brugt af hvem, til hvad, hvor">Brugsbeskrivelse:</label>
-          <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}">Brugsen</textarea>
+          <label class="head" for="itemusedby">Proviniens/brugsbeskrivelse:</label>
+          <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}" placeholder="Brugt af hvem, til hvad, hvor?">Brugsen</textarea>
           <div>
             <label class="leader" for="itemusedwhereid">Geografisk område:</label>
             <select id="itemusedwhereid" th:field="*{itemusedwhereid}">

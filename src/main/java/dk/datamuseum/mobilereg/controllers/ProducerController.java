@@ -1,6 +1,8 @@
 package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,23 @@ public class ProducerController {
         this.itemRepository = itemRepository;
     }
 
+    private List<List<Producer>> makeIndex(Iterable<Producer> producers) {
+        List<List<Producer>> producerIndex = new ArrayList<List<Producer>>();
+        char currChar = '\0';
+        List<Producer> currElem = null;
+
+        for (Producer curr : producers) {
+            if (curr.getTitle().charAt(0) == currChar) {
+                currElem.add(curr);
+            } else {
+                currChar = curr.getTitle().charAt(0);
+                currElem = new ArrayList<Producer>();
+                producerIndex.add(currElem);
+                currElem.add(curr);
+            }
+        }
+        return producerIndex;
+    }
     /**
      * List producers, either all or filtered.
      * @param q - query string.
@@ -50,6 +69,7 @@ public class ProducerController {
             q = "";
         }
         producers = producerRepository.findByQuerytext(q);
+        model.addAttribute("prodindex", makeIndex(producers));
         model.addAttribute("producers", producers);
         model.addAttribute("q", q);
         return "producers";

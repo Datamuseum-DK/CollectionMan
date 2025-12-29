@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.imgscalr.Scalr;
@@ -26,13 +25,10 @@ import com.drew.metadata.MetadataException;
 /**
  * Scaling of images.
  * Calls storage service for all storage.
- * FIXME: Not thread-safe
  */
 @Slf4j
-@Service
 public class ScalingService {
 
-    //@Autowired
     private StorageService storageService;
 
     /** Orientation of image in sourceFile. */
@@ -43,7 +39,6 @@ public class ScalingService {
     /**
      * Constructor.
      */
-    @Autowired
     public ScalingService(StorageService storageService) {
         this.storageService = storageService;
     }
@@ -67,14 +62,17 @@ public class ScalingService {
         }
         log.info(String.format("New dimensions %dx%d", width, height));
 
-        Image newResizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Image newResizedImage = originalImage.getScaledInstance(width, height,
+                Image.SCALE_SMOOTH);
+        BufferedImage bufferedImage = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_RGB);
         bufferedImage.getGraphics().drawImage(newResizedImage, 0, 0, null);
         return bufferedImage;
     }
 
     /**
-     * Scale image with understanding of camera orientation.
+     * Scale image with understanding of camera orientation. Only resize if the
+     * image is larger than the maximum dimensions.
      *
      * @param maxDim - Max size in width and height.
      * @return scaled image.
@@ -83,6 +81,12 @@ public class ScalingService {
      * @see <a href="https://www.javadoc.io/doc/org.imgscalr/imgscalr-lib/latest/org/imgscalr/Scalr.html">Scalr</a>.
      */
     private BufferedImage scaleWithOrientation(int maxDim) {
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
+        if (Math.max(width, height) <= maxDim) {
+            return originalImage;
+        }
+
         BufferedImage scaledImg = Scalr.resize(originalImage, maxDim);
 
         switch (orientation) {
@@ -141,7 +145,8 @@ public class ScalingService {
         } catch (ImageProcessingException ex) {
             log.warn("Unable to process image: {}", sourceFile.getOriginalFilename());
         } catch (MetadataException ex) {
-            log.debug("No EXIF information found for image: " + sourceFile.getOriginalFilename());
+            log.debug("No EXIF information found for image: {}",
+                    sourceFile.getOriginalFilename());
         }
     }
 
@@ -168,19 +173,20 @@ public class ScalingService {
     @Async
     public void storeAsync(String subDir, int pictureId, int dimension) {
         String formatName = "jpg";
-        String imageFileToWrite = Integer.toString(pictureId) + "." + formatName;
+        String imageFileToWrite = String.format("%d.%s", pictureId,formatName);
 
         try {
-            //BufferedImage resizedImage = resizeImage(dimension);
             BufferedImage resizedImage = scaleWithOrientation(dimension);
-            OutputStream outStream = storageService.getOutputHandle(subDir, imageFileToWrite);
+            OutputStream outStream = storageService.getOutputHandle(subDir,
+                    imageFileToWrite);
 
             ImageIO.write(resizedImage, formatName, outStream);
             outStream.flush();
             outStream.close();
             resizedImage = null;
         } catch (IOException e) {
-            throw new StorageFileNotFoundException("Could not store file: " + imageFileToWrite, e);
+            throw new StorageFileNotFoundException("Could not store file: "
+                    + imageFileToWrite, e);
         }
     }
 

@@ -303,8 +303,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         </fieldset>
         <fieldset id="Notater" class="tabcontent">
           <legend>Notater</legend>
-          <label class="leader" for="itemusedby" title="Brugt af hvem, til hvad, hvor">Brugsbeskrivelse:</label>
-          <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}">Brugsen</textarea>
+          <label class="leader" for="itemusedby">Proviniens/brugsbeskrivelse:</label>
+          <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}" placeholder="Brugt af hvem, til hvad, hvor?">Brugsen</textarea>
           <div>
             <label class="leader" for="itemusedwhereid">Geografisk område:</label>
             <select id="itemusedwhereid" th:field="*{itemusedwhereid}">
@@ -321,7 +321,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         <fieldset id="Internt" class="tabcontent">
           <legend>Internt</legend>
           <label class="head" for="itemrestoration">Restaurering:</label>
-          <textarea id="itemrestoration" cols="40" rows="5" th:field="*{itemrestoration}">Tekst her</textarea>
+          <textarea id="itemrestoration" cols="40" rows="5" th:field="*{itemrestoration}" placeholder="Notater om reparationer, m.m.">Tekst her</textarea>
           <label class="head" for="itemremarks">Bemærkninger (intern):</label>
           <textarea id="itemremarks" cols="40" rows="5" th:field="*{itemremarks}">Kommentarer</textarea>
         </fieldset>

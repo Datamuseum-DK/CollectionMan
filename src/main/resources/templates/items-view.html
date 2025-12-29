@@ -86,7 +86,9 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         <h2>Billeder</h2>
         <form action="items-view.html" th:action="@{/items/pictureupload}" method="post" enctype="multipart/form-data" onsubmit="submitButton.disabled = true; return true;">
           <div th:remove="all-but-first">
-            <a href="#" th:each="picture : ${item.pictures}" th:href="@{/pictures/view/{p}(p=${picture.pictureid})}"><img th:title="'Lagt op ' + ${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}" src="../../../test/resources/static/testpicture1.jpg" th:src="@{/media/{p}(p=${picture.low})}"/></a>
+            <a href="#" th:each="picture : ${item.pictures}" th:href="@{/pictures/view/{p}(p=${picture.pictureid})}">
+              <img th:title="'Lagt op ' + ${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}" src="../../../test/resources/static/testpicture1.jpg" th:src="@{/media/{p}(p=${picture.low})}"/>
+            </a>
             <a href="picture/pictureoriginal/DSC_8078.JPG">
               <img src="../../../test/resources/static/testpicture2.jpg"/>
             </a>
@@ -137,20 +139,17 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
       <fieldset id="Notater" class="tabcontent">
         <legend>Notater</legend>
         <dl class="factsheet">
-          <dt class="multiline" title="Beskrivelse af hvem, hvad, hvor">Brugsbeskrivelse</dt>
+          <dt class="multiline" title="Beskrivelse af hvem, hvad, hvor">Proviniens/brugsbeskrivelse</dt>
           <dd class="multiline" th:utext="${item.itemusedby}">Brugsen</dd>
           <dt>Område</dt>
           <dd>
             <span th:each="s : ${steder}" th:if="${s.id == item.itemusedwhereid}" th:text="${s.stednavn}">København</span>
           </dd>
-
           <dt class="multiline" title="Særlige oplysninger om genstandens proveniens">Særlige oplysninger</dt>
           <dd class="multiline" th:utext="${item.itemextrainfo}">Tekst her</dd>
-
           <dt class="multiline" title="Litteraturhenvisninger">Litteratur</dt>
           <dd class="multiline" th:utext="${item.itemreferences}">Tekst her</dd>
-
-          </dl>
+        </dl>
       </fieldset>
       <fieldset id="Internt" class="tabcontent">
         <legend>Internt</legend>
@@ -159,6 +158,8 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd class="multiline" th:utext="${item.itemrestoration}">Tekst her</dd>
           <dt class="multiline">Bemærkninger</dt>
           <dd class="multiline" th:utext="${item.itemremarks}">Kommentarer</dd>
+          <dt>Sidst ændret</dt>
+          <dd th:text="${#temporals.format(item.lastmodified,'yyyy-MM-dd HH:mm:ss')} + ' af ' + ${item.lastmodifiedby ?: 'ukendt'}">2012-05-06 14:55:12 af sr</dd>
         </dl>
       </fieldset>
     </main>

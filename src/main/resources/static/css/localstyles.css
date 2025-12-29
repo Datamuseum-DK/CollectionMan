@@ -142,8 +142,8 @@ table.datatable {
 }
 .pagination li {
   display: inline-block;
-min-width: 3em;
-text-align: center;
+  min-width: 3em;
+  text-align: center;
 
 }
 .page-link {
@@ -225,7 +225,7 @@ text-align: center;
 }
 
 #qr-video {
-    height:50vh;
+    height: 50vh;
 }
 
 #flash-toggle {
@@ -260,6 +260,14 @@ dl.factsheet dd a.subject::before {
     text-decoration: none;
 }
 
+details.prodindex summary {
+  font-size: 130%;
+  background: lightgrey;
+  margin: 0.3ex;
+}
+details.prodindex li {
+  margin: 0.5ex;
+}
 /* Beginning of media styles */
 @media (max-width: 480px) {
   dl.factsheet dd {

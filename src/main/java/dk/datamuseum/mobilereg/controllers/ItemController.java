@@ -250,7 +250,7 @@ public class ItemController {
         } else {
             model.addAttribute("locations", itemRepository.findByPlacementidNull());
         }
-        return "item-addform";
+        return "items-addform";
     }
 
     /**
@@ -268,7 +268,7 @@ public class ItemController {
         log.debug("Evaluating item {}", item.toString());
         if (result.hasErrors()) {
             log.debug("Result {}", result.toString());
-            return "item-addform";
+            return "items-addform";
         }
         //item.setItemusedfor("");
         //item.setItemusedwhere("");
@@ -299,7 +299,7 @@ public class ItemController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
         model.addAttribute("casefile", file);
 
-        return "item-edit";
+        return "items-edit";
     }
 
     /**
@@ -487,7 +487,7 @@ public class ItemController {
         log.debug("Incoming item: {}", item);
         if (result.hasErrors()) {
             item.setId(id);
-            return "item-edit";
+            return "items-edit";
         }
         Item itemInDB = itemRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + id));

@@ -26,12 +26,9 @@ public class PictureServiceImpl implements PictureService {
 
     private final StorageService storageService;
 
-    private final ScalingService scalingService;
-
     @Autowired
-    public PictureServiceImpl(StorageService storageService, ScalingService scalingService) {
+    public PictureServiceImpl(StorageService storageService) {
         this.storageService = storageService;
-        this.scalingService = scalingService;
 
         for (String subDir : subDirs) {
             storageService.init(subDir);
@@ -44,6 +41,7 @@ public class PictureServiceImpl implements PictureService {
             throw new StorageException("Failed to store empty file.");
         }
 
+        ScalingService scalingService = new ScalingService(storageService);
         try {
             scalingService.setSourceFile(file);
         } catch (IOException e) {

@@ -42,7 +42,7 @@ En beskrivelse her.
         <dt>Oprettet af</dt>
         <dd th:text="${caseFile.creator}">User id</dd>
         <dt>Sidst ændret</dt>
-        <dd th:text="${#temporals.format(caseFile.lastmodified,'yyyy-MM-dd HH:mm')}">2025-01-09 15:46</dd>
+        <dd th:text="${#temporals.format(caseFile.lastmodified,'yyyy-MM-dd HH:mm:ss')}">2025-01-09 15:46:23</dd>
       </dl>
       <h3>Genstande</h3>
       <dl th:replace="~{items-preview :: preview(${items})}">

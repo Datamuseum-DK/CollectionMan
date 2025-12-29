@@ -17,30 +17,37 @@
       </form>
       <h2>Producenter</h2>
       <form action="producers.html" th:action="@{/producers}">
-          <input type="text" id="query" name="q" autofocus="autofocus" value="" th:value="${q}"/>
-          <input type="submit" value="Filtrer"/>
+        <input type="text" id="query" name="q" value="" th:value="${q}"/>
+        <input type="submit" value="Filtrer"/>
       </form>
-      <ul th:remove="all-but-first">
-      <li th:each="producer : ${producers}">
-        <div>
-          <a href="producers-view.html"
-          th:href="@{/producers/view/{id}(id=${producer.producerid})}" th:text="${producer.title}">ACT Computers Ltd.</a>
-        </div>
-        <div th:text="${#strings.abbreviate(producer.description, 400)}">Applied Computer Techniques" (ACT) skiftede senere navn til Apricot Computers</div>
-      </li>
-      <li>
-        <div>
-          <a href="producers-view.html">Addo</a>
-        </div>
-        <div>Addo AB et svensk firma der senere blev fusioneret med Facit</div>
-      </li>
-      <li>
-        <div>
-          <a href="producers-view.html">Bogika Data-Systemer</a>
-        </div>
-        <div></div>
-      </li>
-      </ul>
+      <details th:each="initial : ${prodindex}" class="prodindex">
+        <summary th:text="${#strings.substring(initial[0].getTitle(),0,1)}">A</summary>
+        <ul th:remove="all-but-first">
+          <li th:each="producer : ${initial}">
+            <div>
+              <a href="producers-view.html" th:href="@{/producers/view/{id}(id=${producer.producerid})}" th:text="${producer.title}">ACT Computers Ltd.</a>
+            </div>
+            <div th:text="${#strings.abbreviate(producer.description, 400)}">Applied Computer Techniques" (ACT) skiftede senere navn til Apricot Computers</div>
+          </li>
+          <li>
+            <div>
+              <a href="producers-view.html">Addo</a>
+            </div>
+            <div>Addo AB et svensk firma der senere blev fusioneret med Facit</div>
+          </li>
+        </ul>
+      </details>
+      <details class="prodindex" th:remove="all">
+        <summary>B</summary>
+        <ul>
+          <li>
+            <div>
+              <a href="producers-view.html">Bogika Data-Systemer</a>
+            </div>
+            <div>Herning</div>
+          </li>
+        </ul>
+      </details>
     </section>
     <footer th:replace="~{layout :: footerFragment}">
     Footer

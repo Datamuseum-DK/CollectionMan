@@ -37,11 +37,11 @@ En beskrivelse her.
         <dt>Email</dt>
         <dd th:text="${donor.email}">noreply@example.com</dd>
         <dt>Oprettet</dt>
-        <dd th:text="${#temporals.format(donor.created,'yyyy-MM-dd HH:mm')}">2025-01-09T15:46:50</dd>
+        <dd th:text="${#temporals.format(donor.created,'yyyy-MM-dd HH:mm')}">2025-01-09 15:46</dd>
         <dt>Oprettet af</dt>
         <dd th:text="${donor.creator}">User id</dd>
         <dt>Sidst ændret</dt>
-        <dd th:text="${#temporals.format(donor.lastmodified,'yyyy-MM-dd HH:mm')}">2025-01-09T15:46:50</dd>
+        <dd th:text="${#temporals.format(donor.lastmodified,'yyyy-MM-dd HH:mm:ss')}">2025-01-09 15:46:30</dd>
       </dl>
       <h3>Genstande</h3>
       <dl>
