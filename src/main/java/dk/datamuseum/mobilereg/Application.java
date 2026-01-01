@@ -56,20 +56,10 @@ public class Application {
     @Bean
     public PasswordEncoder passwordEncoder() {
 //      return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        Pbkdf2PasswordEncoder encoder = 
+        Pbkdf2PasswordEncoder encoder =
                 Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
         encoder.setEncodeHashAsBase64(true);
         return encoder;
-    }
-
-    /**
-     * Instantiate the special validator for Items.
-     *
-     * @return instantiated class, which is added to the bean registry.
-     */
-    //@Bean
-    public Validator itemValidator() {
-        return new ItemValidator();
     }
 
 }

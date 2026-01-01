@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 
 import dk.datamuseum.mobilereg.MobileRegProperties;
+import dk.datamuseum.mobilereg.ItemValidator;
 
 import dk.datamuseum.mobilereg.entities.Donor;
 import dk.datamuseum.mobilereg.entities.CaseFile;
@@ -85,6 +86,8 @@ public class ItemController {
 
     private final MobileRegProperties properties;
 
+    private final ItemValidator itemValidator;
+
     /**
      * Constructor.
      */
@@ -99,7 +102,8 @@ public class ItemController {
             ProducerRepository producerRepository,
             StedRepository stedRepository,
             SubjectRepository subjectRepository,
-            MobileRegProperties properties) {
+            MobileRegProperties properties,
+            ItemValidator itemValidator) {
         this.donorRepository = donorRepository;
         this.fileRepository = fileRepository;
         this.itemRepository = itemRepository;
@@ -111,6 +115,7 @@ public class ItemController {
         this.stedRepository = stedRepository;
         this.subjectRepository = subjectRepository;
         this.properties = properties;
+        this.itemValidator = itemValidator;
     }
 
     /**
@@ -134,7 +139,7 @@ public class ItemController {
         return false;
     }
 
-    /**
+    /*
      * Checks if item can fit in the parent.
      */
     private void checkItemFit(Item item) {
@@ -145,7 +150,7 @@ public class ItemController {
         }
     }
 
-    /**
+    /*
      * Checks if item can fit in the parent.
      */
     private void checkItemFit(Item item, Item parent) {
@@ -266,12 +271,11 @@ public class ItemController {
     public String addItem(@Valid Item item, BindingResult result, Model model,
        Authentication authentication) {
         log.debug("Evaluating item {}", item.toString());
+        itemValidator.validate(item, result);
         if (result.hasErrors()) {
             log.debug("Result {}", result.toString());
             return "items-addform";
         }
-        //item.setItemusedfor("");
-        //item.setItemusedwhere("");
         checkItemFit(item);
         itemRepository.save(item);
         if (createHeadlineIfEmpty(item)) {
@@ -484,9 +488,14 @@ public class ItemController {
     public String updateItem(@PathVariable("id") int id,
             @Valid Item item,
             BindingResult result, Model model) {
-        log.debug("Incoming item: {}", item);
+
+        itemValidator.validate(item, result);
         if (result.hasErrors()) {
             item.setId(id);
+            CaseFile file = fileRepository.findById(item.getFileid())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
+            model.addAttribute("casefile", file);
+            log.debug("Errors: {}", result.toString());
             return "items-edit";
         }
         Item itemInDB = itemRepository.findById(id).orElseThrow(()
@@ -495,8 +504,6 @@ public class ItemController {
         item.setPlacementid(itemInDB.getPlacementid());
         item.setItemregistered(itemInDB.getItemregistered());
         item.setItemregisteredby(itemInDB.getItemregisteredby());
-        //item.setItemusedfor(itemInDB.getItemusedfor());
-        //item.setItemusedwhere(itemInDB.getItemusedwhere());
         checkItemFit(item);
         createHeadlineIfEmpty(item);
         itemRepository.save(item);
@@ -530,6 +537,9 @@ public class ItemController {
         return "redirect:/items";
     }
 
+    /*
+     * Check if string is a number.
+     */
     private static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
@@ -594,27 +604,6 @@ public class ItemController {
      * @param size - size of page in number of items.
      * @return name of Thymeleaf template or redirection to factsheet of item.
      */
-    /*
-    @RequestMapping({"/nosubjects"})
-    @PreAuthorize("hasAuthority('VIEW_ITEMS')")
-    public String showNoSubjects(
-            Model model,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "50") int size) {
-
-        List<Item> items = new ArrayList<Item>();
-        Pageable paging = PageRequest.of(page - 1, size);
-        Page<Item> pagedItems =  itemRepository.findBySubjectsIsNullOrderByHeadline(paging);
-
-        items = pagedItems.getContent();
-        model.addAttribute("items", items);
-        model.addAttribute("currentPage", pagedItems.getNumber() + 1);
-        model.addAttribute("totalItems", pagedItems.getTotalElements());
-        model.addAttribute("totalPages", pagedItems.getTotalPages());
-        model.addAttribute("pageSize", size);
-        return "nosubjects";
-    }
-    */
     
     /*
      * Get rid of URL part.
@@ -779,8 +768,6 @@ public class ItemController {
     public String importPicture(
             @RequestParam("file") MultipartFile myFile,
             @RequestParam("id") int id) {
-
-        //String originalName = myFile.getOriginalFilename();
 
         if (myFile == null || myFile.isEmpty()) {
             return String.format("redirect:/items/view/%d", id);

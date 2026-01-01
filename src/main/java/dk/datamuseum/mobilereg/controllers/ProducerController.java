@@ -40,16 +40,21 @@ public class ProducerController {
         this.itemRepository = itemRepository;
     }
 
+    /*
+     * Make an index consisting of the initial letter of the producer title.
+     * Requires the title to not be empty.
+     */
     private List<List<Producer>> makeIndex(Iterable<Producer> producers) {
         List<List<Producer>> producerIndex = new ArrayList<List<Producer>>();
         char currChar = '\0';
         List<Producer> currElem = null;
 
         for (Producer curr : producers) {
-            if (curr.getTitle().charAt(0) == currChar) {
+            char probeChar = Character.toUpperCase(curr.getTitle().charAt(0));
+            if (probeChar == currChar) {
                 currElem.add(curr);
             } else {
-                currChar = curr.getTitle().charAt(0);
+                currChar = probeChar;
                 currElem = new ArrayList<Producer>();
                 producerIndex.add(currElem);
                 currElem.add(curr);
@@ -57,6 +62,7 @@ public class ProducerController {
         }
         return producerIndex;
     }
+
     /**
      * List producers, either all or filtered.
      * @param q - query string.

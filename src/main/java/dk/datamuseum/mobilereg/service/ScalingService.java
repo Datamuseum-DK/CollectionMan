@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +39,7 @@ public class ScalingService {
     /**
      * Constructor.
      */
-    public ScalingService(StorageService storageService) {
+    public ScalingService(final StorageService storageService) {
         this.storageService = storageService;
     }
 
@@ -49,14 +49,12 @@ public class ScalingService {
      * @param maxDim - Max size in width and height.
      * @return scaled image.
      */
-    private BufferedImage resizeImage(int maxDim) {
-        int width, height;
-        double scaling;
+    private BufferedImage resizeImage(final int maxDim) {
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
 
-        width = originalImage.getWidth();
-        height = originalImage.getHeight();
         if (Math.max(width, height) > maxDim) {
-            scaling = (0.0 + Math.max(width, height)) / maxDim;
+            double scaling = (0.0 + Math.max(width, height)) / maxDim;
             width = Double.valueOf(width / scaling).intValue();
             height = Double.valueOf(height / scaling).intValue();
         }
@@ -173,12 +171,12 @@ public class ScalingService {
     @Async
     public void storeAsync(String subDir, int pictureId, int dimension) {
         String formatName = "jpg";
-        String imageFileToWrite = String.format("%d.%s", pictureId,formatName);
+        String fileToWrite = String.format("%d.%s", pictureId, formatName);
 
         try {
             BufferedImage resizedImage = scaleWithOrientation(dimension);
             OutputStream outStream = storageService.getOutputHandle(subDir,
-                    imageFileToWrite);
+                    fileToWrite);
 
             ImageIO.write(resizedImage, formatName, outStream);
             outStream.flush();
@@ -186,7 +184,7 @@ public class ScalingService {
             resizedImage = null;
         } catch (IOException e) {
             throw new StorageFileNotFoundException("Could not store file: "
-                    + imageFileToWrite, e);
+                    + fileToWrite, e);
         }
     }
 

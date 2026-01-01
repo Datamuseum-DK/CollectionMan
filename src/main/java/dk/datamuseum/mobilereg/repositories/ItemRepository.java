@@ -27,7 +27,8 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
      * @param pageable - information about which page the user wants returned.
      * @return a page of hits.
      */
-    @Query("SELECT i FROM Item i WHERE i.headline LIKE %?1% OR i.description LIKE %?1% OR i.itemserialno LIKE %?1% ORDER BY i.headline")
+    @Query("SELECT i FROM Item i WHERE i.headline LIKE %?1% OR i.description"
+            + " LIKE %?1% OR i.itemserialno LIKE %?1% ORDER BY i.headline")
     Page<Item> findByFulltextContaining(String query, Pageable pageable);
 
     /**
@@ -81,11 +82,11 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
      * @return a list of items - potentially with no members.
      */
     @NativeQuery(value = "WITH RECURSIVE name_tree(itemid,placementid,itemheadline) AS ("
-          + " select itemid, placementid, itemheadline from items where itemid = ?1"
-          + " union all"
-          + " select c.itemid, c.placementid, c.itemheadline"
-          + " from items c join name_tree p on p.placementid = c.itemid)"
-          + " select items.* from name_tree left join items using(itemid) where name_tree.itemid <> ?1")
+          + " SELECT itemid, placementid, itemheadline FROM items WHERE itemid = ?1"
+          + " UNION ALL"
+          + " SELECT c.itemid, c.placementid, c.itemheadline"
+          + " FROM items c join name_tree p on p.placementid = c.itemid)"
+          + " SELECT items.* FROM name_tree LEFT JOIN items using(itemid) WHERE name_tree.itemid <> ?1")
     List<Item> findParentContainers(int id);
 
     /**
@@ -104,7 +105,8 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
      * @param pageable - information about which page the user wants returned.
      * @return a page of hits.
      */
-    @Query(value = "SELECT i FROM Item i JOIN i.itemClass c WHERE i.placementid = ?1 ORDER BY c.level, i.headline")
+    @Query(value = "SELECT i FROM Item i JOIN i.itemClass c"
+            + " WHERE i.placementid = ?1 ORDER BY c.level, i.headline")
     Page<Item> findByPlacementidOrderByHeadline(int id, Pageable pageable);
 
     /**
@@ -116,7 +118,8 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
      * @param maxLevel - the level of the item you want to see possible containers for.
      * @return an iteration of items - potentially with no members.
      */
-    @Query(value = "SELECT i FROM Item i JOIN i.itemClass c WHERE i.placementid = ?1 AND c.level < ?2 ORDER BY i.headline")
+    @Query(value = "SELECT i FROM Item i JOIN i.itemClass c"
+            + " WHERE i.placementid = ?1 AND c.level < ?2 ORDER BY i.headline")
     Iterable<Item> findContainers(int parentid, int maxLevel);
 
     /**
@@ -164,4 +167,11 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
      */
     @Query(value = "SELECT i FROM Item i JOIN i.subjects s WHERE s.subjectid = ?1 ORDER BY i.headline")
     Iterable<Item> findBySubjectOrderByHeadline(int subjectid);
+
+    /**
+     * Check if the QR code is already registered in the database.
+     *
+     * @param qrcode - The QR code to look up.
+     */
+    // boolean existsByQrcode(int qrcode);
 }

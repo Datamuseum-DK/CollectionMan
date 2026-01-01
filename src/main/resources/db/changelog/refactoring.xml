@@ -105,7 +105,7 @@
     </addColumn>
   </changeSet>
 
-  <!-- Version 6.2.0 -->
+  <!-- Version 6.3.0 -->
   <changeSet author="roug" id="v6.3.0">
     <dropColumn tableName="items">
       <column name="itemusedfor"/>
@@ -117,4 +117,10 @@
     </dropColumn>
   </changeSet>
 
+  <changeSet author="roug" id="v6.3.0-1">
+    <createIndex tableName="items" indexName="items_qrcode" unique="true">
+      <column name="qrcode"/>
+    </createIndex>
+  </changeSet>
+  
 </databaseChangeLog>

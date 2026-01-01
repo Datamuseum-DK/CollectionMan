@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
-//import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +14,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -29,10 +30,12 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
+import dk.datamuseum.mobilereg.UniqueQR;
 
 /**
  * The items entity.
  */
+// @UniqueQR(itemid = "id", qrCode="qrcode", message = "QR Duplet")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "items")
@@ -47,18 +50,14 @@ public class Item {
 
     }
 
-    public static List<Acquired> ACQ_OPTIONS = Arrays.asList(Acquired.UKENDT, Acquired.GAVE, Acquired.KØB, Acquired.DEPONERING );
+    public static List<Acquired> ACQ_OPTIONS = Arrays.asList(Acquired.UKENDT,
+            Acquired.GAVE, Acquired.KØB, Acquired.DEPONERING );
 
     // itemid              = models.AutoField(verbose_name="genstand nr.", primary_key=True, editable=False)
     @Id
     @Column(name = "itemid")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
-
-    // itemtemporary       = models.IntegerField(blank=True, null=False, default=0)
-    //@ColumnDefault("0")
-    //@Column(nullable = false)
-    //private Integer itemtemporary;
 
     /**
      * File = Sag.
@@ -67,10 +66,6 @@ public class Item {
     @Column(name = "fileid")
     @NotNull(message = "Der skal angives en sag")
     private Integer fileid;
-
-    // olditemid           = models.CharField(verbose_name="gammelt nr.", max_length=255, blank=True)
-    //@Column(length=255)
-    //private String olditemid;
 
     //@ColumnDefault("0")
     //@Column(nullable = false)
@@ -175,11 +170,6 @@ public class Item {
     @Column
     private String lastmodifiedby;
 
-    // itemthanksletter    = models.DateField(verbose_name="takkebrev afsendt", null=True, blank=True)
-    //@Column
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
-    //private LocalDate itemthanksletter;
-
     /**
      * Id of containing item. Can be null.
      */
@@ -197,16 +187,6 @@ public class Item {
     @ColumnDefault("")
     private String itemusedby;
 
-    // itemusedfor         = models.TextField("til hvad", blank=True)
-    // @Column(length=65535)
-    // @ColumnDefault("")
-    // private String itemusedfor;
-
-    // itemusedwhere       = models.TextField("hvor", blank=True)
-    // @Column(length=65535)
-    // @ColumnDefault("")
-    // private String itemusedwhere;
-
     // itemusedwhereid     = models.ForeignKey(Sted, null=True, blank=True,
     //  db_column='itemusedwhereid', verbose_name="brugt i geografisk område",
     //  on_delete=models.CASCADE)
@@ -214,23 +194,6 @@ public class Item {
     //@JoinColumn(name="itemusedwhereid", nullable=true)
     //private Sted usedwhere;
     private Integer itemusedwhereid;
-
-    // itemusedfrom        = models.DateField(verbose_name="brugt fra", null=True, blank=True)
-    // @Column
-    // @DateTimeFormat(pattern = "yyyy-MM-dd")
-    // private LocalDate itemusedfrom;
-    // itemusedto          = models.DateField(verbose_name="brugt indtil", null=True, blank=True)
-    // @Column
-    // @DateTimeFormat(pattern = "yyyy-MM-dd")
-    // private LocalDate itemusedto;
-    // itemusedendfrom     = models.DateField(verbose_name="udgået af brug/nedtaget", null=True, blank=True)
-    // @Column
-    // @DateTimeFormat(pattern = "yyyy-MM-dd")
-    // private LocalDate itemusedendfrom;
-    // itemusedendto       = models.DateField(verbose_name="udgået af brug/nedtaget", null=True, blank=True)
-    // @Column
-    // @DateTimeFormat(pattern = "yyyy-MM-dd")
-    // private LocalDate itemusedendto;
 
     // itemextrainfo       = models.TextField("særlige oplysninger", blank=True)
     @Column(length=65535)
@@ -251,12 +214,6 @@ public class Item {
     @ColumnDefault("")
     private String itemremarks;
 
-    // iteminternal        = models.IntegerField("intern", help_text="forenigens aktiv", default=0, null=False, blank=True)
-    //@Column
-    //@ColumnDefault("0")
-    //@NotNull(message = "Der skal angives en status")
-    //private Integer iteminternal;
-
     // itemsubject         = models.ManyToManyField(Subjects, related_name="itemlist", verbose_name="emnegrupper" ,null=True, blank=True)
     @ManyToMany
     @JoinTable(
@@ -276,6 +233,9 @@ public class Item {
     /**
      * The QR codes we used are integers.
      */
+    //@QRCode
+    @Min(50000000)
+    @Max(59999999)
     @Column
     private Integer qrcode;
 
@@ -284,11 +244,6 @@ public class Item {
      * TODO: Don't use join for itemclass.
      */
     public Item() {
-        //setIteminternal(0);
-        //setItemdeleted(0); // Godkendt
-        //setItemtemporary(0);
-        //setItemClass(1);
-        //setOlditemid("");
         setItemsize("");
         setItemweight("");
         setItemmodeltype("");

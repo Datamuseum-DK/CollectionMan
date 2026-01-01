@@ -73,6 +73,13 @@ public class DonorController {
         return "donors-add";
     }
 
+    /**
+     * Create new donor in the database.
+     *
+     * @param result - Results from validation of the web form.
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template or redirection to list of donors.
+     */
     @PreAuthorize("hasAuthority('ADD_DONATORS')")
     @PostMapping("/adddonor")
     public String addDonor(@Valid Donor donor, BindingResult result, Model model) {
