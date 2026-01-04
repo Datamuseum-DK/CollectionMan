@@ -81,11 +81,11 @@ public class ScalingService {
     private BufferedImage scaleWithOrientation(int maxDim) {
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
-        if (Math.max(width, height) <= maxDim) {
-            return originalImage;
-        }
 
-        BufferedImage scaledImg = Scalr.resize(originalImage, maxDim);
+        BufferedImage scaledImg = originalImage;
+        if (Math.max(width, height) > maxDim) {
+            scaledImg = Scalr.resize(originalImage, maxDim);
+        }
 
         switch (orientation) {
         case 1: // No rotation
