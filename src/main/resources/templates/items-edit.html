@@ -43,6 +43,7 @@
               <input type="radio" name="itemClass" value="3"/>
               <span>Palle</span>
             </label>
+            <span th:if="${#fields.hasErrors('itemClass')}" th:errors="*{itemClass}" class="fielderror">Error</span>
           </div>
           <div>
             <label class="leader required" for="fileid">Sag:</label>
@@ -321,7 +322,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         <fieldset id="Internt" class="tabcontent">
           <legend>Internt</legend>
           <label class="head" for="itemrestoration">Restaurering:</label>
-          <textarea id="itemrestoration" cols="40" rows="5" th:field="*{itemrestoration}" placeholder="Notater om reparationer, m.m.">Tekst her</textarea>
+          <textarea id="itemrestoration" cols="40" rows="5" th:field="*{itemrestoration}" placeholder="Notater om skader, reparationer, m.m.">Tekst her</textarea>
           <label class="head" for="itemremarks">Bemærkninger (intern):</label>
           <textarea id="itemremarks" cols="40" rows="5" th:field="*{itemremarks}">Kommentarer</textarea>
         </fieldset>

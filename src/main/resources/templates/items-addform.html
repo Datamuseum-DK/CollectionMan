@@ -123,6 +123,11 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
             <label for="itemdatingto">til:</label>
             <input id="itemdatingto" type="date" value="1982-10-11" th:field="*{itemdatingto}"/>
           </div>
+          <div>
+            <label class="leader" for="qrcode">QR kode:</label>
+            <input type="number" id="qrcode" value="" th:field="*{qrcode}"/>
+            <span th:if="${#fields.hasErrors('qrcode')}" th:errors="*{qrcode}" class="fielderror">Error</span>
+          </div>
         </fieldset>
         <fieldset id="Erhvervelse" class="tabcontent">
           <legend>Erhvervelse</legend>
@@ -185,7 +190,7 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
         <fieldset id="Internt" class="tabcontent">
           <legend>Internt</legend>
           <label class="head" for="itemrestoration">Restaurering:</label>
-          <textarea id="itemrestoration" cols="40" rows="5" th:field="*{itemrestoration}">Tekst her</textarea>
+          <textarea id="itemrestoration" cols="40" rows="5" th:field="*{itemrestoration}" placeholder="Notater om skader, reparationer, m.m.">Tekst her</textarea>
           <label class="head" for="itemremarks">Bemærkninger (intern):</label>
           <textarea id="itemremarks" cols="40" rows="5" th:field="*{itemremarks}">Kommentarer</textarea>
         </fieldset>

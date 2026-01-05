@@ -49,7 +49,8 @@ public class ItemValidator implements Validator {
             if (duplicateItem.isPresent()
                     && duplicateItem.get().getId() != item.getId()) {
                 errors.rejectValue("qrcode", "DuplicateQR",
-                        "QR Code is already registered");
+                        String.format("QR Code is already registered for %d",
+                        duplicateItem.get().getId()));
             }
         }
     }

@@ -249,7 +249,7 @@ public class ItemController {
                 -> new IllegalArgumentException("Invalid placementid Id:" + item.getPlacementid()));
             //TODO parentClass seems unnecessary
             ItemClass parentClass = itemClassRepository.findById(parent.getItemClass().getId()).orElseThrow(()
-                -> new IllegalArgumentException("Unable to get item class of parent Id:"  + item.getPlacementid()));
+                -> new IllegalArgumentException("Unable to get item class of parent Id: "  + item.getPlacementid()));
             model.addAttribute("locations", List.of(parent));
             model.addAttribute("types", itemClassRepository.findByLevelGreaterThan(parentClass.getLevel()));
         } else {
@@ -269,7 +269,7 @@ public class ItemController {
     @PostMapping("/additem")
     @PreAuthorize("hasAuthority('ADD_ITEMS')")
     public String addItem(@Valid Item item, BindingResult result, Model model,
-       Authentication authentication) {
+                Authentication authentication) {
         log.debug("Evaluating item {}", item.toString());
         itemValidator.validate(item, result);
         if (result.hasErrors()) {
@@ -415,12 +415,13 @@ public class ItemController {
      */
     @PostMapping("/updateplace/{itemid}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
-    public String moveItem(@PathVariable("itemid") int itemid, Integer placementid, Model model) {
+    public String moveItem(@PathVariable("itemid") int itemid,
+                Integer placementid, Model model) {
         Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + itemid));
 
         Item parentInDB = itemRepository.findById(placementid).orElseThrow(()
-                -> new IllegalArgumentException("Invalid parent Id:" + itemid));
+                -> new IllegalArgumentException("Invalid parent Id for: " + itemid));
         checkItemFit(itemInDB, parentInDB);
 
         itemInDB.setPlacementid(placementid);
@@ -448,7 +449,7 @@ public class ItemController {
     }
 
     /**
-     * Update the location of the item.
+     * Update the location of the item from QR scan.
      *
      * @param itemid item id.
      * @param placementid - the new location's QR code - this can be a URL.
@@ -461,9 +462,9 @@ public class ItemController {
                 String placementid, Model model) {
         Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + itemid));
-        Integer cleanId = evaluateQRString(placementid);
-        Item parentItem = itemRepository.getByQrcode(cleanId).orElseThrow(()
-                -> new IllegalArgumentException("QR-koden er ikke registreret:" + cleanId));
+        Integer cleanQR = evaluateQRString(placementid);
+        Item parentItem = itemRepository.getByQrcode(cleanQR).orElseThrow(()
+                -> new IllegalArgumentException("QR-koden er ikke registreret:" + cleanQR));
 
         checkItemFit(itemInDB, parentItem);
         itemInDB.setPlacementid(parentItem.getId());
@@ -663,14 +664,14 @@ public class ItemController {
         log.info("Add QR code {} to {}", query, id);
         if (query == null)
             throw new IllegalArgumentException("No QR code");
-        Integer cleanId = evaluateQRString(query);
-        Optional<Item> duplicateItem = itemRepository.getByQrcode(cleanId);
+        Integer cleanQR = evaluateQRString(query);
+        Optional<Item> duplicateItem = itemRepository.getByQrcode(cleanQR);
         if (duplicateItem.isPresent()) {
             throw new IllegalArgumentException("QR code already assigned to item Id: " + duplicateItem.get().getId());
         }
         Item directitem = itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item Id: " + id));
-        directitem.setQrcode(cleanId);
+        directitem.setQrcode(cleanQR);
         itemRepository.save(directitem);
         return String.format("redirect:/items/view/%d", directitem.getId());
     }
@@ -691,12 +692,12 @@ public class ItemController {
         log.info("QR code query {}", query);
         if (query == null)
             throw new IllegalArgumentException("No QR code");
-        Integer cleanId = evaluateQRString(query);
-        Optional<Item> directitem = itemRepository.getByQrcode(cleanId);
+        Integer cleanQR = evaluateQRString(query);
+        Optional<Item> directitem = itemRepository.getByQrcode(cleanQR);
         if (directitem.isPresent()) {
             return String.format("redirect:/items/view/%d", directitem.get().getId());
         }
-        model.addAttribute("qr", cleanId);
+        model.addAttribute("qr", cleanQR);
         return "qrresult";
     }
 
