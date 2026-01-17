@@ -28,12 +28,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 // import dk.datamuseum.mobilereg.MobileRegProperties;
 
 import dk.datamuseum.mobilereg.entities.Item;
-// import dk.datamuseum.mobilereg.entities.ItemClass;
+import dk.datamuseum.mobilereg.entities.ItemClass;
 // import dk.datamuseum.mobilereg.entities.Picture;
 // import dk.datamuseum.mobilereg.entities.Subject;
 
 import dk.datamuseum.mobilereg.repositories.ItemRepository;
 import dk.datamuseum.mobilereg.repositories.PictureRepository;
+import dk.datamuseum.mobilereg.repositories.ItemClassRepository;
 // import dk.datamuseum.mobilereg.repositories.SubjectRepository;
 
 import dk.datamuseum.mobilereg.service.PictureService;
@@ -47,6 +48,7 @@ import dk.datamuseum.mobilereg.service.PictureService;
 //@RequestMapping("/")
 public class MaintenanceController {
 
+    private final ItemClassRepository itemClassRepository;
 
     private final ItemRepository itemRepository;
 
@@ -59,9 +61,11 @@ public class MaintenanceController {
      */
     public MaintenanceController(
                 ItemRepository itemRepository,
+                ItemClassRepository itemClassRepository,
                 PictureRepository pictureRepository,
                 PictureService pictureService) {
         this.itemRepository = itemRepository;
+        this.itemClassRepository = itemClassRepository;
         this.pictureRepository = pictureRepository;
         this.pictureService = pictureService;
     }
@@ -92,6 +96,27 @@ public class MaintenanceController {
         model.addAttribute("totalPages", pagedItems.getTotalPages());
         model.addAttribute("pageSize", size);
         return "nosubjects";
+    }
+
+    /**
+     * List all artefacts without a producer.
+     *
+     * @param model - Additional attributes used by the web form.
+     * @return name of Thymeleaf template or redirection to factsheet of item.
+     */
+    @RequestMapping({"/noproducers"})
+    @PreAuthorize("hasAuthority('VIEW_ITEMS')")
+    public String showNoProducer(Model model) {
+        List<ItemClass> classByLevel = itemClassRepository.findAllOrderByLevelDesc();
+        if (classByLevel.size() == 0) {
+            throw new IllegalArgumentException("No item classes!");
+        }
+        ItemClass artifactLevel = classByLevel.get(0);
+        Iterable<Item> items = itemRepository.findByProduceridIsNullOrderByHeadline(
+                artifactLevel.getLevel());
+
+        model.addAttribute("items", items);
+        return "noproducers";
     }
 
 }

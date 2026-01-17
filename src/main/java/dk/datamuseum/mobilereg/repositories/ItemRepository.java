@@ -27,8 +27,9 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
      * @param pageable - information about which page the user wants returned.
      * @return a page of hits.
      */
-    @Query("SELECT i FROM Item i WHERE i.headline LIKE %?1% OR i.description"
-            + " LIKE %?1% OR i.itemserialno LIKE %?1% ORDER BY i.headline")
+    @Query("SELECT i FROM Item i WHERE i.headline LIKE %?1%"
+            + " OR i.description LIKE %?1%"
+            + " OR i.itemserialno LIKE %?1% ORDER BY i.headline")
     Page<Item> findByFulltextContaining(String query, Pageable pageable);
 
     /**
@@ -64,6 +65,15 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
     Iterable<Item> findByProduceridOrderByHeadline(int id);
 
     /**
+     * Get all items with no producer.
+     *
+     * @param level - artifact class level.
+     * @return an iteration of items - potentially with no members.
+     */
+    @Query("SELECT i FROM Item i WHERE producerid IS NULL AND i.itemClass.level = ?1")
+    Iterable<Item> findByProduceridIsNullOrderByHeadline(int level);
+
+    /**
      * Get all items with given donor.
      *
      * @param id - donor id.
@@ -85,7 +95,7 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
           + " SELECT itemid, placementid, itemheadline FROM items WHERE itemid = ?1"
           + " UNION ALL"
           + " SELECT c.itemid, c.placementid, c.itemheadline"
-          + " FROM items c join name_tree p on p.placementid = c.itemid)"
+          + " FROM items c JOIN name_tree p ON p.placementid = c.itemid)"
           + " SELECT items.* FROM name_tree LEFT JOIN items using(itemid) WHERE name_tree.itemid <> ?1")
     List<Item> findParentContainers(int id);
 

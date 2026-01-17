@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Artefakter uden producent')}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <main>
+    <h2>Artefakter uden producent</h2>
+    <p>
+    Producent er ikke nødvendig for artefakter fremstillet på opgave- eller hobbybasis.
+    </p>
+      <table th:if="${not #lists.isEmpty(items)}">
+        <thead>
+          <tr>
+            <th>Betegnelse</th><th>Status</th><th>Registreret</th>
+          </tr>
+        </thead>
+        <tbody th:remove="all-but-first">
+          <tr th:each="item : ${items}">
+            <td>
+                <a href="items-view.html" th:href="@{/items/view/{id}(id=${item.id})}"
+                th:text="${item.headline}">Binært Kugleur</a>
+            </td>
+            <td th:text="${item.itemStatus.name}">Godkendt</td>
+            <td th:text="|${item.itemregistered} af ${item.itemregisteredby}|">2015-04-26 af fvn</td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">Corel Draw 4.0</a>
+            </td>
+            <td>Filler</td>
+            <td>Filler</td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">Friden EC-132 regnemaskine</a>
+            </td>
+            <td>Filler</td>
+            <td>Filler</td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">Friden Flexowriter</a>
+            </td>
+            <td>Filler</td>
+            <td>Filler</td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">Friden regnemaskine</a>
+            </td>
+            <td>Filler</td>
+            <td>Filler</td>
+          </tr>
+          <tr>
+            <td>
+                <a href="items-view.html">ICL 1501 intelligent terminal</a>
+            </td>
+            <td>Filler</td>
+            <td>Filler</td>
+          </tr>
+        </tbody>
+      </table>
+      <p th:if="${#lists.isEmpty(items)}" class="system-msg">
+      Ingen artefakter uden producent.
+      </p>
+    </main>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>
