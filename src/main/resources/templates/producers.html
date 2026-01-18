@@ -21,7 +21,7 @@
         <input type="submit" value="Filtrer"/>
       </form>
       <details th:each="initial : ${prodindex}" class="prodindex">
-        <summary th:text="${#strings.substring(initial[0].getTitle(),0,1)}">A</summary>
+        <summary th:text="${#strings.substring(initial[0].getTitle(),0,1).toUpperCase()}">A</summary>
         <ul th:remove="all-but-first">
           <li th:each="producer : ${initial}">
             <div>

@@ -24,7 +24,9 @@
           <img id="mainpicture" src="../../../test/resources/static/testpicture1.jpg" th:src="@{/media/{p}(p=${picture.medium})}"/>
         </a>
       </p>
-      <p>Lagt op: <time th:text="${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}">2012-03-29</time></p>
+      <p>Lagt op: <time th:text="${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}">2012-03-29</time>
+      af <span th:text="${picture.creator}">sr</span>
+      </p>
     </section>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
