@@ -84,18 +84,33 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           </dd>
         </dl>
         <h2>Billeder</h2>
+          <menu class="preview150" th:remove="all-but-first" th:if="${not #lists.isEmpty(item.pictures)}">
+            <li th:each="picture : ${item.pictures}">
+              <a href="#" th:href="@{/pictures/view/{p}(p=${picture.pictureid})}">
+                <div class="imgframe">
+                  <img th:title="'Lagt op ' + ${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}" src="../../../test/resources/static/testpicture1.jpg" th:src="@{/media/{p}(p=${picture.low})}"/>
+                </div>
+                <div th:text="${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}">2018-03-09</div>
+              </a>
+            </li>
+            <li>
+              <a href="picture/pictureoriginal/DSC_8078.JPG">
+                <div class="imgframe">
+                  <img src="../../../test/resources/static/testpicture2.jpg"/>
+                </div>
+                <div th:text="${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}">2018-03-09</div>
+              </a>
+            </li>
+            <li>
+              <a href="picture/pictureoriginal/DSC_8080.JPG">
+                <div class="imgframe">
+                  <img src="../../../test/resources/static/testpicture3.jpg"/>
+                </div>
+                <div th:text="${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}">2018-03-09</div>
+              </a>
+            </li>
+          </menu>
         <form action="items-view.html" th:action="@{/items/pictureupload}" method="post" enctype="multipart/form-data" onsubmit="submitButton.disabled = true; return true;">
-          <div th:remove="all-but-first">
-            <a href="#" th:each="picture : ${item.pictures}" th:href="@{/pictures/view/{p}(p=${picture.pictureid})}">
-              <img th:title="'Lagt op ' + ${#temporals.format(picture.pictureregistered,'yyyy-MM-dd')}" src="../../../test/resources/static/testpicture1.jpg" th:src="@{/media/{p}(p=${picture.low})}"/>
-            </a>
-            <a href="picture/pictureoriginal/DSC_8078.JPG">
-              <img src="../../../test/resources/static/testpicture2.jpg"/>
-            </a>
-            <a href="picture/pictureoriginal/DSC_8080.JPG">
-              <img src="../../../test/resources/static/testpicture3.jpg"/>
-            </a>
-          </div>
           <div id="pictupload">
             <input type="hidden" name="id" th:value="${item.id}" value="11000937"/>
             <label for="picture">Upload billede</label>
