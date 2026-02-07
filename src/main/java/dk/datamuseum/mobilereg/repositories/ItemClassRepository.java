@@ -30,7 +30,9 @@ public interface ItemClassRepository extends CrudRepository<ItemClass, Integer> 
     /**
      * Find all item classes that can be a parent.
      */
-    List<ItemClass> findByLevelGreaterThan(Integer level);
+    List<ItemClass> findByLevelGreaterThanEqual(Integer level);
+
+    List<ItemClass> findByLevelIsBetweenOrderByLevelDesc(Integer minLevel, Integer maxLevel);
 
     /**
      * Get the classes ordered by the highest level first.

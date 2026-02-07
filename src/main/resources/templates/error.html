@@ -12,7 +12,7 @@
       </h1>
     </header>
     <section id="content">
-      <h1 th:text="|${httpStatus.value} - ${httpStatus.reasonPhrase}|">404</h1>
+      <h1 th:if="${httpStatus}" th:text="|${httpStatus.value} - ${httpStatus.reasonPhrase}|">404</h1>
       <p th:if="${url}">
 		<b>URL:</b> <span th:text="${url}">Page URL</span>
 	</p>

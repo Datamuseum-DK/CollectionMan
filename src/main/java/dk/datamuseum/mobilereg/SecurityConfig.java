@@ -51,8 +51,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
             .requestMatchers("/", "/css/**", "/js/**", "/favicon.svg",
                     "/login", "/about").permitAll()
-            .requestMatchers("/userprofile").authenticated()
-            .anyRequest().hasAuthority("ROLE_VIEWER")
+            .anyRequest().authenticated()
             )
             .formLogin((form) -> form
                     .permitAll()

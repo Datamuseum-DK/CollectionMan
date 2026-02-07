@@ -7,17 +7,21 @@ import dk.datamuseum.mobilereg.entities.ItemStatus;
 import dk.datamuseum.mobilereg.entities.Picture;
 import dk.datamuseum.mobilereg.entities.Subject;
 
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
@@ -34,6 +38,21 @@ class ItemRepositoryTest {
 
     @Autowired
     private ItemStatusRepository itemStatusRepository;
+
+    @Autowired
+    private EntityManager entityManager;
+
+    @Test
+    void minimumLevelChild() {
+        Integer level = itemRepository.findMinLevel(11001745);
+        assertThat(level).isEqualTo(50);
+
+        level = itemRepository.findMinLevel(11002191);
+        assertThat(level).isEqualTo(10000001);
+
+        level = itemRepository.findMinLevel(10000032);
+        assertThat(level).isEqualTo(30);
+    }
 
     @Test
     void readThenSaveItem() {
@@ -60,9 +79,6 @@ class ItemRepositoryTest {
                 -> new IllegalArgumentException("ItemStatus id not find"));
         // given
         Item item = new Item();
-        //item.setId(1);
-        //item.setItemtemporary(0);
-        //item.setItemdeleted(0);
         item.setHeadline("item");
         item.setDescription("item");
         item.setItemsize("");
@@ -73,13 +89,10 @@ class ItemRepositoryTest {
         item.setItemClass(itemClass);
         item.setItemreceivedby("SMR");
         item.setItemusedby("SMR");
-        //item.setItemusedfor("");
-        //item.setItemusedwhere("");
         item.setItemextrainfo("");
         item.setItemrestoration("");
         item.setItemreferences("");
         item.setItemremarks("");
-        //item.setIteminternal(0);
         item.setItemacquiretype(1);
         item.setPictures(new ArrayList<Picture>());
         item.setSubjects(new ArrayList<Subject>());
@@ -99,4 +112,24 @@ class ItemRepositoryTest {
         assertThat(retrievedItem.isPresent()).isTrue();
         assertThat(retrievedItem.get().getHeadline()).isEqualTo("item");
     }
+
+    /**
+     * It shall not be possible to delete item 11001745 as it has
+     * children and subjects.
+     * The exception is thrown at the end of the method in commit.
+     */
+    @Test
+    //@Disabled
+    void deleteItem11001745() throws Exception {
+        Optional<Item> optionalItem = itemRepository.findById(11001745);
+        assertThat(optionalItem.isPresent()).isTrue();
+        Item retrievedItem = optionalItem.get();
+        // assertThatThrownBy(()-> itemRepository.deleteById(11001745))
+        //         .hasMessageContaining("Referential integrity constraint violation");
+        // assertThat(itemRepository.existsById(11001745)).isTrue();
+        itemRepository.deleteById(11001745);
+        assertThatExceptionOfType(ConstraintViolationException.class)
+             .isThrownBy(() -> entityManager.flush());
+    }
+
 }

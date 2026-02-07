@@ -133,6 +133,19 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
     Iterable<Item> findContainers(int parentid, int maxLevel);
 
     /**
+     * Find the minimum level child in a given container.
+     * It shall not be possible to change the container's level to same or
+     * lower level. If there are no children then the item can be any level.
+     *
+     * @param itemid - the item we need to know what it contains.
+     * @return the level of the biggest container or 10000001 if there
+     * are no children.
+     */
+    @Query(value = "SELECT COALESCE(MIN(c.level), 10000001) FROM Item i JOIN i.itemClass c"
+            + " WHERE i.placementid = ?1")
+    Integer findMinLevel(int itemid);
+
+    /**
      * Items that were used at an identified place.
      *
      * @param id - sted id.

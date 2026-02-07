@@ -173,8 +173,12 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd class="multiline" th:utext="${item.itemrestoration}">Tekst her</dd>
           <dt class="multiline">Bemærkninger</dt>
           <dd class="multiline" th:utext="${item.itemremarks}">Kommentarer</dd>
+          <!--/*/ <th:block th:each="a : ${activities}"> /*/-->
+          <dt th:text="${a.activityType.name}">Aktivitetstype</dt>
+          <dd th:text="${#temporals.format(a.created,'yyyy-MM-dd HH:mm')} + ' ' + ${a.note}">Note her</dd>
+          <!--/*/ </th:block> /*/-->
           <dt>Sidst ændret</dt>
-          <dd th:text="${#temporals.format(item.lastmodified,'yyyy-MM-dd HH:mm:ss')} + ' af ' + ${item.lastmodifiedby ?: 'ukendt'}">2012-05-06 14:55:12 af sr</dd>
+          <dd th:text="${#temporals.format(item.lastmodified,'yyyy-MM-dd HH:mm')} + ' af ' + ${item.lastmodifiedby ?: 'ukendt'}">2012-05-06 14:55:12 af sr</dd>
         </dl>
       </fieldset>
     </main>

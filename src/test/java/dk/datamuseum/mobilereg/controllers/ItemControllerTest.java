@@ -2,6 +2,7 @@ package dk.datamuseum.mobilereg.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -18,31 +19,26 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class WebApplicationTests {
+class ItemControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     /**
-     * It is possible to get the frontpage for anonymous users.
+     * Test that the list of possible item classes is correct when editing
+     * an item that is in a location and has a child container.
      */
     @Test
-    void shouldReturnDefaultMessage() throws Exception {
-        this.mockMvc.perform(get("/"))
+    @WithMockUser(username = "reg", authorities = {"CHANGE_ITEMS", "DELETE_ITEMS"})
+    void editPalle461() throws Exception {
+        this.mockMvc.perform(get("/items/edit")
+            .param("id","11001745"))
             .andExpectAll(
                 status().isOk(),
-                content().string(containsString("<a href=\"about\">Brugervejledning</a>"))
+                content().string(containsString("<span>Palle</span>")),
+                content().string(containsString("<span>Rum</span>")),
+                content().string(not(containsString("<span>Lokation</span>")))
             );
-    }
-
-    /**
-     * Any authenticated user can see the user profile.
-     */
-    @Test
-    @WithMockUser(username = "reg")
-    void userProfileAuth() throws Exception {
-        this.mockMvc.perform(get("/userprofile")).andExpect(status().isOk())
-            .andExpect(content().string(containsString("<h3>Autoriteter</h3>")));
     }
 
 }

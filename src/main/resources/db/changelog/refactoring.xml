@@ -123,4 +123,102 @@
     </createIndex>
   </changeSet>
   
+  <!-- Version 6.4.0 -->
+  <changeSet author="roug" id="v6.4.0">
+    <createTable tableName="activity_types">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="name" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="systemact" type="BOOLEAN" defaultValueBoolean="false">
+        <constraints nullable="false"/>
+      </column>
+      <column name="visible" type="BOOLEAN" defaultValueBoolean="false">
+        <constraints nullable="false"/>
+      </column>
+      <column name="placeholder" type="TEXT"/>
+    </createTable>
+
+    <createTable tableName="activities"
+          remarks="Events on an item">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="itemid" type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created" type="DATETIME">
+        <constraints nullable="false"/>
+      </column>
+      <column name="creator" type="VARCHAR(32)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="lastmodified" type="DATETIME">
+        <constraints nullable="false"/>
+      </column>
+      <column name="typeid"  type="INT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="note" type="LONGTEXT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addForeignKeyConstraint constraintName="itemid_constraint"
+              baseTableName="activities"
+              baseColumnNames="itemid"
+              onDelete="CASCADE"
+              referencedTableName="items"
+              referencedColumnNames="itemid"/>
+
+    <addForeignKeyConstraint constraintName="typeid_constraint"
+              baseTableName="activities"
+              baseColumnNames="typeid"
+              onDelete="RESTRICT" onUpdate="CASCADE"
+              referencedTableName="activity_types"
+              referencedColumnNames="id"/>
+<!--
+    <createIndex indexName="activities_itemid"
+                 tableName="activities" unique="false">
+      <column name="itemid"/>
+    </createIndex>
+    -->
+    <addForeignKeyConstraint constraintName="placement_constraint"
+                             baseTableName="items"
+                             baseColumnNames="placementid"
+                             onDelete="RESTRICT" onUpdate="RESTRICT"
+                             referencedTableName="items"
+                             referencedColumnNames="itemid"/>
+
+    <insert tableName="activity_types">
+      <!-- <column name="id" valueNumeric="1"/> -->
+      <column name="name" value="Flytning"/>
+      <column name="systemact" valueBoolean="true"/>
+      <column name="visible" valueBoolean="false"/>
+      <column name="placeholder" value=""/>
+    </insert>
+  </changeSet>
+
+  <changeSet author="roug" id="actdata01" context="test">
+    <insert tableName="activity_types">
+      <!-- <column name="id" valueNumeric="2"/> -->
+      <column name="name" value="Skadeobservation"/>
+      <column name="systemact" valueBoolean="false"/>
+      <column name="visible" valueBoolean="false"/>
+      <column name="placeholder" value="Indtast en observeret skade på genstanden"/>
+    </insert>
+    <insert tableName="activities">
+      <column name="id" valueNumeric="1"/>
+      <column name="itemid" valueNumeric="11002191"/>
+      <column name="created" valueDate="2025-06-09T15:46:50"/>
+      <column name="creator" value="sr"/>
+      <column name="lastmodified" valueDate="2025-06-09T15:46:50"/>
+      <column name="typeid" valueNumeric="1"/>
+      <column name="note" value="Fra Ukendt til Palle 461"/>
+    </insert>
+
+  </changeSet>
+
 </databaseChangeLog>

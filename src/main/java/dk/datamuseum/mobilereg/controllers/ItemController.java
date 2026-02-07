@@ -52,6 +52,7 @@ import dk.datamuseum.mobilereg.repositories.ProducerRepository;
 import dk.datamuseum.mobilereg.repositories.StedRepository;
 import dk.datamuseum.mobilereg.repositories.SubjectRepository;
 
+import dk.datamuseum.mobilereg.service.ChangelogService;
 import dk.datamuseum.mobilereg.service.PictureService;
 import static dk.datamuseum.mobilereg.service.RichTextService.richText;
 
@@ -88,6 +89,8 @@ public class ItemController {
 
     private final ItemValidator itemValidator;
 
+    private final ChangelogService changelogService;
+
     /**
      * Constructor.
      */
@@ -103,7 +106,8 @@ public class ItemController {
             StedRepository stedRepository,
             SubjectRepository subjectRepository,
             MobileRegProperties properties,
-            ItemValidator itemValidator) {
+            ItemValidator itemValidator,
+            ChangelogService changelogService) {
         this.donorRepository = donorRepository;
         this.fileRepository = fileRepository;
         this.itemRepository = itemRepository;
@@ -116,6 +120,7 @@ public class ItemController {
         this.subjectRepository = subjectRepository;
         this.properties = properties;
         this.itemValidator = itemValidator;
+        this.changelogService = changelogService;
     }
 
     /**
@@ -251,7 +256,8 @@ public class ItemController {
             ItemClass parentClass = itemClassRepository.findById(parent.getItemClass().getId()).orElseThrow(()
                 -> new IllegalArgumentException("Unable to get item class of parent Id: "  + item.getPlacementid()));
             model.addAttribute("locations", List.of(parent));
-            model.addAttribute("types", itemClassRepository.findByLevelGreaterThan(parentClass.getLevel()));
+            Integer minLevel = parent.getItemClass().getLevel() + 1;
+            model.addAttribute("types", itemClassRepository.findByLevelGreaterThanEqual(minLevel));
         } else {
             model.addAttribute("locations", itemRepository.findByPlacementidNull());
         }
@@ -302,6 +308,16 @@ public class ItemController {
         CaseFile file = fileRepository.findById(item.getFileid())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid file Id:" + id));
         model.addAttribute("casefile", file);
+
+        Integer maxLevel = itemRepository.findMinLevel(id) - 1;
+        Integer minLevel = 0;
+        if (item.getPlacementid() != null) {
+            Item parent = itemRepository.findById(item.getPlacementid()).orElseThrow(()
+                -> new IllegalArgumentException("Invalid placementid Id:" + item.getPlacementid()));
+            minLevel = parent.getItemClass().getLevel() + 1;
+        }
+        log.debug("Min: {}, Max: {}", minLevel, maxLevel);
+        model.addAttribute("types", itemClassRepository.findByLevelIsBetweenOrderByLevelDesc(minLevel, maxLevel));
 
         return "items-edit";
     }
@@ -423,7 +439,8 @@ public class ItemController {
         Item parentInDB = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid parent Id for: " + itemid));
         checkItemFit(itemInDB, parentInDB);
-
+        changelogService.logActivity(1, itemid, String.format("Fra %d til %d",
+                itemInDB.getPlacementid(), placementid));
         itemInDB.setPlacementid(placementid);
         log.info("Moving {} to {}", itemInDB.getId(), itemInDB.getPlacementid());
         itemRepository.save(itemInDB);
@@ -748,6 +765,7 @@ public class ItemController {
         Page<Item> pagedChildren =  itemRepository.findByPlacementidOrderByHeadline(id, paging);
         children = pagedChildren.getContent();
         model.addAttribute("children", children);
+        model.addAttribute("activities", changelogService.getActvitiesForItem(id));
         model.addAttribute("currentPage", pagedChildren.getNumber() + 1);
         model.addAttribute("totalChildren", pagedChildren.getTotalElements());
         model.addAttribute("totalPages", pagedChildren.getTotalPages());

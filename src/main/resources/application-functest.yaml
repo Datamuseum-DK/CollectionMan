@@ -15,16 +15,10 @@ spring:
 #
 #   databasePlatform: org.hibernate.dialect.H2Dialect
 
-# h2:
-#   console:
-#     enabled: false
+  h2:
+    console:
+      enabled: true
 #     path: /h2-console
 #     settings.trace: false
 #     settings.web-allow-others: false
-#
-#  liquibase:
-#    contexts: createdjangodb,test
-# Liquibase behaviour
-#spring.liquibase.enabled=false
-#spring.liquibase.change-log = db/changelog/db.changelog-production.yml
 

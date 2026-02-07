@@ -29,8 +29,7 @@ When installing directly in the operating system it is a prerequisite to have ei
 ```sql
 CREATE DATABASE museumdb;
 CREATE USER 'regbase'@'%' IDENTIFIED BY  'CHANGEME';
-GRANT SELECT ON museumdb.* TO 'regbase'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, RELOAD, REFERENCES, ALTER, CREATE VIEW, SHOW VIEW, INDEX ON museumdb.* TO 'regbase'@'%' WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, ALTER, CREATE VIEW, SHOW VIEW, INDEX ON museumdb.* TO 'regbase'@'%';
 
 ```
 You can then launch the application like this:
