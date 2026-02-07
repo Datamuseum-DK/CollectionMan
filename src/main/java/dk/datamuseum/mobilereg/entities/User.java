@@ -68,7 +68,7 @@ public class User {
     @Column(name = "date_joined")
     private LocalDateTime dateJoined;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(
             name = "auth_user_groups",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -76,7 +76,7 @@ public class User {
             )
     private List<Role> roles; // = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(
             name = "auth_user_user_permissions",
             joinColumns = @JoinColumn(name = "user_id"),

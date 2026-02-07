@@ -116,17 +116,13 @@ class ItemRepositoryTest {
     /**
      * It shall not be possible to delete item 11001745 as it has
      * children and subjects.
-     * The exception is thrown at the end of the method in commit.
+     * The exception is thrown when the updates are flushed to the database.
      */
     @Test
-    //@Disabled
     void deleteItem11001745() throws Exception {
         Optional<Item> optionalItem = itemRepository.findById(11001745);
         assertThat(optionalItem.isPresent()).isTrue();
         Item retrievedItem = optionalItem.get();
-        // assertThatThrownBy(()-> itemRepository.deleteById(11001745))
-        //         .hasMessageContaining("Referential integrity constraint violation");
-        // assertThat(itemRepository.existsById(11001745)).isTrue();
         itemRepository.deleteById(11001745);
         assertThatExceptionOfType(ConstraintViolationException.class)
              .isThrownBy(() -> entityManager.flush());

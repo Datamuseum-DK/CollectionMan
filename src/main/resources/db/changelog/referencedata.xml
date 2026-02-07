@@ -43,6 +43,8 @@
       <column name="itemserialno" value=""/>
       <column name="itemacquiretype" valueNumeric="0"/>
       <column name="itemreceivedby" value=""/>
+      <column name="itemregistered" valueDate="2025-07-06"/>
+      <column name="itemregisteredby" value="sr"/>
       <column name="fileid" valueNumeric="${locations.id}"/>
       <column name="itemusedby" value=""/>
       <column name="itemusedfor" value=""/>
@@ -52,6 +54,7 @@
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
       <column name="itemdeleted" valueNumeric="4"/>
+      <column name="lastmodified" valueDate="2025-07-06T12:39:36"/>
     </insert>
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000031"/>
@@ -67,6 +70,8 @@
       <column name="itemserialno" value=""/>
       <column name="itemacquiretype" valueNumeric="0"/>
       <column name="itemreceivedby" value=""/>
+      <column name="itemregistered" valueDate="2025-07-06"/>
+      <column name="itemregisteredby" value="sr"/>
       <column name="fileid" valueNumeric="${locations.id}"/>
       <column name="itemusedby" value=""/>
       <column name="itemusedfor" value=""/>
@@ -76,6 +81,7 @@
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
       <column name="itemdeleted" valueNumeric="4"/>
+      <column name="lastmodified" valueDate="2025-07-06T12:39:36"/>
     </insert>
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000032"/>
@@ -91,6 +97,8 @@
       <column name="itemserialno" value=""/>
       <column name="itemacquiretype" valueNumeric="0"/>
       <column name="itemreceivedby" value=""/>
+      <column name="itemregistered" valueDate="2025-07-06"/>
+      <column name="itemregisteredby" value="sr"/>
       <column name="fileid" valueNumeric="${locations.id}"/>
       <column name="itemusedby" value=""/>
       <column name="itemusedfor" value=""/>
@@ -100,6 +108,7 @@
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
       <column name="itemdeleted" valueNumeric="4"/>
+      <column name="lastmodified" valueDate="2025-07-06T12:39:36"/>
     </insert>
     <!--
     <insert tableName="items">
@@ -116,6 +125,8 @@
       <column name="itemserialno" value=""/>
       <column name="itemacquiretype" valueNumeric="0"/>
       <column name="itemreceivedby" value=""/>
+      <column name="itemregistered" valueDate="2025-07-06"/>
+      <column name="itemregisteredby" value="sr"/>
       <column name="fileid" valueNumeric="${locations.id}"/>
       <column name="itemusedby" value=""/>
       <column name="itemusedfor" value=""/>
@@ -125,6 +136,7 @@
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
       <column name="itemdeleted" valueNumeric="4"/>
+      <column name="lastmodified" valueDate="2025-07-06T12:39:36"/>
     </insert>
     -->
     <insert tableName="items">
@@ -141,6 +153,8 @@
       <column name="itemserialno" value=""/>
       <column name="itemacquiretype" valueNumeric="0"/>
       <column name="itemreceivedby" value=""/>
+      <column name="itemregistered" valueDate="2025-07-06"/>
+      <column name="itemregisteredby" value="sr"/>
       <column name="fileid" valueNumeric="${locations.id}"/>
       <column name="itemusedby" value=""/>
       <column name="itemusedfor" value=""/>
@@ -150,6 +164,7 @@
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
       <column name="itemdeleted" valueNumeric="4"/>
+      <column name="lastmodified" valueDate="2025-07-06T12:39:36"/>
     </insert>
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000035"/>
@@ -165,6 +180,8 @@
       <column name="itemserialno" value=""/>
       <column name="itemacquiretype" valueNumeric="0"/>
       <column name="itemreceivedby" value=""/>
+      <column name="itemregistered" valueDate="2025-07-06"/>
+      <column name="itemregisteredby" value="sr"/>
       <column name="fileid" valueNumeric="${locations.id}"/>
       <column name="itemusedby" value=""/>
       <column name="itemusedfor" value=""/>
@@ -174,6 +191,7 @@
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
       <column name="itemdeleted" valueNumeric="4"/>
+      <column name="lastmodified" valueDate="2025-07-06T12:39:36"/>
     </insert>
     <insert tableName="items">
       <column name="itemid" valueNumeric="10000036"/>
@@ -189,6 +207,8 @@
       <column name="itemserialno" value=""/>
       <column name="itemacquiretype" valueNumeric="0"/>
       <column name="itemreceivedby" value=""/>
+      <column name="itemregistered" valueDate="2025-07-06"/>
+      <column name="itemregisteredby" value="sr"/>
       <column name="fileid" valueNumeric="${locations.id}"/>
       <column name="itemusedby" value=""/>
       <column name="itemusedfor" value=""/>
@@ -198,6 +218,7 @@
       <column name="itemreferences" value=""/>
       <column name="itemremarks" value=""/>
       <column name="itemdeleted" valueNumeric="4"/>
+      <column name="lastmodified" valueDate="2025-07-06T12:39:36"/>
     </insert>
   </changeSet>
 

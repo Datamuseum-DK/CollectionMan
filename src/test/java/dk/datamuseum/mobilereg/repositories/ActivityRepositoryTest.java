@@ -3,6 +3,7 @@ package dk.datamuseum.mobilereg.repositories;
 import dk.datamuseum.mobilereg.entities.Activity;
 import dk.datamuseum.mobilereg.entities.ActivityType;
 
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ class ActivityRepositoryTest {
 
     @Autowired
     private ActivityTypeRepository activityTypeRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     private ActivityType type1;
 

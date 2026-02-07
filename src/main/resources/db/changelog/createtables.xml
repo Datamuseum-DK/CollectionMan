@@ -17,6 +17,7 @@
         <constraints nullable="false" unique="true"/>
       </column>
     </createTable>
+
     <createTable tableName="auth_group_permissions">
       <column autoIncrement="true" name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true"/>
@@ -28,6 +29,7 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
+
     <createTable tableName="auth_permission">
       <column autoIncrement="true" name="id" type="INT">
         <constraints nullable="false" primaryKey="true"/>
@@ -75,6 +77,7 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
+
     <createTable tableName="auth_user_groups">
       <column autoIncrement="true" name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true"/>
@@ -86,6 +89,21 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
+
+    <addForeignKeyConstraint
+       constraintName="auth_user_groups_group_id_97559544_fk_auth_group_id"
+       baseTableName="auth_user_groups"
+       baseColumnNames="group_id"
+       referencedTableName="auth_group" referencedColumnNames="id"
+       onUpdate="RESTRICT" onDelete="RESTRICT"/>
+
+    <addForeignKeyConstraint
+       constraintName="auth_user_groups_user_id_6a12ed8b_fk_auth_user_id"
+       baseTableName="auth_user_groups"
+       baseColumnNames="user_id"
+       referencedTableName="auth_user" referencedColumnNames="id"
+       onUpdate="RESTRICT" onDelete="RESTRICT"/>
+
     <createTable tableName="auth_user_user_permissions">
       <column autoIncrement="true" name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true"/>
@@ -97,6 +115,21 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
+
+    <addForeignKeyConstraint
+       constraintName="auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm"
+       baseTableName="auth_user_user_permissions"
+       baseColumnNames="permission_id"
+       referencedTableName="auth_permission" referencedColumnNames="id"
+       onUpdate="RESTRICT" onDelete="RESTRICT"/>
+
+    <addForeignKeyConstraint
+       constraintName="auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id"
+       baseTableName="auth_user_user_permissions"
+       baseColumnNames="user_id"
+       referencedTableName="auth_user" referencedColumnNames="id"
+       onUpdate="RESTRICT" onDelete="RESTRICT"/>
+
   </changeSet>
 
   <changeSet author="roug" id="ddl01" context="createdjangodb">
@@ -535,25 +568,5 @@
     <addNotNullConstraint tableName="items"
         columnDataType="INT" columnName="itemdeleted"/>
   </changeSet>
-
-<!--
-  <changeSet author="roug" id="ddlnotes">
-    <createTable tableName="notes">
-      <column name="id" type="INT" autoIncrement="true">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="item_id" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="creator" type="VARCHAR(32)" defaultValue="ukendt">
-        <constraints nullable="false" />
-      </column>
-      <column name="created" type="DATETIME"/>
-      <column name="content" type="LONGTEXT">
-        <constraints nullable="false" />
-      </column>
-    </createTable>
-  </changeSet>
--->
 
 </databaseChangeLog>

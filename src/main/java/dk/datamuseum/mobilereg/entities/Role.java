@@ -34,7 +34,7 @@ public class Role {
     @Column(length = 150)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(
             name = "auth_group_permissions",
             joinColumns = @JoinColumn(name = "group_id"),

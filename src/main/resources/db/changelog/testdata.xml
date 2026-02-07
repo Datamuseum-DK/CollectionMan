@@ -268,28 +268,9 @@
       <column name="lastmodified" valueDate="2024-02-10T07:55:53"/>
       <column name="olditemid" value=""/>
     </insert>
-    <!--
-    <insert tableName="notes">
-      <column name="item_id" valueNumeric="11000937"/>
-      <column name="content" value="Hører til en DEC systemenhed som befinder sig på Tapeten. Har tilhørt Rank XEROX.
-Datering skal undersøges nærmere."/>
-      <column name="created" valueDate="2019-03-04T15:46:50"/>
-      <column name="creator" value="roug"/>
-    </insert>
--->
   </changeSet>
+
   <changeSet author="roug" id="data003" context="test">
-    <!--
-    <sql>
-     INSERT INTO notes (item_id, content, created, creator) SELECT itemid, itemextrainfo, NOW(), 'fvn' FROM items WHERE itemextrainfo IS NOT NULL
-    </sql>
-    <sql>
-     INSERT INTO notes (item_id, content, created, creator) SELECT itemid, itemreferences, NOW(), 'fvn' FROM items WHERE itemreferences IS NOT NULL
-    </sql>
-    <sql>
-     INSERT INTO notes (item_id, content, created, creator) SELECT itemid, itemremarks, NOW(), 'fvn' FROM items WHERE itemremarks IS NOT NULL
-    </sql>
-    -->
     <!-- Alt starter som genstande på ukendt placering. -->
     <sql>
       UPDATE items SET placementid=10000030, itemclassid=1
@@ -384,10 +365,6 @@ Datering skal undersøges nærmere."/>
       <column name="itemclassid" valueNumeric="3"/>
     </insert>
   </changeSet>
-  <changeSet author="roug" id="permissions" context="test">
-    <loadData tableName="auth_permission" file="auth_permission.csv" relativeToChangelogFile="true"/>
-    <loadData tableName="auth_group_permissions" file="auth_group_perms.csv" relativeToChangelogFile="true"/>
-  </changeSet>
   <!-- Create three users, password is 'testkode'
    User 3 is 'reg' - doing registrations.
    User 10 is 'adm' - doing user administration
@@ -442,6 +419,9 @@ Datering skal undersøges nærmere."/>
       <column name="id" valueNumeric="2"/>
       <column name="name" value="staff"/>
     </insert>
+
+    <loadData tableName="auth_permission" file="auth_permission.csv" relativeToChangelogFile="true"/>
+
     <!-- Group members -->
     <insert tableName="auth_user_groups">
       <column name="id" valueNumeric="1"/>
@@ -453,6 +433,8 @@ Datering skal undersøges nærmere."/>
       <column name="user_id" valueNumeric="10"/>
       <column name="group_id" valueNumeric="2"/>
     </insert>
+
+    <loadData tableName="auth_group_permissions" file="auth_group_perms.csv" relativeToChangelogFile="true"/>
 
     <insert tableName="auth_user_user_permissions">
       <column name="id" valueNumeric="1"/>

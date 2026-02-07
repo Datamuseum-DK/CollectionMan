@@ -147,7 +147,12 @@
         <constraints nullable="false" primaryKey="true"/>
       </column>
       <column name="itemid" type="INT">
-        <constraints nullable="false"/>
+        <constraints nullable="false"
+              foreignKeyName="itemid_constraint"
+              deleteCascade="true"
+              referencedTableName="items"
+              referencedColumnNames="itemid"
+          />
       </column>
       <column name="created" type="DATETIME">
         <constraints nullable="false"/>
@@ -159,32 +164,32 @@
         <constraints nullable="false"/>
       </column>
       <column name="typeid"  type="INT">
-        <constraints nullable="false"/>
+        <constraints nullable="false"
+              foreignKeyName="typeid_constraint"
+              referencedTableName="activity_types"
+              referencedColumnNames="id"
+          />
       </column>
       <column name="note" type="LONGTEXT">
         <constraints nullable="false"/>
       </column>
     </createTable>
 
+    <!--
     <addForeignKeyConstraint constraintName="itemid_constraint"
               baseTableName="activities"
               baseColumnNames="itemid"
               onDelete="CASCADE"
               referencedTableName="items"
               referencedColumnNames="itemid"/>
-
     <addForeignKeyConstraint constraintName="typeid_constraint"
               baseTableName="activities"
               baseColumnNames="typeid"
               onDelete="RESTRICT" onUpdate="CASCADE"
               referencedTableName="activity_types"
               referencedColumnNames="id"/>
-<!--
-    <createIndex indexName="activities_itemid"
-                 tableName="activities" unique="false">
-      <column name="itemid"/>
-    </createIndex>
-    -->
+-->
+
     <addForeignKeyConstraint constraintName="placement_constraint"
                              baseTableName="items"
                              baseColumnNames="placementid"
@@ -218,7 +223,6 @@
       <column name="typeid" valueNumeric="1"/>
       <column name="note" value="Fra Ukendt til Palle 461"/>
     </insert>
-
   </changeSet>
 
 </databaseChangeLog>
