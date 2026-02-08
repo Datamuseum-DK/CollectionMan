@@ -436,11 +436,17 @@ public class ItemController {
         Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + itemid));
 
+        Integer oldPlaceId = itemInDB.getPlacementid();
+        Item oldPlaceInDB = itemRepository.findById(oldPlaceId).orElseThrow(()
+                -> new IllegalArgumentException("Invalid old placeId:" + oldPlaceId));
+
         Item parentInDB = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid parent Id for: " + itemid));
         checkItemFit(itemInDB, parentInDB);
-        changelogService.logActivity(1, itemid, String.format("Fra %d til %d",
-                itemInDB.getPlacementid(), placementid));
+        changelogService.logActivity(1, itemid,
+                String.format("Fra [[genstand:%d|%s]] til [[genstand:%d|%s]].",
+                oldPlaceInDB.getId(), oldPlaceInDB.getHeadline(),
+                parentInDB.getId(), parentInDB.getHeadline()));
         itemInDB.setPlacementid(placementid);
         log.info("Moving {} to {}", itemInDB.getId(), itemInDB.getPlacementid());
         itemRepository.save(itemInDB);

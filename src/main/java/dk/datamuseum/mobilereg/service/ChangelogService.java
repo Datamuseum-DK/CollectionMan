@@ -6,6 +6,7 @@ import dk.datamuseum.mobilereg.entities.ActivityType;
 import dk.datamuseum.mobilereg.entities.Activity;
 import dk.datamuseum.mobilereg.repositories.ActivityTypeRepository;
 import dk.datamuseum.mobilereg.repositories.ActivityRepository;
+import static dk.datamuseum.mobilereg.service.RichTextService.richText;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -52,7 +53,14 @@ public class ChangelogService {
         activityRepository.save(activity);
     }
 
+    /**
+     * Get the activies for an item an make them richText.
+     */
     public Iterable<Activity> getActvitiesForItem(int itemid) {
-        return activityRepository.findByItemidOrderByCreated(itemid);
+        Iterable<Activity> activities = activityRepository.findByItemidOrderByCreated(itemid);
+        for (Activity a : activities) {
+            a.setNote(richText(a.getNote()));
+        }
+        return activities;
     }
 }

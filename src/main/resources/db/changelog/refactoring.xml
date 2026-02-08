@@ -175,20 +175,27 @@
       </column>
     </createTable>
 
+    <!-- Replace constraints with CASCADE -->
+    <dropAllForeignKeyConstraints baseTableName="items_itemsubject"/>
     <!--
-    <addForeignKeyConstraint constraintName="itemid_constraint"
-              baseTableName="activities"
-              baseColumnNames="itemid"
-              onDelete="CASCADE"
-              referencedTableName="items"
-              referencedColumnNames="itemid"/>
-    <addForeignKeyConstraint constraintName="typeid_constraint"
-              baseTableName="activities"
-              baseColumnNames="typeid"
-              onDelete="RESTRICT" onUpdate="CASCADE"
-              referencedTableName="activity_types"
-              referencedColumnNames="id"/>
--->
+    <dropForeignKeyConstraint
+            constraintName="items_itemsubject_items_id_db071cc8_fk_items_itemid"
+            baseTableName="items_itemsubject"/>
+    -->
+    <addForeignKeyConstraint
+            constraintName="itemsubject_item_id_constraint"
+            baseTableName="items_itemsubject" baseColumnNames="items_id"
+            referencedTableName="items" referencedColumnNames="itemid"
+            onUpdate="RESTRICT" onDelete="CASCADE"/>
+    <!--
+    <dropForeignKeyConstraint
+            constraintName="items_itemsubject_subjects_id_a8fa221d_fk_subjects_subjectid"
+            baseTableName="items_itemsubject"/>
+    -->
+    <addForeignKeyConstraint constraintName="itemsubject_subjects_id_constraint"
+            baseTableName="items_itemsubject" baseColumnNames="subjects_id"
+            referencedTableName="subjects" referencedColumnNames="subjectid"
+            onUpdate="RESTRICT" onDelete="CASCADE"/>
 
     <addForeignKeyConstraint constraintName="placement_constraint"
                              baseTableName="items"
@@ -221,7 +228,16 @@
       <column name="creator" value="sr"/>
       <column name="lastmodified" valueDate="2025-06-09T15:46:50"/>
       <column name="typeid" valueNumeric="1"/>
-      <column name="note" value="Fra Ukendt til Palle 461"/>
+      <column name="note" value="Fra [[genstand:10000030|Ukendt lokation]] til [[genstand:11001745|Palle 461]]."/>
+    </insert>
+    <insert tableName="activities">
+      <column name="id" valueNumeric="2"/>
+      <column name="itemid" valueNumeric="11002191"/>
+      <column name="created" valueDate="2025-06-19T15:46:50"/>
+      <column name="creator" value="sr"/>
+      <column name="lastmodified" valueDate="2025-06-19T15:46:50"/>
+      <column name="typeid" valueNumeric="2"/>
+      <column name="note" value="Mangler to taster:&#13;&#10;&#13;&#10;Escape&#13;&#10;&#13;&#10;Print Screen"/>
     </insert>
   </changeSet>
 

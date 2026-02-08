@@ -82,7 +82,7 @@ class ActivityRepositoryTest {
         Optional<Activity> retrievedActivity = activityRepository.findById(1);
         assertThat(retrievedActivity.isPresent()).isTrue();
         probe = retrievedActivity.get();
-        assertThat(probe.getNote()).isEqualTo("Fra Ukendt til Palle 461");
+        assertThat(probe.getNote()).isEqualTo("Fra [[genstand:10000030|Ukendt lokation]] til [[genstand:11001745|Palle 461]].");
     }
 
     @Test
