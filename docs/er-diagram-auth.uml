@@ -1,0 +1,66 @@
+@startuml
+entity django_content_type {
+* id: integer
+--
+* app_label: string
+* model: string
+}
+
+entity auth_permission {
+* id: integer
+--
+* name: string
+* content_type_id: integer <<FK>>
+* code_name: string
+}
+
+entity auth_user {
+* id: integer
+--
+* password: string
+* username: string
+* last_login: datetime
+first_name: string
+last_name: string
+email: string
+is_superuser: boolean
+is_active: boolean
+* date_joined: datetime
+}
+
+entity auth_group {
+* id: integer
+--
+* name: string
+}
+
+entity auth_user_user_permissions {
+* id: integer
+--
+* user_id: integer <<FK>>
+* permission_id: integer <<FK>>
+}
+
+
+entity auth_group_permissions {
+* id: integer
+--
+* group_id: integer <<FK>>
+* permission_id: integer <<FK>>
+}
+
+entity auth_user_groups {
+* id: integer
+--
+* user_id: integer <<FK>>
+* group_id: integer <<FK>>
+}
+
+auth_group ||..o{ auth_user_groups
+auth_user ||..o{ auth_user_groups
+auth_user ||..o{ auth_user_user_permissions
+auth_group ||..o{ auth_group_permissions
+auth_group_permissions ||..o{ auth_permission
+auth_user_user_permissions }o..|| auth_permission
+auth_permission }o..|| django_content_type
+@enduml

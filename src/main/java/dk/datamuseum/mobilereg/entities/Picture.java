@@ -70,6 +70,11 @@ public class Picture {
     //private Item item;
     private Integer itemid;
 
+    /**
+     * Get the filename part of the original size path. Only works on Linux.
+     *
+     * @return filename after last slash.
+     */
     public String getFilename() {
         return original.substring(original.lastIndexOf('/') + 1);
     }

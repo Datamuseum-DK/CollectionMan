@@ -52,7 +52,11 @@ public class PasswordController {
     /**
      * Do the password change.
      * TODO
+     * @param orgpasswd - User's original password
+     * @param passwd1 - New password
+     * @param passwd2 - New password again to show the user knows it.
      * @param model holder for model attributes
+     * @param authentication - Current authentication session.
      * @return view name
      */
     @PreAuthorize("isAuthenticated()")

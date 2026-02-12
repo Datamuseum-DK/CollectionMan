@@ -422,38 +422,6 @@ public class ItemController {
     }
 
     /**
-     * Update the location of the item.
-     *
-     * @param itemid item id.
-     * @param placementid - the item id of the new location.
-     * @param model - Additional attributes used by the web form.
-     * @return redirection to factsheet of created item.
-     */
-    @PostMapping("/updateplace/{itemid}")
-    @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
-    public String moveItem(@PathVariable("itemid") int itemid,
-                Integer placementid, Model model) {
-        Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
-                -> new IllegalArgumentException("Invalid item Id:" + itemid));
-
-        Integer oldPlaceId = itemInDB.getPlacementid();
-        Item oldPlaceInDB = itemRepository.findById(oldPlaceId).orElseThrow(()
-                -> new IllegalArgumentException("Invalid old placeId:" + oldPlaceId));
-
-        Item parentInDB = itemRepository.findById(placementid).orElseThrow(()
-                -> new IllegalArgumentException("Invalid parent Id for: " + itemid));
-        checkItemFit(itemInDB, parentInDB);
-        changelogService.logActivity(1, itemid,
-                String.format("Fra [[genstand:%d|%s]] til [[genstand:%d|%s]].",
-                oldPlaceInDB.getId(), oldPlaceInDB.getHeadline(),
-                parentInDB.getId(), parentInDB.getHeadline()));
-        itemInDB.setPlacementid(placementid);
-        log.info("Moving {} to {}", itemInDB.getId(), itemInDB.getPlacementid());
-        itemRepository.save(itemInDB);
-        return String.format("redirect:/items/view/%d", itemid);
-    }
-
-    /**
      * Show the form for scanning QR to move.
      *
      * @param id item id.
@@ -472,6 +440,23 @@ public class ItemController {
     }
 
     /**
+     * Update the location of the item.
+     *
+     * @param itemid item id.
+     * @param placementid - the item id of the new location.
+     * @param model - Additional attributes used by the web form.
+     * @return redirection to factsheet of created item.
+     */
+    @PostMapping("/updateplace/{itemid}")
+    @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
+    public String moveItem(@PathVariable("itemid") int itemid,
+                Integer placementid, Model model) {
+        Item parentItem = itemRepository.findById(placementid).orElseThrow(()
+                -> new IllegalArgumentException("Invalid parent Id for: " + itemid));
+        return moveUpdateDB (itemid, parentItem);
+    }
+
+    /**
      * Update the location of the item from QR scan.
      *
      * @param itemid item id.
@@ -483,13 +468,24 @@ public class ItemController {
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String moveQRItem(@PathVariable("itemid") int itemid,
                 String placementid, Model model) {
-        Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
-                -> new IllegalArgumentException("Invalid item Id:" + itemid));
         Integer cleanQR = evaluateQRString(placementid);
         Item parentItem = itemRepository.getByQrcode(cleanQR).orElseThrow(()
                 -> new IllegalArgumentException("QR-koden er ikke registreret:" + cleanQR));
+        return moveUpdateDB (itemid, parentItem);
+    }
 
+    private String moveUpdateDB(int itemid, Item parentItem) {
+        Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + itemid));
         checkItemFit(itemInDB, parentItem);
+        Integer oldPlaceId = itemInDB.getPlacementid();
+        Item oldPlaceInDB = itemRepository.findById(oldPlaceId).orElseThrow(()
+                -> new IllegalArgumentException("Invalid old placeId:" + oldPlaceId));
+        changelogService.logActivity(1, itemid,
+                String.format("Fra [[genstand:%d|%s]] til [[genstand:%d|%s]].",
+                oldPlaceInDB.getId(), oldPlaceInDB.getHeadline(),
+                parentItem.getId(), parentItem.getHeadline()));
+
         itemInDB.setPlacementid(parentItem.getId());
         log.info("Moving {} to {}", itemInDB.getId(), itemInDB.getPlacementid());
         itemRepository.save(itemInDB);
@@ -544,7 +540,8 @@ public class ItemController {
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('DELETE_ITEMS')")
     public String deleteItem(@PathVariable("id") int id, Model model) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
+        Item item = itemRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + id));
         // Delete files
         for (Picture picture : item.getPictures()) {
             String filename = picture.getOriginal();
@@ -704,7 +701,6 @@ public class ItemController {
      *
      * @param query QR code, which can be a URL.
      * @param model - Additional attributes used by the web form.
-     * @return name of Thymeleaf template.
      * @return name of Thymeleaf template or redirection to factsheet of created item.
      */
     @GetMapping("/qrfind")
@@ -797,7 +793,8 @@ public class ItemController {
         if (myFile == null || myFile.isEmpty()) {
             return String.format("redirect:/items/view/%d", id);
         }
-        Item item = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
+        Item item = itemRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("Invalid item Id:" + id));
 
         Picture picture = new Picture();
         picture.setTitle(item.getHeadline());

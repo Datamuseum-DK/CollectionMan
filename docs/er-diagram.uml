@@ -1,0 +1,152 @@
+@startuml
+entity ItemClass {
+* id: integer
+--
+* level: integer
+* name: string
+}
+
+entity ItemStatuses {
+* id: integer
+--
+* name: string
+* visible: boolean
+}
+
+entity Items {
+* itemid
+--
+* itemstatus: integer <<FK>>
+* itemheadline: string
+* itemdescription: text
+itemsize: string
+itemweight: string
+itemmodeltype: string
+itemserialno: string
+itemdatingfrom: date
+itemdatingto: date
+itemacquiretype: enum
+itemdepositeduntil: date
+itemborroweduntil: date
+itemreceived: date
+itemreceivedby: string
+itemregistered: date
+itemregisteredby: string
+lastmodified: datetime
+lastmodifiedby: string
+placementid: integer <<FK>>
+itemlocation: text
+itemusedby: text
+itemextrainfo: text
+itemrestoration: text
+itemreferences: text
+itemremarks: text
+donatorid: integer <<FK>>
+* fileid integer <<FK>>
+itemusedwhereid: integer <<FK>>
+producerid: integer <<FK>>
+itemclassid: integer <<FK>>
+qrcode: integer
+}
+
+entity Files {
+* fileid
+--
+creator: string
+created: datetime
+lastmodified: datetime
+* filetitle: string
+* filedescription: text
+datingfrom: date
+datingto: date
+* status: boolean
+}
+
+entity Activities {
+* id: int
+--
+* itemid: integer <<FK>>
+* typeid: integer <<FK>>
+* created: datetime
+* note: longtext
+}
+
+entity ActivityTypes {
+* id: integer
+--
+* name: varchar(50)
+* systemact: boolean
+* visible: boolean
+placeholder: text
+}
+
+entity Sted {
+* id: integer
+--
+* stednavn: string
+}
+
+entity Donators {
+* donatorid: integer
+--
+donatorinstitution: string
+donatorposition: string
+donatorname: string
+donatoraddress: string
+donatorphone: string
+donatoremail: string
+}
+
+entity ItemsSubject {
+* id: integer
+--
+* items_id: integer <<FK>>
+* subject_id: integer <<FK>>
+}
+
+entity Subjects {
+* subjectid: integer
+--
+creator: string
+created: datetime
+lastmodified: datetime
+subjecttitle: string
+subjectdescription: text
+}
+
+entity Pictures {
+* pictureid: integer
+--
+picturetext: text
+pictureregisteredby: string
+pictureregistered: datetime
+lastmodified: datetime
+pictureoriginal: string
+picturemedium: string
+picturelow: string
+itemid: integer <<FK>>
+}
+
+entity Producers {
+* producerid: integer
+--
+creator: string
+created: datetime
+lastmodified: datetime
+* producertitle: string
+* producerdescription: text
+}
+
+ItemClass ||..|{ Items
+Files ||..o{ Items
+ItemStatuses ||..|{ Items
+Items }o..o| Sted
+Items }o..|| Pictures
+Items |o..o{ ItemsSubject
+Subjects |o..o{ ItemsSubject
+Items }o--o| Producers
+Items }o--o| Items
+Items }o--o| Donators
+Items |o..o{ Activities
+ActivityTypes ||--|{ Activities
+@enduml

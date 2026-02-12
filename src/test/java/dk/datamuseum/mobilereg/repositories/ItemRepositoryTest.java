@@ -128,4 +128,15 @@ class ItemRepositoryTest {
              .isThrownBy(() -> entityManager.flush());
     }
 
+    @Test
+    void noDuplicateQRcodes() {
+        Optional<Item> optionalItem = itemRepository.findById(10000001);
+        assertThat(optionalItem.isPresent()).isTrue();
+        Item retrievedItem = optionalItem.get();
+        assertThat(retrievedItem.getHeadline()).isEqualTo("ICT mekanisk korthuller");
+        retrievedItem.setQrcode(58531224);
+        itemRepository.save(retrievedItem);
+        assertThatExceptionOfType(ConstraintViolationException.class)
+             .isThrownBy(() -> entityManager.flush());
+    }
 }

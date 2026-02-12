@@ -29,6 +29,12 @@ public class LocationsController {
         this.itemRepository = itemRepository;
     }
 
+    /**
+     * Get the list of locations.
+     *
+     * @param model - map to place attributes in.
+     * @return name of Thymeleaf template.
+     */
     @RequestMapping({"/locations"})
     public String locationList(Model model) {
         List<Item> items = itemRepository.findByPlacementidNull();
