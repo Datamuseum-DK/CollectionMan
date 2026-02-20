@@ -143,7 +143,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           </dd>
           <dt title="Modtagelsesdato">Modtaget</dt>
           <dd><span th:remove="tag" th:text="${#temporals.format(item.itemreceived,'yyyy-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemreceivedby}">fvn</span></dd>
-          <dt title="Deponeret til museet indtil">Deponeret indtil:</dt>
+          <dt title="Deponeret til museet indtil">Deponeret indtil</dt>
           <dd th:text="${#temporals.format(item.itemdepositeduntil,'yyyy-MM-dd')}">2032-09-16</dd>
           <dt>Lånt indtil</dt>
           <dd th:text="${#temporals.format(item.itemborroweduntil,'yyyy-MM-dd')}">2027-10-16</dd>
@@ -175,12 +175,12 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd class="multiline" th:utext="${item.itemremarks}">Kommentarer</dd>
           <!--/*/ <th:block th:each="a : ${activities}"> /*/-->
           <dt class="multiline" th:text="${a.activityType.name}">Flytning</dt>
-          <dd class="multiline" th:utext="${#temporals.format(a.created,'yyyy-MM-dd HH:mm')} + ' ' + ${a.note}">2025-06-09 15:46: Fra Ukendt til Palle 461.</dd>
+          <dd class="multiline"><span th:text="${#temporals.format(a.created,'yyyy-MM-dd HH:mm')} + ' af ' + ${a.creator} + ':' ">2025-06-09 15:46 af sr: </span><span th:utext="${a.note}">Fra Ukendt til Palle 461.</span></dd>
           <!--/*/ </th:block> /*/-->
           <dt class="multiline" th:remove="all">Skadeobservation</dt>
-          <dd class="multiline" th:remove="all">2025-06-19 15:46: Mangler to taster:&#13;&#10;* Escape&#13;&#10;* Print Screen</dd>
+          <dd class="multiline" th:remove="all">2025-06-19 15:46 af lm: Mangler to taster:&#13;&#10;* Escape&#13;&#10;* Print Screen</dd>
           <dt class="multiline" th:remove="all">Flytning</dt>
-          <dd class="multiline" th:remove="all">2025-08-12 09:12: Fra Palle 461 til Charlotteskolen.</dd>
+          <dd class="multiline" th:remove="all">2025-08-12 09:12 af fvn: Fra Palle 461 til Charlotteskolen.</dd>
           <dt>Sidst ændret</dt>
           <dd th:text="${#temporals.format(item.lastmodified,'yyyy-MM-dd HH:mm')} + ' af ' + ${item.lastmodifiedby ?: 'ukendt'}">2012-05-06 14:55:12 af sr</dd>
         </dl>

@@ -44,7 +44,7 @@ public class PictureController {
     }
     */
 
-    @PreAuthorize("hasAuthority('VIEW_PICTURES')")
+    @PreAuthorize("hasAuthority('VIEW_ITEMS')")
     @GetMapping("/view/{id}")
     public String showFactsheet(@PathVariable("id") int id, Model model) throws NotFoundException {
         Picture picture = pictureRepository.findById(id).orElseThrow(()
@@ -58,14 +58,14 @@ public class PictureController {
      * Delete picture.
      * This also removes the physical files in the picture service.
      */
-    @PreAuthorize("hasAuthority('DELETE_PICTURES')")
+    @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     @GetMapping("/delete/{id}")
     public String deletePicture(@PathVariable("id") int id, Model model) {
         Picture picture = pictureRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid picture Id:" + id));
         Integer returnItem = picture.getItemid();
         pictureRepository.delete(picture);
-        log.info("Deleted picture Id {}", id);
+        log.info("Deleted picture Id {} for item Id {}", id, returnItem);
 
         String filename = picture.getOriginal();
         filename = filename.substring(filename.lastIndexOf('/') + 1);

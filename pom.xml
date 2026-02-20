@@ -6,7 +6,7 @@
     <groupId>dk.datamuseum</groupId>
     <artifactId>mobilereg</artifactId>
     <name>CollectionMan</name>
-    <version>6.4.1-SNAPSHOT</version>
+    <version>6.4.1</version>
 
     <dependencyManagement>
         <dependencies>

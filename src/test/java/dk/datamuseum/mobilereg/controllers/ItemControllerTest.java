@@ -1,11 +1,14 @@
 package dk.datamuseum.mobilereg.controllers;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,8 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.multipart.MultipartFile;
 //import org.springframework.security.test.context.support.WithUserDetails;
 
 @SpringBootTest
@@ -88,6 +93,45 @@ class ItemControllerTest {
                 content().string(containsString("<a href=\"/items/view/11002191\">Flyttekasse PCSW03</a>")),
                 content().string(containsString("Fra <a href=\"10000034\">Charlotteskolen</a> til <a href=\"11002191\">Flyttekasse PCSW03</a>.")),
                 content().string(not(containsString("<a href=\"/items/view/10000034\">Charlotteskolen</a>")))
+            );
+    }
+
+    /**
+     * Test that creation fails if placementid is null.
+     */
+    @Test
+    @WithMockUser(username = "reg", authorities = {"ADD_ITEMS", "CHANGE_ITEMS", "VIEW_ITEMS"})
+    void addItemWOplacementid() throws Exception {
+        mockMvc.perform(post("/items/additem")
+            .with(csrf())
+            .param("fileid", "1")
+            .param("itemClass","1")
+            .param("itemstatus","1")
+            .param("itemacquiretype","1")
+            .param("headline","Test item")
+            .param("description",""))
+            .andExpectAll(
+                status().isBadRequest()
+            );
+    }
+
+    /**
+     * Test upload of picture.
+     */
+    @Test
+    @WithMockUser(username = "reg", authorities = {"ADD_PICTURES", "CHANGE_ITEMS", "VIEW_ITEMS"})
+    void uploadPictureSimple() throws Exception {
+        FileInputStream fileptr = new FileInputStream("target/classes/static/testimages/5.jpg");
+
+        MockMultipartFile picture = new MockMultipartFile("file",
+            "testpicture.jpg", "image/jpeg",
+            fileptr);
+        mockMvc.perform(multipart("/items/pictureupload")
+            .file(picture)
+            .with(csrf())
+            .param("id","10000001"))
+            .andExpectAll(
+                status().isFound()
             );
     }
 

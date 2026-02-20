@@ -1,4 +1,32 @@
-# Kubernetes deployment
+# Deployment
+
+## Legacy deployment
+
+When installing directly in the operating system it is a prerequisite to have either MySQL or MariaDB running.
+
+```sql
+CREATE DATABASE museumdb;
+CREATE USER 'regbase'@'%' IDENTIFIED BY  'CHANGEME';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, ALTER, CREATE VIEW, SHOW VIEW, INDEX ON museumdb.* TO 'regbase'@'%';
+
+```
+You can then launch the application like this:
+
+```sh
+#!/bin/sh
+java \
+  -Dspring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver \
+  -Dspring.datasource.url=jdbc:mysql:///museumdb \
+  -Dspring.datasource.username=regbase \
+  -Dspring.datasource.password=CHANGEME \
+  -Dmobilereg.storage-root-dir=/opt/regbase/pictures \
+  -Dserver.servlet.context-path=/ \
+  -jar mobilereg-jar-with-dependencies.jar
+```
+
+You can change the `server.servlet.context-path` to e.g. `/registration` if you don't want to run the application in the root context. Then visit http://localhost:8080/.
+
+## Kubernetes
 
 The application can be deployed in Kubernetes with the Helm chart. It will run with the official image, which was built with:
 

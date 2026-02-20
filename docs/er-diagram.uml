@@ -147,6 +147,6 @@ Subjects |o..o{ ItemsSubject
 Items }o--o| Producers
 Items }o--o| Items
 Items }o--o| Donators
-Items |o..o{ Activities
+Items ||..o{ Activities
 ActivityTypes ||--|{ Activities
 @enduml

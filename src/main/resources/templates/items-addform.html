@@ -67,7 +67,7 @@
             <span th:if="${#fields.hasErrors('itemStatus')}" th:errors="*{itemStatus}" class="fielderror">Error</span>
           </div>
           <div>
-            <label class="required leader" for="placementid">Lokation:</label>
+            <label class="required leader" for="placementid">Placering:</label>
             <select id="placementid" th:field="*{placementid}" th:remove="all-but-first">
               <option value="0" th:value="${location.id}" th:text="${location.headline}" th:each="location: ${locations}">Sandby</option>
               <option value="1">Nordrup</option>

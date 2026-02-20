@@ -146,6 +146,7 @@ public class ItemController {
 
     /*
      * Checks if item can fit in the parent.
+     * Top-level items have a null-parent.
      */
     private void checkItemFit(Item item) {
         if (item.getPlacementid() != null) {
@@ -265,7 +266,8 @@ public class ItemController {
     }
 
     /**
-     * Create the item.
+     * Create the item. It is not possible to create top-level items via the
+     * UI - the placement id must contain a value.
      *
      * @param item - The item record containing the entered information.
      * @param result - Results from validation of the web form.
@@ -282,11 +284,15 @@ public class ItemController {
             log.debug("Result {}", result.toString());
             return "items-addform";
         }
+        if (item.getPlacementid() == null) {
+            throw new IllegalArgumentException("Placement is missing");
+        }
         checkItemFit(item);
         itemRepository.save(item);
         if (createHeadlineIfEmpty(item)) {
             itemRepository.save(item);
         }
+        log.info("Added item Id {} to {}", item.getId(), item.getPlacementid());
         return String.format("redirect:/items/view/%d", item.getId());
     }
 
@@ -450,7 +456,9 @@ public class ItemController {
     @PostMapping("/updateplace/{itemid}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String moveItem(@PathVariable("itemid") int itemid,
-                Integer placementid, Model model) {
+                Integer placementid,
+                Optional<String> type,
+                Model model) {
         Item parentItem = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid parent Id for: " + itemid));
         return moveUpdateDB (itemid, parentItem);
@@ -467,7 +475,9 @@ public class ItemController {
     @PostMapping("/qrupdateplace/{itemid}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String moveQRItem(@PathVariable("itemid") int itemid,
-                String placementid, Model model) {
+                String placementid,
+                Optional<String> type,
+                Model model) {
         Integer cleanQR = evaluateQRString(placementid);
         Item parentItem = itemRepository.getByQrcode(cleanQR).orElseThrow(()
                 -> new IllegalArgumentException("QR-koden er ikke registreret:" + cleanQR));
@@ -554,7 +564,7 @@ public class ItemController {
         }
 
         itemRepository.delete(item);
-        log.info(String.format("Deleted item Id %d", id));
+        log.info("Deleted item Id {}", id);
         return "redirect:/items";
     }
 
@@ -810,7 +820,8 @@ public class ItemController {
         picture.setLow(String.format("picturelow/%d.jpg", pictureId));
         pictureRepository.save(picture);
 
-        log.info("Upload of {} to picture id {}", myFile.getOriginalFilename(), pictureId);
+        log.info("Upload of {} to picture id {} of item {}",
+                myFile.getOriginalFilename(), pictureId, id);
         pictureService.store(myFile, pictureId);
         return String.format("redirect:/items/view/%d", id);
     }
