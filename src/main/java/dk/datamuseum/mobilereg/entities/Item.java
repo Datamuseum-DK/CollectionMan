@@ -53,7 +53,6 @@ public class Item {
     public static List<Acquired> ACQ_OPTIONS = Arrays.asList(Acquired.UKENDT,
             Acquired.GAVE, Acquired.KØB, Acquired.DEPONERING );
 
-    // itemid              = models.AutoField(verbose_name="genstand nr.", primary_key=True, editable=False)
     @Id
     @Column(name = "itemid")
     @GeneratedValue(strategy=GenerationType.IDENTITY)

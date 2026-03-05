@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Flyt: <span th:text="${pictureid}">21000937</span> - <span th:text="${headline}">RC8000</span></h2>
+      <form method="post" action="pictures-view.html" th:action="@{/pictures/updateplace/{id}(id=${pictureid})}">
+        <fieldset>
+          <legend>Navigere hierarkisk</legend>
+          <button th:if="${placementid}" type="submit" name="placementid" th:value="${placementid}" th:text="${placename}">Sandby</button>
+          <ul class="navselect">
+          <li th:each="place : ${places}" th:value="${place.id}">
+            <a href="pictures-move-nav.html?pictureid=21000937&amp;placementid=10000041" th:href="@{move-nav(pictureid=${pictureid},placementid=${place.id})}" th:text="${place.headline}">Pallereol A</a>
+          </li>
+          <li th:remove="all">
+            <a href="pictures-move-nav.html?pictureid=21000937&amp;placementid=10000042">Pallereol B</a>
+          </li>
+          <li th:remove="all">
+            <a href="pictures-move-nav.html?pictureid=21000937&amp;placementid=10000043">Pallereol C</a>
+          </li>
+          <li th:remove="all">
+            <a href="pictures-move-nav.html?pictureid=21000937&amp;placementid=10000044">Pallereol D</a>
+          </li>
+          </ul>
+        </fieldset>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

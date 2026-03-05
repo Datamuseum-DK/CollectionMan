@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 
-import dk.datamuseum.mobilereg.MobileRegProperties;
+import dk.datamuseum.mobilereg.service.Utilities;
 import dk.datamuseum.mobilereg.ItemValidator;
 
 import dk.datamuseum.mobilereg.entities.Donor;
@@ -54,6 +54,7 @@ import dk.datamuseum.mobilereg.repositories.SubjectRepository;
 
 import dk.datamuseum.mobilereg.service.ChangelogService;
 import dk.datamuseum.mobilereg.service.PictureService;
+import dk.datamuseum.mobilereg.service.Utilities;
 import static dk.datamuseum.mobilereg.service.RichTextService.richText;
 
 /**
@@ -85,7 +86,7 @@ public class ItemController {
 
     private final SubjectRepository subjectRepository;
 
-    private final MobileRegProperties properties;
+    private final Utilities utilities;
 
     private final ItemValidator itemValidator;
 
@@ -105,7 +106,7 @@ public class ItemController {
             ProducerRepository producerRepository,
             StedRepository stedRepository,
             SubjectRepository subjectRepository,
-            MobileRegProperties properties,
+            Utilities utilities,
             ItemValidator itemValidator,
             ChangelogService changelogService) {
         this.donorRepository = donorRepository;
@@ -118,7 +119,7 @@ public class ItemController {
         this.producerRepository = producerRepository;
         this.stedRepository = stedRepository;
         this.subjectRepository = subjectRepository;
-        this.properties = properties;
+        this.utilities = utilities;
         this.itemValidator = itemValidator;
         this.changelogService = changelogService;
     }
@@ -338,7 +339,8 @@ public class ItemController {
      */
     @GetMapping("/move")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
-    public String showMoveForm(int id, Model model) throws NotFoundException {
+    public String showMoveForm(int id,
+                Model model) throws NotFoundException {
         Item item = itemRepository.findById(id).orElseThrow(()
                 -> new NotFoundException("Invalid item Id:" + id));
         int level = getItemLevel(item);
@@ -407,7 +409,7 @@ public class ItemController {
         }
         model.addAttribute("q", query);
         List<Item> items = new ArrayList<Item>();
-        if (isNumeric(query)) {
+        if (Utilities.isNumeric(query)) {
             Integer cleanId = Integer.parseInt(query);
             items = itemRepository.findByIdOrQrcode(cleanId, cleanId);
             model.addAttribute("currentPage", 1);
@@ -461,7 +463,7 @@ public class ItemController {
                 Model model) {
         Item parentItem = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid parent Id for: " + itemid));
-        return moveUpdateDB (itemid, parentItem);
+        return moveUpdateDB(itemid, parentItem);
     }
 
     /**
@@ -476,12 +478,11 @@ public class ItemController {
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String moveQRItem(@PathVariable("itemid") int itemid,
                 String placementid,
-                Optional<String> type,
                 Model model) {
-        Integer cleanQR = evaluateQRString(placementid);
+        Integer cleanQR = utilities.evaluateQRString(placementid);
         Item parentItem = itemRepository.getByQrcode(cleanQR).orElseThrow(()
                 -> new IllegalArgumentException("QR-koden er ikke registreret:" + cleanQR));
-        return moveUpdateDB (itemid, parentItem);
+        return moveUpdateDB(itemid, parentItem);
     }
 
     private String moveUpdateDB(int itemid, Item parentItem) {
@@ -536,12 +537,22 @@ public class ItemController {
         item.setItemregisteredby(itemInDB.getItemregisteredby());
         checkItemFit(item);
         createHeadlineIfEmpty(item);
+        if (itemInDB.getItemStatus().getId() != item.getItemStatus().getId()) {
+            log.info("Status change from {} to {}",
+                    itemInDB.getItemStatus().getName(),
+                    item.getItemStatus().getName());
+            changelogService.logActivity(2, id,
+                String.format("Fra %s til %s.",
+                    itemInDB.getItemStatus().getName(),
+                    item.getItemStatus().getName()));
+        }
         itemRepository.save(item);
         return String.format("redirect:/items/view/%d", id);
     }
 
     /**
-     * Delete item.
+     * Delete item. This also deletes all attached the pictures in the
+     * storage repository.
      *
      * @param id item id.
      * @param model - Additional attributes used by the web form.
@@ -568,21 +579,6 @@ public class ItemController {
         return "redirect:/items";
     }
 
-    /*
-     * Check if string is a number.
-     */
-    private static boolean isNumeric(String strNum) {
-        if (strNum == null) {
-            return false;
-        }
-        try {
-            int i = Integer.parseInt(strNum);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * Run a search and return results.
      *
@@ -606,7 +602,7 @@ public class ItemController {
         query = query.strip();
         model.addAttribute("q", query);
 
-        if (isNumeric(query)) {
+        if (Utilities.isNumeric(query)) {
             Integer cleanId = Integer.parseInt(query);
             List<Item> directitem = itemRepository.findByIdOrQrcode(cleanId, cleanId);
             if (directitem.size() > 0) {
@@ -624,38 +620,6 @@ public class ItemController {
         model.addAttribute("totalPages", pagedItems.getTotalPages());
         model.addAttribute("pageSize", size);
         return "items";
-    }
-
-    /**
-     * Run a search and return results.
-     *
-     * @param query - query string.
-     * @param model - Additional attributes used by the web form.
-     * @param page - page number of result list.
-     * @param size - size of page in number of items.
-     * @return name of Thymeleaf template or redirection to factsheet of item.
-     */
-    
-    /*
-     * Get rid of URL part.
-     * Also works if the string is just a number.
-     *
-     * @param qrInput - The QR value - scanned or entered.
-     */
-    private Integer evaluateQRString(String qrInput) {
-        String prefixProperty = properties.getQrUrlPrefixes();
-        String[] prefixes = prefixProperty.split("\\s*,\\s*");
-
-        for (String prefix : prefixes) {
-            if (qrInput.startsWith(prefix)) {
-                qrInput = qrInput.substring(prefix.length());
-                break;
-            }
-        }
-        if (isNumeric(qrInput)) {
-            return Integer.parseInt(qrInput);
-        } else
-            throw new IllegalArgumentException("QR code is not numeric");
     }
 
     /**
@@ -694,7 +658,7 @@ public class ItemController {
         log.info("Add QR code {} to {}", query, id);
         if (query == null)
             throw new IllegalArgumentException("No QR code");
-        Integer cleanQR = evaluateQRString(query);
+        Integer cleanQR = utilities.evaluateQRString(query);
         Optional<Item> duplicateItem = itemRepository.getByQrcode(cleanQR);
         if (duplicateItem.isPresent()) {
             throw new IllegalArgumentException("QR code already assigned to item Id: " + duplicateItem.get().getId());
@@ -721,7 +685,7 @@ public class ItemController {
         log.info("QR code query {}", query);
         if (query == null)
             throw new IllegalArgumentException("No QR code");
-        Integer cleanQR = evaluateQRString(query);
+        Integer cleanQR = utilities.evaluateQRString(query);
         Optional<Item> directitem = itemRepository.getByQrcode(cleanQR);
         if (directitem.isPresent()) {
             return String.format("redirect:/items/view/%d", directitem.get().getId());

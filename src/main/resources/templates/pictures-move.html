@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Flyt: billede nr. <span th:text="${pictureid}">1</span></h2>
+      <fieldset>
+        <legend>Flytte med QR kode</legend>
+        <div>
+          <a href="pictures-qrmove.html" th:href="@{/pictures/qrmove(pictureid=${pictureid})}">Scan QR</a>
+        </div>
+      </fieldset>
+      <form method="get" action="pictures-move-search.html" th:action="@{/pictures/move-search}">
+        <fieldset>
+          <legend>Søge container</legend>
+          <label class="head" for="placementid" title="Indtast tekst, genstandsnr. eller QR kode">Placering:</label>
+          <input type="hidden" name="pictureid" th:value="${pictureid}"/>
+          <input type="text"  name="q"/>
+          <input type="submit" value="Søg"/>
+        </fieldset>
+      </form>
+      <form method="post" action="pictures-move-nav.html" th:action="@{/pictures/updateplace/{id}(id=${pictureid})}">
+        <fieldset>
+          <legend>Navigere hierarkisk</legend>
+          <ul class="navselect">
+          <li th:each="place : ${places}">
+            <a href="pictures-move-nav.html?pictureid=10000041" th:href="@{move-nav(pictureid=${pictureid},placementid=${place.id})}" th:text="${place.headline}">Sandby</a>
+          </li>
+          <li th:remove="all">
+            <a href="pictures-move-nav.html?pictureid=10000042">Tapeten</a>
+          </li>
+          <li th:remove="all">
+            <a href="pictures-move-nav.html?pictureid=10000043">Renge</a>
+          </li>
+          <li th:remove="all">
+            <a href="pictures-move-nav.html?pictureid=10000044">Ukendt</a>
+          </li>
+          </ul>
+        </fieldset>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

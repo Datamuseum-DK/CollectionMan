@@ -213,9 +213,20 @@
     </insert>
   </changeSet>
 
-  <changeSet author="roug" id="actdata01" context="test">
+  <!-- Version 6.4.2 -->
+  <changeSet author="roug" id="v6.4.2">
     <insert tableName="activity_types">
       <!-- <column name="id" valueNumeric="2"/> -->
+      <column name="name" value="Ny status"/>
+      <column name="systemact" valueBoolean="true"/>
+      <column name="visible" valueBoolean="false"/>
+      <column name="placeholder" value=""/>
+    </insert>
+  </changeSet>
+
+  <changeSet author="roug" id="actdata01" context="test">
+    <insert tableName="activity_types">
+      <!-- <column name="id" valueNumeric="3"/> -->
       <column name="name" value="Skadeobservation"/>
       <column name="systemact" valueBoolean="false"/>
       <column name="visible" valueBoolean="false"/>
@@ -231,7 +242,7 @@
       <column name="note" value="Fra [[genstand:10000030|Ukendt lokation]] til [[genstand:11001745|Palle 461]]."/>
     </insert>
     <insert tableName="activities">
-      <column name="id" valueNumeric="2"/>
+      <column name="id" valueNumeric="3"/>
       <column name="itemid" valueNumeric="11002191"/>
       <column name="created" valueDate="2025-06-19T15:46:50"/>
       <column name="creator" value="sr"/>

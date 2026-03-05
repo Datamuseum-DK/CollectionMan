@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle='Genstande:'+${q})}">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <h2>Vælg container</h2>
+      <form id="search" action="pictures-move-search.html" method="get" th:action="@{/pictures/move-search}">
+        <p>
+          <input type="text" id="query" name="q" value="" th:value="${q}" title="Søg på betegnelse, beskrivelse, serienr., genstandsid og QR kode"/>
+          <input type="hidden" name="pictureid" th:value="${pictureid}"/>
+          <input type="submit" value="Søg igen"/>
+        </p>
+      </form>
+      <form method="post" id="selectplace" th:action="@{/pictures/updateplace/{id}(id=${pictureid})}">
+      <table>
+        <tbody th:remove="all-but-first">
+          <tr th:each="item : ${items}">
+            <td>
+              <div>
+                <button name="placementid" form="selectplace" type="submit" th:value="${item.id}" th:text="${item.headline}">Flyttekasse RC34</button>
+              </div>
+              <div th:text="${#strings.abbreviate(item.description, 400)}">RC manualer med bl.a.: - RC4000 technical manuals - Friden Flexowriter</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">Flyttekasse RM10</a>
+              </div>
+              <div>Flyttekasse med lommeregnere, bl.a.: - TI 59 programmer - bøger om TI 59 programmer
+ - HP67 - Pgm blade 1980 - P.77 blade 1980 - TI Programmable 59 med PC-100B printer
+ - TI PC-100A i original emballage - HP82104A - div. bøger bl.a. vedr. HP25
+ og Friden fully automatic Calculator - div. guides vedr. HP og TI lommeregnere</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">Friden EC-132 regnemaskine</a>
+              </div>
+              <div>Friden EC-132 regnemaskine med tilhørende styreboks og udlæsning via en lille CRT skærm. Har kvadratrods funktion.</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">Friden Flexowriter</a>
+              </div>
+              <div>Friden Flexowriter elektromekanisk skrivemaskine med bord. Har indbygget strimmellæser og strimmelhuller.</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">Friden regnemaskine</a>
+              </div>
+              <div>Friden regnemaskine model 1152</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a href="items-view.html">ICL 1501 intelligent terminal</a>
+              </div>
+              <div>ICL 1501 intelligent terminal</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </form>
+    </section>
+    <nav aria-label="Pagination" th:replace="~{paging :: pagination(@{/pictures/move-search(pictureid=${pictureid},q=${q!=null? q : ''})})}">
+    Navigation here.
+    </nav>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>
