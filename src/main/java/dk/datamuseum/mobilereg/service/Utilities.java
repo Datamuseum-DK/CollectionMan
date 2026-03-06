@@ -1,14 +1,14 @@
 package dk.datamuseum.mobilereg.service;
 
 import java.util.regex.Pattern;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import dk.datamuseum.mobilereg.MobileRegProperties;
 
 /**
  * Utilities.
  */
-@Service
+@Component
 public class Utilities {
 
     private final MobileRegProperties properties;
