@@ -89,7 +89,7 @@ public class PictureController {
         log.debug("Deleted filename: {}", filename);
         pictureService.delete(filename);
 
-        return String.format("redirect:/pictures/view/%d", returnItem);
+        return String.format("redirect:/items/view/%d", returnItem);
     }
 
     /**
