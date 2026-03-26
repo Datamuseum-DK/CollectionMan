@@ -31,17 +31,35 @@ header, footer, legend {
   color: white;
 }
 
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40pt;
+}
+
 header h1 {
-  text-align: center;
+  display: inline-block;
+  margin-left: 0.25em;
 }
 
 header h1 a {
   color: white;
 }
+header h1 a img {
+  height: 32px;
+  width: 32px;
+}
+
+header search {
+  display: inline-block;
+  margin-right: 0.25em;
+}
 
 footer p {
   padding: 4pt;
 }
+
 footer a, footer a:visited {
   color: lightyellow;
 }

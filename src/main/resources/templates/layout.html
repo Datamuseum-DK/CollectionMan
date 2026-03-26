@@ -5,16 +5,24 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title th:text="${webtitle}?:#{app.title}">DDHF genstandsdatabase</title>
-    <link rel="icon" th:href="@{/favicon.svg}" href="/favicon.svg" type="image/svg+xml"/>
+    <link rel="icon" th:href="@{/favicon.svg}" href="../static/favicon.svg" type="image/svg+xml"/>
     <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/tabstyles.css" th:href="@{/css/tabstyles.css}"/>
     <script th:src="@{/js/tabops.js}" src="../static/js/tabops.js"><![CDATA[ ]]></script>
   </head>
   <body>
-    <header>
-      <h1 th:fragment="bannerFragment">
-        <a href="index.html" th:href="@{/}" th:text="#{app.title}">DDHF genstandsdatabase</a>
+    <header th:fragment="bannerFragment" th:remove="tag">
+      <h1>
+        <a href="index.html" th:href="@{/}">
+          <img src="../static/css/house-color-icon.svg" th:src="@{/css/house-color-icon.svg}" th:title="#{app.title}"/>
+        </a>
       </h1>
+      <search title="Søg på betegnelse, beskrivelse, serienr., genstandsid og QR kode">
+        <form id="gsearch" action="items.html" method="get" th:action="@{/items}">
+          <input type="text" id="gquery" name="q" value="" size="10"  placeholder="Genstande"/>
+          <input type="submit" value="Søg"/>
+        </form>
+      </search>
     </header>
     <main>
       <h2>Level 2 heading</h2>
@@ -70,7 +78,9 @@ of the art customer service.
     </main>
     <!-- container -->
     <footer th:fragment="footerFragment">
-      <div id="gatekeeper" title="RSS kommer her"><a href="https://en.wikipedia.org/wiki/The_Net_(1995_film)">π</a></div>
+      <div id="gatekeeper" title="RSS kommer her">
+        <a href="https://en.wikipedia.org/wiki/The_Net_(1995_film)">π</a>
+      </div>
       <p sec:authorize="isAuthenticated()">Log ud: <a th:href="@{/logout}" href="login.html" th:text="${#authentication.name}">Bob</a></p>
       <p sec:authorize="not isAuthenticated()">Bruger: <a th:href="@{/login}" href="login.html">Anonym</a></p>
     </footer>
