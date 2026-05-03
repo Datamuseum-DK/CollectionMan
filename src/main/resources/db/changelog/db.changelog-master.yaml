@@ -13,8 +13,8 @@ databaseChangeLog:
       file: testdata.xml
       relativeToChangelogFile: true
   - include:
-      file: testsubjects.xml
+      file: refactoring.xml
       relativeToChangelogFile: true
   - include:
-      file: refactoring.xml
+      file: testsubjects.xml
       relativeToChangelogFile: true

@@ -19,6 +19,14 @@
       <column name="subjecttitle" value="Korthuller"/>
     </insert>
     <insert tableName="subjects">
+      <column name="subjectid" valueNumeric="89"/>
+      <column name="created" valueDate="2006-04-03T16:49:22"/>
+      <column name="creator" value="mk"/>
+      <column name="lastmodified" valueDate="2006-04-03T16:49:22"/>
+      <column name="subjectdescription" value=""/>
+      <column name="subjecttitle" value="Samlegruppe: Bull Gamma 30"/>
+    </insert>
+    <insert tableName="subjects">
       <column name="subjectid" valueNumeric="91"/>
       <column name="created" valueDate="2006-05-04T17:14:45"/>
       <column name="creator" value="mk"/>
@@ -87,6 +95,16 @@
     <insert tableName="items_itemsubject">
       <column name="items_id" valueNumeric="11002571"/>
       <column name="subjects_id" valueNumeric="29"/>
+    </insert>
+
+    <insert tableName="items_itemsubject">
+      <column name="items_id" valueNumeric="11002571"/>
+      <column name="subjects_id" valueNumeric="89"/>
+    </insert>
+
+    <insert tableName="items_itemsubject">
+      <column name="items_id" valueNumeric="11001137"/>
+      <column name="subjects_id" valueNumeric="89"/>
     </insert>
 
   </changeSet>

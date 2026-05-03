@@ -243,7 +243,7 @@ public class ItemController {
     public String showAddForm1(
                 Item item,
                 Model model) {
-        log.debug("Add form for item {}", item.toString());
+        log.debug("Add form for item {}", item);
         List<ItemClass> classByLevel = itemclasses();
         if (classByLevel.size() == 0) {
             throw new IllegalArgumentException("No item classes!");
@@ -279,7 +279,7 @@ public class ItemController {
     @PreAuthorize("hasAuthority('ADD_ITEMS')")
     public String addItem(@Valid Item item, BindingResult result, Model model,
                 Authentication authentication) {
-        log.debug("Evaluating item {}", item.toString());
+        log.debug("Evaluating item {}", item);
         itemValidator.validate(item, result);
         if (result.hasErrors()) {
             log.debug("Result {}", result.toString());
@@ -461,9 +461,9 @@ public class ItemController {
                 Integer placementid,
                 Optional<String> type,
                 Model model) {
-        Item parentItem = itemRepository.findById(placementid).orElseThrow(()
+        Item newParentItem = itemRepository.findById(placementid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid parent Id for: " + itemid));
-        return moveUpdateDB(itemid, parentItem);
+        return moveUpdateDB(itemid, newParentItem);
     }
 
     /**
@@ -480,25 +480,27 @@ public class ItemController {
                 String placementid,
                 Model model) {
         Integer cleanQR = utilities.evaluateQRString(placementid);
-        Item parentItem = itemRepository.getByQrcode(cleanQR).orElseThrow(()
+        Item newParentItem = itemRepository.getByQrcode(cleanQR).orElseThrow(()
                 -> new IllegalArgumentException("QR-koden er ikke registreret:" + cleanQR));
-        return moveUpdateDB(itemid, parentItem);
+        return moveUpdateDB(itemid, newParentItem);
     }
 
-    private String moveUpdateDB(int itemid, Item parentItem) {
+    private String moveUpdateDB(int itemid, Item newParentItem) {
         Item itemInDB = itemRepository.findById(itemid).orElseThrow(()
                 -> new IllegalArgumentException("Invalid item Id:" + itemid));
-        checkItemFit(itemInDB, parentItem);
+        checkItemFit(itemInDB, newParentItem);
         Integer oldPlaceId = itemInDB.getPlacementid();
         Item oldPlaceInDB = itemRepository.findById(oldPlaceId).orElseThrow(()
                 -> new IllegalArgumentException("Invalid old placeId:" + oldPlaceId));
-        changelogService.logActivity(1, itemid,
+        if (oldPlaceInDB.getId() != newParentItem.getId()) {
+            changelogService.logActivity(1, itemid,
                 String.format("Fra [[genstand:%d|%s]] til [[genstand:%d|%s]].",
                 oldPlaceInDB.getId(), oldPlaceInDB.getHeadline(),
-                parentItem.getId(), parentItem.getHeadline()));
+                newParentItem.getId(), newParentItem.getHeadline()));
 
-        itemInDB.setPlacementid(parentItem.getId());
-        log.info("Moving {} to {}", itemInDB.getId(), itemInDB.getPlacementid());
+            itemInDB.setPlacementid(newParentItem.getId());
+            log.info("Moving {} to {}", itemInDB.getId(), itemInDB.getPlacementid());
+        }
         itemRepository.save(itemInDB);
         return String.format("redirect:/items/view/%d", itemid);
     }

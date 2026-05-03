@@ -72,29 +72,4 @@ public class Subject {
         return this.title;
     }
 
-    /*
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((subjectid == null) ? 0 : subjectid.hashCode());
-        return result;
-    }
-    */
-
- /*
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Subject other = (Subject) obj;
-        if (subjectid != other.subjectid)
-            return false;
-        return true;
-    }
-    */
 }
