@@ -14,13 +14,16 @@
     <header th:fragment="bannerFragment" th:remove="tag">
       <h1>
         <a href="index.html" th:href="@{/}">
-          <img src="../static/css/house-color-icon.svg" th:src="@{/css/house-color-icon.svg}" th:title="#{app.title}"/>
+          <img src="../static/css/home.svg" th:src="@{/css/home.svg}" th:title="#{app.title}"/>
+        </a>
+        <a sec:authorize="hasAuthority('VIEW_ITEMS')" href="scanqr.html" th:href="@{/scanqr}">
+          <img src="../static/css/scan.svg" th:src="@{/css/scan.svg}" title="Scan QR"/>
         </a>
       </h1>
       <search title="Søg på betegnelse, beskrivelse, serienr., genstandsid og QR kode">
         <form id="gsearch" action="items.html" method="get" th:action="@{/items}">
           <input type="text" id="gquery" name="q" value="" size="10"  placeholder="Genstande"/>
-          <input type="submit" value="Søg"/>
+          <button type="submit"><img src="../static/css/search.svg" th:src="@{/css/search.svg}" title="Søg"/></button>
         </form>
       </search>
     </header>

@@ -32,8 +32,8 @@ header, footer, legend {
 }
 
 header {
+  position: sticky; top:0px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   height: 40pt;
 }
@@ -41,12 +41,15 @@ header {
 header h1 {
   display: inline-block;
   margin-left: 0.25em;
+  font-size: 100%;
 }
 
 header h1 a {
   color: white;
+  text-decoration: none;
 }
-header h1 a img {
+
+header h1 a img, header search img {
   height: 32px;
   width: 32px;
 }
@@ -54,6 +57,11 @@ header h1 a img {
 header search {
   display: inline-block;
   margin-right: 0.25em;
+}
+
+header search button {
+   background:none;
+   border-width: 0;
 }
 
 footer p {

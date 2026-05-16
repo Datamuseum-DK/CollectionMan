@@ -252,4 +252,13 @@
     </insert>
   </changeSet>
 
+  <!-- Version 6.4.3 -->
+  <changeSet author="roug" id="v6.4.3">
+    <addDefaultValue tableName="items" columnName="itemsize" defaultValue=""/>
+    <addDefaultValue tableName="items" columnName="itemweight" defaultValue=""/>
+    <addDefaultValue tableName="items" columnName="itemmodeltype" defaultValue=""/>
+    <addDefaultValue tableName="items" columnName="itemserialno" defaultValue=""/>
+    <addDefaultValue tableName="items" columnName="itemreceivedby" defaultValue=""/>
+  </changeSet>
+
 </databaseChangeLog>
