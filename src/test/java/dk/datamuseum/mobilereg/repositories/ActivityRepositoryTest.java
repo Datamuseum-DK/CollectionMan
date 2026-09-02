@@ -15,12 +15,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
-@DataJpaTest
-//@AutoConfigureTestDatabase(replace=Replace.NONE)
+@SpringBootTest
 class ActivityRepositoryTest {
 
     @Autowired
@@ -89,7 +89,8 @@ class ActivityRepositoryTest {
     @DisplayName("Can't delete type 1")
     void deleteType1() {
         getType1();
-        activityTypeRepository.delete(type1);
+        assertThatExceptionOfType(DataIntegrityViolationException.class)
+             .isThrownBy(() -> activityTypeRepository.delete(type1));
 
         Optional<Activity> retrievedActivity = activityRepository.findById(1);
         assertThat(retrievedActivity.isPresent()).isTrue(); // Is not deleted

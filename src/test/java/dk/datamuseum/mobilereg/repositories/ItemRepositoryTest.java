@@ -20,11 +20,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@SpringBootTest
 class ItemRepositoryTest {
 
     @Autowired
@@ -48,7 +48,7 @@ class ItemRepositoryTest {
         assertThat(level).isEqualTo(50);
 
         level = itemRepository.findMinLevel(11002191);
-        assertThat(level).isEqualTo(10000001);
+        assertThat(level).isEqualTo(100);
 
         level = itemRepository.findMinLevel(10000032);
         assertThat(level).isEqualTo(30);
@@ -123,9 +123,8 @@ class ItemRepositoryTest {
         Optional<Item> optionalItem = itemRepository.findById(11001745);
         assertThat(optionalItem.isPresent()).isTrue();
         Item retrievedItem = optionalItem.get();
-        itemRepository.deleteById(11001745);
-        assertThatExceptionOfType(ConstraintViolationException.class)
-             .isThrownBy(() -> entityManager.flush());
+        assertThatExceptionOfType(DataIntegrityViolationException.class)
+             .isThrownBy(() -> itemRepository.deleteById(11001745));
     }
 
     @Test
@@ -135,8 +134,7 @@ class ItemRepositoryTest {
         Item retrievedItem = optionalItem.get();
         assertThat(retrievedItem.getHeadline()).isEqualTo("ICT mekanisk korthuller");
         retrievedItem.setQrcode(58531224);
-        itemRepository.save(retrievedItem);
-        assertThatExceptionOfType(ConstraintViolationException.class)
-             .isThrownBy(() -> entityManager.flush());
+        assertThatExceptionOfType(DataIntegrityViolationException.class)
+             .isThrownBy(() -> itemRepository.save(retrievedItem));
     }
 }

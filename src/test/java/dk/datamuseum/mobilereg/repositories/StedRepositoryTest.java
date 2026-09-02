@@ -3,6 +3,7 @@ package dk.datamuseum.mobilereg.repositories;
 import dk.datamuseum.mobilereg.entities.Sted;
 
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,19 +11,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-//import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-//import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
-//@AutoConfigureTestDatabase(replace=Replace.NONE)
+@Slf4j
+@SpringBootTest
 class StedRepositoryTest {
 
     @Autowired
     private StedRepository stedRepository;
-
-    private Log logger = LogFactory.getLog(StedRepositoryTest.class);
 
     @Test
     void givenStedEntity_whenSaveSted_thenStedIsPersisted() {
@@ -31,10 +28,10 @@ class StedRepositoryTest {
         sted.setStednavn("sted");
 
         // when
-        logger.info(String.format("Sted id: %d", sted.getId()));
+        log.info(String.format("Sted id: {}", sted.getId()));
         stedRepository.save(sted);
         int generatedID = (int)sted.getId();
-        logger.info(String.format("Sted id: %d", generatedID));
+        log.info(String.format("Sted id: {}", generatedID));
         assertThat(generatedID).isGreaterThan(0);
 
         // then

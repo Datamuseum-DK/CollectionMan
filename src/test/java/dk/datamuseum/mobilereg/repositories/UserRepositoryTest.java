@@ -19,11 +19,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@SpringBootTest
 class UserRepositoryTest {
 
     @Autowired
@@ -44,12 +44,15 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Read user 3, and save it again.
+     */
     @Test
     void readThenSaveUser() {
-        Optional<User> optionalUser = userRepository.findById(10);
+        Optional<User> optionalUser = userRepository.findById(3);
         assertThat(optionalUser.isPresent()).isTrue();
         User retrievedUser = optionalUser.get();
-        assertThat(retrievedUser.getEmail()).isEqualTo("adm@example.com");
+        assertThat(retrievedUser.getEmail()).isEqualTo("reg@example.com");
         userRepository.save(retrievedUser);
     }
 
@@ -60,7 +63,7 @@ class UserRepositoryTest {
      */
     @Test
     void deleteUserAdm() {
-        User retrievedUser = userRepository.findByUsername("adm");
+        User retrievedUser = userRepository.findByUsername("adm").get();
         assertThat(retrievedUser.getId()).isEqualTo(10);
 
         // Check that membership of "staff" is there.

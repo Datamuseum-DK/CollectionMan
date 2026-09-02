@@ -20,11 +20,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@SpringBootTest
 class ItemClassRepositoryTest {
 
     @Autowired
@@ -74,9 +74,8 @@ class ItemClassRepositoryTest {
         Optional<ItemClass> optionalItemClass = itemClassRepository.findById(1);
         assertThat(optionalItemClass.isPresent()).isTrue();
         ItemClass retrievedItemClass = optionalItemClass.get();
-        itemClassRepository.deleteById(1);
-        assertThatExceptionOfType(ConstraintViolationException.class)
-             .isThrownBy(() -> entityManager.flush());
+        assertThatExceptionOfType(DataIntegrityViolationException.class)
+             .isThrownBy(() -> itemClassRepository.deleteById(1));
     }
 
 }
