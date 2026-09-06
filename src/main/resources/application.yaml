@@ -1,0 +1,31 @@
+info:
+  description: Genstandsregistrering
+
+spring:
+  profiles:
+    active: default
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: true
+
+  liquibase:
+    enabled: true
+    contexts:  prod
+#    change-log: db/changelog/db.changelog-production.yml
+
+# Application values
+mobilereg:
+  storage-root-dir: /var/tmp/mobilereg-files
+  qr-urlprefixes: https://gier.dk/, HTTPS://GIER.DK/, https://gier.x.ddhf.dk//
+  version: @project.version@
+
+# Servlet values
+server:
+  servlet:
+    session:
+      timeout: 60m

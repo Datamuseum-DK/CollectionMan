@@ -1,7 +1,6 @@
 package dk.datamuseum.mobilereg.controllers;
 
 import jakarta.validation.Valid;
-//import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

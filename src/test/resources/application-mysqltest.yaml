@@ -1,0 +1,30 @@
+spring:
+  h2:
+    console:
+      enabled: false
+#     path: /h2-console
+#     settings.trace: false
+#     settings.web-allow-others: false
+  datasource:
+    url: jdbc:mysql://frigg/genstandtest
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: dbtest
+    password: shieGh6sae
+# jpa:
+#   show-sql: true
+  liquibase:
+    contexts: createdjangodb,test
+    drop-first: true
+
+#   databasePlatform: org.hibernate.dialect.H2Dialect
+
+#
+#  liquibase:
+#    contexts: createdjangodb,test
+# Liquibase behaviour
+#spring.liquibase.enabled=false
+#spring.liquibase.change-log = db/changelog/db.changelog-production.yml
+
+mobilereg:
+  storage-root-dir: target
+

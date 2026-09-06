@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import dk.datamuseum.mobilereg.entities.Donor;
 import dk.datamuseum.mobilereg.repositories.DonorRepository;
-//import dk.datamuseum.mobilereg.entities.Item;
 import dk.datamuseum.mobilereg.repositories.ItemRepository;
 
 /**

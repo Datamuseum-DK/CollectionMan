@@ -289,7 +289,12 @@
         <constraints nullable="false" primaryKey="true"/>
       </column>
       <column name="userid" type="INT">
-        <constraints nullable="false" />
+        <constraints nullable="false"
+                     foreignKeyName="useridentity_constraint"
+                     deleteCascade="true"
+                     referencedTableName="auth_user"
+                     referencedColumnNames="id"
+                     />
       </column>
       <column name="provider" type="VARCHAR(100)">
         <constraints nullable="false" />

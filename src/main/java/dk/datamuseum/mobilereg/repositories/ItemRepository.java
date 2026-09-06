@@ -135,7 +135,8 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
     /**
      * Find the minimum level child in a given container.
      * It shall not be possible to change the container's level to same or
-     * lower level. If there are no children then the item can be any level.
+     * lower level of an existing child. If there are no children then the
+     * item can be any level.
      *
      * @param itemid - the item we need to know what it contains.
      * @return the level of the biggest container or 10000001 if there

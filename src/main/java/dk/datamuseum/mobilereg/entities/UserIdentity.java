@@ -25,6 +25,7 @@ import jakarta.persistence.UniqueConstraint;
 
 /**
  * The user identity in IDPs.
+ * These must disappear when the user is deleted.
  */
 @Entity
 @Table(

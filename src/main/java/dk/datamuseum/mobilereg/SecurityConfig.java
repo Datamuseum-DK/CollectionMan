@@ -22,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-//import dk.datamuseum.mobilereg.service.CMOidcUserService;
+import dk.datamuseum.mobilereg.service.CMOidcUserService;
 import dk.datamuseum.mobilereg.service.CMOAuth2UserService;
 
 /**
@@ -38,7 +38,7 @@ import dk.datamuseum.mobilereg.service.CMOAuth2UserService;
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
-    //private final CMOidcUserService oidcUserService;
+    private final CMOidcUserService oidcUserService;
     private final CMOAuth2UserService oauth2Service;
 
     /**
@@ -46,10 +46,10 @@ public class SecurityConfig {
      */
     public SecurityConfig(
             UserDetailsService userDetailsService,
-            //CMOidcUserService oidcUserService,
+            CMOidcUserService oidcUserService,
             CMOAuth2UserService oauth2Service) {
         this.userDetailsService = userDetailsService;
-        //this.oidcUserService = oidcUserService;
+        this.oidcUserService = oidcUserService;
         this.oauth2Service = oauth2Service;
     }
 
@@ -97,6 +97,7 @@ public class SecurityConfig {
             .oauth2Login(oauth2Login -> oauth2Login
                 .userInfoEndpoint(userInfo -> userInfo
                     .userService(oauth2Service)
+                    .oidcUserService(oidcUserService)
                 )
             )
             .logout((logout) -> logout.permitAll())

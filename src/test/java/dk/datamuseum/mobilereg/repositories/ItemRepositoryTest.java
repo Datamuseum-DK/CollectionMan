@@ -47,8 +47,10 @@ class ItemRepositoryTest {
         Integer level = itemRepository.findMinLevel(11001745);
         assertThat(level).isEqualTo(50);
 
-        level = itemRepository.findMinLevel(11002191);
-        assertThat(level).isEqualTo(100);
+        // Don't use 11002191. Item 10000001 is moved to it.
+        // 10000036 shall have no items under it.
+        level = itemRepository.findMinLevel(10000036);
+        assertThat(level).isEqualTo(10000001);
 
         level = itemRepository.findMinLevel(10000032);
         assertThat(level).isEqualTo(30);
