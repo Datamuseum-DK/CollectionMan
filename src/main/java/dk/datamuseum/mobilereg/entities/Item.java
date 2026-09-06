@@ -238,6 +238,9 @@ public class Item {
     @Column
     private Integer qrcode;
 
+    @OneToMany(mappedBy = "itemidto")
+    private List<ReverseLink> revlinks;
+
     /**
      * Constructor.
      * TODO: Don't use join for itemclass.

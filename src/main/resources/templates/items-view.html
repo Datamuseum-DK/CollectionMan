@@ -61,6 +61,10 @@
           <dd th:unless="${#strings.isEmpty(item.itemmodeltype)}" th:text="${item.itemmodeltype}">GNT5601</dd>
           <dt th:unless="${#strings.isEmpty(item.itemserialno)}">Serienr.</dt>
           <dd th:unless="${#strings.isEmpty(item.itemserialno)}" th:text="${item.itemserialno}">131-006077-8</dd>
+          <dt th:unless="${#strings.isEmpty(item.itemsize)}">Størrelse</dt>
+          <dd th:unless="${#strings.isEmpty(item.itemsize)}" th:text="${item.itemsize}">12/21/32</dd>
+          <dt th:unless="${#strings.isEmpty(item.itemweight)}">Vægt (Kg)</dt>
+          <dd th:unless="${#strings.isEmpty(item.itemweight)}" th:text="${item.itemweight}">1,3</dd>
           <dt th:if="${item.qrcode}">QR kode</dt>
           <dd th:if="${item.qrcode}" th:text="${item.qrcode}">59001111</dd>
           <dt class="multiline">Beskrivelse</dt>
@@ -183,6 +187,12 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd th:remove="all">2025-08-12 09:12 af fvn: Fra Palle 461 til Charlotteskolen.</dd>
           <dt>Sidst ændret</dt>
           <dd th:text="${#temporals.format(item.lastmodified,'yyyy-MM-dd HH:mm')} + ' af ' + ${item.lastmodifiedby ?: 'ukendt'}">2012-05-06 14:55:12 af sr</dd>
+          <!--/*/ <th:block th:if="${not #lists.isEmpty(revlinks)}" /*/-->
+          <dt>Links hertil</dt>
+          <dd><span th:each="r : ${revlinks}">*<a href="items-view.html" th:href="${r.itemidfrom}" th:text="${'Genstand:' + r.itemidfrom}">Genstand:11000937</a>
+          </span>
+          <span th:remove="all">*<a href="items-view.html">Genstand:11002155</a></span></dd>
+          <!--/*/ </th:block> /*/-->
         </dl>
       </fieldset>
     </main>

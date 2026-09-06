@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Interface for database queries on the 'producers' table.
+ * Interface for database queries on the 'subjects' table.
  * A repository has a number of default queries.
  */
 @Repository

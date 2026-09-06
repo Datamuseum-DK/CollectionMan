@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Optional;
 //import java.util.stream.Collectors;
 
 /**
@@ -103,36 +104,36 @@ public class RegbaseUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            user = userRepository.findByEmail(username);
-        }
+        User user = userRepository.findByUsername(username)
+            .orElseGet(() -> {
+               User euser = userRepository.findByEmail(username)
+                .orElseThrow(()
+                  -> new UsernameNotFoundException("Invalid username or password."));
+                return euser;
+             }
+             );
 
-        if (user != null) {
-            Set <SimpleGrantedAuthority> authorities = new HashSet<>();
+        Set <SimpleGrantedAuthority> authorities = new HashSet<>();
 
-            authorities.add(new SimpleGrantedAuthority("LOCAL_USER"));
-            authorities.add(new SimpleGrantedAuthority("ROLE_VIEWER"));
+        authorities.add(new SimpleGrantedAuthority("LOCAL_USER"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_VIEWER"));
 
-            if (user.isSuperuser()) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_SUPERUSER"));
-                for (Permission permission : allPermissions()) {
-                    authorities.add(new SimpleGrantedAuthority(permission.getCodename().toUpperCase()));
-                }
+        if (user.isSuperuser()) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_SUPERUSER"));
+            for (Permission permission : allPermissions()) {
+                authorities.add(new SimpleGrantedAuthority(permission.getCodename().toUpperCase()));
             }
-
-            addRolesFromDB(user, authorities);
-            addPermissions(user, authorities);
-
-            return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                    user.getPassword(),
-                    user.isActive(), // enabled
-                    true, // accountNonExpired
-                    true, // credentialsNonExpired
-                    true, // accountNonLocked
-                    authorities);
-        } else {
-            throw new UsernameNotFoundException("Invalid username or password.");
         }
+
+        addRolesFromDB(user, authorities);
+        addPermissions(user, authorities);
+
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),
+                user.getPassword(),
+                user.isActive(), // enabled
+                true, // accountNonExpired
+                true, // credentialsNonExpired
+                true, // accountNonLocked
+                authorities);
     }
 }

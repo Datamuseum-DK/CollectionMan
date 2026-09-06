@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import dk.datamuseum.mobilereg.entities.User;
 import dk.datamuseum.mobilereg.repositories.UserRepository;
+import java.util.Optional;
 
 /**
  * Controller user self service.
@@ -51,7 +52,7 @@ public class PasswordController {
 
     /**
      * Do the password change.
-     * TODO
+     *
      * @param orgpasswd - User's original password
      * @param passwd1 - New password
      * @param passwd2 - New password again to show the user knows it.
@@ -69,10 +70,10 @@ public class PasswordController {
             username = ((UserDetails)principal).getUsername();
         }
         // UserDetails loadedUser = userDetailsService().loadUserByUsername(username);
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new NotFoundException("Invalid user Name:" + username);
-        }
+
+        User user = userRepository.findByUsername(username).orElseThrow(()
+                -> new NotFoundException("Invalid user Name:"));
+
         // Check correct password
         if (!passwordEncoder.matches(orgpasswd, user.getPassword())) {
             model.addAttribute("message", "Forkert kodeord");

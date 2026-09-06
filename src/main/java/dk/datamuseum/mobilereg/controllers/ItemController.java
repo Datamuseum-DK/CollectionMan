@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeSet;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -30,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 
 import dk.datamuseum.mobilereg.service.Utilities;
-import dk.datamuseum.mobilereg.ItemValidator;
+//import dk.datamuseum.mobilereg.ItemValidator;
 
 import dk.datamuseum.mobilereg.entities.Donor;
 import dk.datamuseum.mobilereg.entities.CaseFile;
@@ -39,6 +41,7 @@ import dk.datamuseum.mobilereg.entities.ItemClass;
 import dk.datamuseum.mobilereg.entities.ItemStatus;
 import dk.datamuseum.mobilereg.entities.Picture;
 import dk.datamuseum.mobilereg.entities.Producer;
+import dk.datamuseum.mobilereg.entities.ReverseLink;
 import dk.datamuseum.mobilereg.entities.Sted;
 import dk.datamuseum.mobilereg.entities.Subject;
 
@@ -49,13 +52,14 @@ import dk.datamuseum.mobilereg.repositories.ItemClassRepository;
 import dk.datamuseum.mobilereg.repositories.ItemStatusRepository;
 import dk.datamuseum.mobilereg.repositories.PictureRepository;
 import dk.datamuseum.mobilereg.repositories.ProducerRepository;
+import dk.datamuseum.mobilereg.repositories.ReverseLinkRepository;
 import dk.datamuseum.mobilereg.repositories.StedRepository;
 import dk.datamuseum.mobilereg.repositories.SubjectRepository;
 
 import dk.datamuseum.mobilereg.service.ChangelogService;
 import dk.datamuseum.mobilereg.service.PictureService;
 import dk.datamuseum.mobilereg.service.Utilities;
-import static dk.datamuseum.mobilereg.service.RichTextService.richText;
+import static dk.datamuseum.mobilereg.service.RichTextService.*;
 
 /**
  * Controller for items.
@@ -88,9 +92,11 @@ public class ItemController {
 
     private final Utilities utilities;
 
-    private final ItemValidator itemValidator;
+//    private final ItemValidator itemValidator;
 
     private final ChangelogService changelogService;
+
+    private final ReverseLinkRepository reverseLinkRepository;
 
     /**
      * Constructor.
@@ -104,10 +110,11 @@ public class ItemController {
             PictureRepository pictureRepository,
             PictureService pictureService,
             ProducerRepository producerRepository,
+            ReverseLinkRepository reverseLinkRepository,
             StedRepository stedRepository,
             SubjectRepository subjectRepository,
             Utilities utilities,
-            ItemValidator itemValidator,
+//            ItemValidator itemValidator,
             ChangelogService changelogService) {
         this.donorRepository = donorRepository;
         this.fileRepository = fileRepository;
@@ -117,10 +124,11 @@ public class ItemController {
         this.pictureRepository = pictureRepository;
         this.pictureService = pictureService;
         this.producerRepository = producerRepository;
+        this.reverseLinkRepository = reverseLinkRepository;
         this.stedRepository = stedRepository;
         this.subjectRepository = subjectRepository;
         this.utilities = utilities;
-        this.itemValidator = itemValidator;
+//        this.itemValidator = itemValidator;
         this.changelogService = changelogService;
     }
 
@@ -280,7 +288,7 @@ public class ItemController {
     public String addItem(@Valid Item item, BindingResult result, Model model,
                 Authentication authentication) {
         log.debug("Evaluating item {}", item);
-        itemValidator.validate(item, result);
+//        itemValidator.validate(item, result);
         if (result.hasErrors()) {
             log.debug("Result {}", result.toString());
             return "items-addform";
@@ -293,6 +301,9 @@ public class ItemController {
         if (createHeadlineIfEmpty(item)) {
             itemRepository.save(item);
         }
+        TreeSet<Integer> references = new TreeSet<Integer>();
+        references = extractReferences(item, references);
+
         log.info("Added item Id {} to {}", item.getId(), item.getPlacementid());
         return String.format("redirect:/items/view/%d", item.getId());
     }
@@ -518,11 +529,12 @@ public class ItemController {
      */
     @PostMapping("/update/{id}")
     @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
+    @Transactional
     public String updateItem(@PathVariable("id") int id,
             @Valid Item item,
             BindingResult result, Model model) {
 
-        itemValidator.validate(item, result);
+//        itemValidator.validate(item, result);
         if (result.hasErrors()) {
             item.setId(id);
             CaseFile file = fileRepository.findById(item.getFileid())
@@ -548,6 +560,8 @@ public class ItemController {
                     itemInDB.getItemStatus().getName(),
                     item.getItemStatus().getName()));
         }
+        TreeSet<Integer> references = new TreeSet<Integer>();
+        references = extractReferences(item, references);
         itemRepository.save(item);
         return String.format("redirect:/items/view/%d", id);
     }
@@ -636,7 +650,6 @@ public class ItemController {
     public String showAddQRForm(
                 @RequestParam(name = "id", required=true) Integer id,
                 Model model) {
-        //model.addAttribute("id", id.toString());
         model.addAttribute("itemid", id);
         log.info("Form to add QR code to {}", id);
         return "addqrform";
@@ -705,6 +718,28 @@ public class ItemController {
         item.setItemusedby(richText(item.getItemusedby()));
     }
 
+    /*
+     * Update the reverse links in the database.
+     */
+    private TreeSet<Integer> extractReferences(Item item, TreeSet<Integer> references) {
+        extractRefs(item.getDescription(), references);
+        extractRefs(item.getItemextrainfo(), references);
+        extractRefs(item.getItemreferences(), references);
+        extractRefs(item.getItemrestoration(), references);
+        extractRefs(item.getItemremarks(), references);
+        extractRefs(item.getItemusedby(), references);
+        reverseLinkRepository.deleteByItemidfrom(item.getId());
+
+        ReverseLink linkObj = new ReverseLink();
+        linkObj.setItemidfrom(item.getId());
+        for (Integer refTo : references) {
+            linkObj.setItemidto(refTo);
+            log.info("Reflink from Id {} to {}", item.getId(), refTo);
+            reverseLinkRepository.save(linkObj);
+        }
+        return references;
+    }
+
     /**
      * Factsheet for item.
      *
@@ -737,6 +772,8 @@ public class ItemController {
         else
             model.addAttribute("producer", Optional.empty());
         model.addAttribute("parents", itemRepository.findParentContainers(id));
+        var revLinks = reverseLinkRepository.findByItemidto(id);
+        model.addAttribute("revlinks", revLinks);
 
         List<Item> children = new ArrayList<Item>();
         Pageable paging = PageRequest.of(page - 1, size);

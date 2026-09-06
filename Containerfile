@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/java21-debian12:debug
+FROM gcr.io/distroless/java25-debian13:debug
 
 EXPOSE 8080
 

@@ -261,4 +261,48 @@
     <addDefaultValue tableName="items" columnName="itemreceivedby" defaultValue=""/>
   </changeSet>
 
+  <!-- Version 6.5.0 -->
+  <!-- Implementation of "what items link to this item?"
+       If the item is deleted, then the links from it are also deleted.
+    -->
+  <changeSet author="roug" id="v6.5.0">
+    <createTable tableName="reverse_links">
+      <column name="itemidfrom" type="INT">
+        <constraints nullable="false"
+                     foreignKeyName="itemidfrom_constraint"
+                     deleteCascade="true"
+                     referencedTableName="items"
+                     referencedColumnNames="itemid"
+                     />
+      </column>
+      <column name="itemidto" type="INT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createIndex tableName="reverse_links" indexName="reversefrom" unique="false">
+      <column name="itemidto"/>
+    </createIndex>
+
+    <createTable tableName="auth_user_identity"
+          remarks="Identity provider accounts">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="userid" type="INT">
+        <constraints nullable="false" />
+      </column>
+      <column name="provider" type="VARCHAR(100)">
+        <constraints nullable="false" />
+      </column>
+      <column name="subject" type="VARCHAR(100)">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <addUniqueConstraint constraintName="uk_provider_subject"
+       columnNames="provider,subject"
+       tableName="auth_user_identity"
+       />
+  </changeSet>
+
 </databaseChangeLog>
