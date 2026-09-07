@@ -152,7 +152,7 @@ public class V1RestController {
      * @param id - picture id.
      * @return picture with added links in HAL format.
      */
-    @PreAuthorize("hasAuthority('VIEW_PICTURES')")
+    @PreAuthorize("hasAuthority('VIEW_ITEMS')")
     @GetMapping("/pictures/{id}")
     EntityModel<Picture> onePicture(@PathVariable Integer id) {
         Picture picture = pictureRepository.findById(id)
@@ -165,7 +165,7 @@ public class V1RestController {
      *
      * @return list
      */
-    @PreAuthorize("hasAuthority('VIEW_PICTURES')")
+    @PreAuthorize("hasAuthority('VIEW_ITEMS')")
     @GetMapping("/pictures")
     public CollectionModel<EntityModel<Picture>> allPictures() {
         List<EntityModel<Picture>> pictures = pictureRepository.findAll().stream()

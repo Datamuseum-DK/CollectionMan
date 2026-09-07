@@ -4,7 +4,7 @@ The purpose of this application is to manage the inventory of a small museum's c
 
 ## Development
 
-This is a Spring Boot project built in Maven. You check it out from GitHub and then do `mvn install`. This will produce a mobilereg-jar-with-dependencies.jar, which can be run directly with Java.
+This is a Spring Boot project built in Maven. You check it out from GitHub and then do `mvn install`. This will produce a mobilereg-jar-with-dependencies.jar, which can be run directly with Java 25.
 
 - [Database structure](docs/DATABASE.md)
 - [Deployment](docs/DEPLOYMENT.md)

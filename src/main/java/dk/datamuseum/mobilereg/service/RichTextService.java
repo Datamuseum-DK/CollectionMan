@@ -58,7 +58,7 @@ public class RichTextService {
     }
 
     /*
-     * Ufærdig.
+     * Unfinished.
      */
     private static String replaceText(String text, Pattern pattern, String replacement) {
         Matcher itemMatches = pattern.matcher(text);
@@ -73,13 +73,13 @@ public class RichTextService {
         }
         return text;
     }
+
     /**
      * Find references to other items in the text area.
      * These are always integers and will be stored in a database table.
      *
      * @param plainText - the text field from the database.
-     * @param refs - the set of references already found.
-     * @return the updated set of references.
+     * @param refs - the set of references already found. These are added to.
      */
     public static void extractRefs(String plainText, Set<Integer> refs) {
         Matcher itemMatches = revPattern.matcher(plainText);

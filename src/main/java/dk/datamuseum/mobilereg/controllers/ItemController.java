@@ -10,7 +10,6 @@ import java.util.TreeSet;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.HtmlUtils;
 
 import dk.datamuseum.mobilereg.service.Utilities;
 //import dk.datamuseum.mobilereg.ItemValidator;
@@ -58,7 +56,6 @@ import dk.datamuseum.mobilereg.repositories.SubjectRepository;
 
 import dk.datamuseum.mobilereg.service.ChangelogService;
 import dk.datamuseum.mobilereg.service.PictureService;
-import dk.datamuseum.mobilereg.service.Utilities;
 import static dk.datamuseum.mobilereg.service.RichTextService.*;
 
 /**
@@ -798,7 +795,7 @@ public class ItemController {
      * @return redirection to factsheet of created item.
      */
     @RequestMapping(value = "/pictureupload", method = RequestMethod.POST)
-    @PreAuthorize("hasAuthority('ADD_PICTURES')")
+    @PreAuthorize("hasAuthority('CHANGE_ITEMS')")
     public String importPicture(
             @RequestParam("file") MultipartFile myFile,
             @RequestParam("id") int id) {
