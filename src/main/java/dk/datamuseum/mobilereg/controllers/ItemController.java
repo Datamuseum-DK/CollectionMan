@@ -731,7 +731,7 @@ public class ItemController {
         linkObj.setItemidfrom(item.getId());
         for (Integer refTo : references) {
             linkObj.setItemidto(refTo);
-            log.info("Reflink from Id {} to {}", item.getId(), refTo);
+            log.debug("Link from Id {} to {}", item.getId(), refTo);
             reverseLinkRepository.save(linkObj);
         }
         return references;

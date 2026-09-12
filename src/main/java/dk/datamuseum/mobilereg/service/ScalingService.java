@@ -44,31 +44,6 @@ public class ScalingService {
     }
 
     /**
-     * Simple scaling of image. UNUSED.
-     *
-     * @param maxDim - Max size in width and height.
-     * @return scaled image.
-     */
-    private BufferedImage resizeImage(final int maxDim) {
-        int width = originalImage.getWidth();
-        int height = originalImage.getHeight();
-
-        if (Math.max(width, height) > maxDim) {
-            double scaling = (0.0 + Math.max(width, height)) / maxDim;
-            width = Double.valueOf(width / scaling).intValue();
-            height = Double.valueOf(height / scaling).intValue();
-        }
-        log.info(String.format("New dimensions %dx%d", width, height));
-
-        Image newResizedImage = originalImage.getScaledInstance(width, height,
-                Image.SCALE_SMOOTH);
-        BufferedImage bufferedImage = new BufferedImage(width, height,
-                BufferedImage.TYPE_INT_RGB);
-        bufferedImage.getGraphics().drawImage(newResizedImage, 0, 0, null);
-        return bufferedImage;
-    }
-
-    /**
      * Scale image with understanding of camera orientation. Only resize if the
      * image is larger than the maximum dimensions.
      *

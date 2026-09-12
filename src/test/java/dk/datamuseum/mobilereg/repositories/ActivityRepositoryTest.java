@@ -55,10 +55,9 @@ class ActivityRepositoryTest {
         //activity.setLastmodified(LocalDateTime.parse("2024-04-30T16:20:38"));
 
         // when
-        // log.info(String.format("Activity id: %d", activity.getId()));
         activityRepository.save(activity);
         int generatedID = (int)activity.getId();
-        log.debug(String.format("Activity id: %d", generatedID));
+        log.debug("Activity id: {}", generatedID);
         assertThat(generatedID).isGreaterThan(0);
 
         // then

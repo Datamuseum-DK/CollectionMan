@@ -45,12 +45,12 @@ public class CMOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public OAuth2User loadUser(OAuth2UserRequest request)
             throws OAuth2AuthenticationException {
 
         OAuth2User oauthUser = super.loadUser(request);
-        log.info("OIDC User: {}", oauthUser);
+        log.info("OAuth2 User: {}", oauthUser);
 
         String provider;
         String email;

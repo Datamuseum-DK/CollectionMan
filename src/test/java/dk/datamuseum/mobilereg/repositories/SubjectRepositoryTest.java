@@ -28,10 +28,10 @@ class SubjectRepositoryTest {
         subject.setTitle("subject");
 
         // when
-        log.info(String.format("Subject id: {}", subject.getSubjectid()));
+        log.debug("Subject id: {}", subject.getSubjectid());
         subjectRepository.save(subject);
         int generatedID = (int)subject.getSubjectid();
-        log.info(String.format("Subject id: {}", generatedID));
+        log.debug("Subject id: {}", generatedID);
         assertThat(generatedID).isGreaterThan(0);
 
         // then

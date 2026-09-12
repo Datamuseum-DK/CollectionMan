@@ -11,7 +11,7 @@
         <a href="index.html">DDHF mobilregistrering</a>
       </h1>
     </header>
-    <section id="content">
+    <main>
       <form id="actions">
         <button id="search" type="submit" form="actions" formaction="users.html" th:formaction="@{/users}">Liste</button>
         <button id="rediger" sec:authorize="hasAuthority('CHANGE_USER')" type="submit" form="actions" formaction="users-edit.html" th:formaction="@{/users/edit/{id}(id=${user.id})}">Rediger</button>
@@ -49,7 +49,26 @@
         <li th:each="permission : ${user.permissions}" th:text="${permission.name}">Can add groups</li>
         <li>Can delete groups</li>
       </ul>
-    </section>
+      <!--/*/ <th:block th:if="${not #lists.isEmpty(user.userIdentities)}"> /*/-->
+      <h3>Identity providere</h3>
+      <table class="datatable">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Provider</th>
+            <th>Konto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="identity : ${user.userIdentities}">
+            <td th:text="${identity.id}">1</td>
+            <td th:text="${identity.provider}">google</td>
+            <td th:text="${identity.subject}">112022029095608045058</td>
+          </tr>
+        </tbody>
+      </table>
+      <!--/*/ </th:block> /*/-->
+    </main>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
     </footer>

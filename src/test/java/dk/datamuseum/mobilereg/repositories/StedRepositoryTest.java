@@ -28,10 +28,10 @@ class StedRepositoryTest {
         sted.setStednavn("sted");
 
         // when
-        log.info(String.format("Sted id: {}", sted.getId()));
+        log.debug("Sted id: {}", sted.getId());
         stedRepository.save(sted);
         int generatedID = (int)sted.getId();
-        log.info(String.format("Sted id: {}", generatedID));
+        log.debug("Sted id: {}", generatedID);
         assertThat(generatedID).isGreaterThan(0);
 
         // then

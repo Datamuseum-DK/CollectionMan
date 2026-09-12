@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -83,6 +84,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "permission_id")
             )
     private List<Permission> permissions;
+
+    /** List of linked identities from OAuth2 or OIDC. */
+    @OneToMany(orphanRemoval = true, mappedBy="user")
+    private List<UserIdentity> userIdentities;
 
     public String getFullName() {
        return firstName + " " + lastName;

@@ -17,7 +17,7 @@ public interface PictureService {
     String PICTUREMEDIUM = "picturemedium";
     String PICTURELOW = "picturelow";
     String[] subDirs = { PICTURELOW, PICTUREMEDIUM, PICTUREORIGINAL };
-    int[] maxDims = { 150, 640, 2048, 40 };
+    int[] maxDims = { 150, 640, 3840, 40 };
 
 
     /**

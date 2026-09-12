@@ -172,6 +172,7 @@ public class UserController {
         } else {
             user.setPassword(passwordEncoder.encode(passwd1));
         }
+        user.setUserIdentities(orgUser.getUserIdentities());
 
         userRepository.save(user);
         log.info("Updated user Id {}", id);

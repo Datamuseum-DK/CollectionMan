@@ -1,5 +1,6 @@
 package dk.datamuseum.mobilereg.entities;
 
+import dk.datamuseum.mobilereg.UniqueQR;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -20,6 +21,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Data;
@@ -30,7 +32,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
-import dk.datamuseum.mobilereg.UniqueQR;
 
 /**
  * The items entity.
@@ -42,12 +43,9 @@ import dk.datamuseum.mobilereg.UniqueQR;
 @Data
 public class Item {
 
-    /**
-     * Enumeration of ways an item was acquired.
-     */
+    /** Enumeration of ways an item was acquired. */
     public enum Acquired {
         UKENDT, GAVE, ARV, KØB, DEPONERING;
-
     }
 
     public static List<Acquired> ACQ_OPTIONS = Arrays.asList(Acquired.UKENDT,
@@ -58,15 +56,11 @@ public class Item {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
-    /*
-     * File = Sag.
-     */
+    /** File = Sag. */
     @Column(name = "fileid")
     @NotNull(message = "Der skal angives en sag")
     private Integer fileid;
 
-    //@ColumnDefault("0")
-    //@Column(nullable = false)
     //@NotNull(message = "Der skal angives en status")
     @ManyToOne
     @JoinColumn(name="itemstatus", nullable=false)
@@ -102,9 +96,7 @@ public class Item {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate itemdatingto;
 
-    /*
-     * Producer is a ManyToOne relation.
-     */
+    /** Producer is a ManyToOne relation. */
     @Column(name = "producerid")
     private Integer producerid;
 
@@ -149,9 +141,7 @@ public class Item {
     @Column
     private String lastmodifiedby;
 
-    /*
-     * Id of containing item. Can be null.
-     */
+    /** Id of containing item. Can be null. */
     @Column
     private Integer placementid;
 
@@ -203,7 +193,7 @@ public class Item {
     private ItemClass itemClass;
 
     /**
-     * The QR codes we used are integers.
+     * The QR codes we use are integers.
      */
     //@QRCode
     @Min(50000000)
@@ -211,19 +201,34 @@ public class Item {
     @Column
     private Integer qrcode;
 
+    @OneToMany(mappedBy = "itemidfrom", orphanRemoval = true)
+    private List<ReverseLink> itemlinks;
+
     @OneToMany(mappedBy = "itemidto")
     private List<ReverseLink> revlinks;
 
     /**
      * Constructor.
-     * TODO: Don't use join for itemclass.
+     *
      */
     public Item() {
+        setHeadline("item");
+        setDescription("item");
         setItemsize("");
         setItemweight("");
         setItemmodeltype("");
         setItemserialno("");
         setItemacquiretype(0); // Ukendt
+        setItemreceivedby("");
+        setItemusedby("");
+        setItemextrainfo("");
+        setItemrestoration("");
+        setItemreferences("");
+        setItemremarks("");
+        setItemlinks(new ArrayList<ReverseLink>());
+        setRevlinks(new ArrayList<ReverseLink>());
+        setPictures(new ArrayList<Picture>());
+        setSubjects(new ArrayList<Subject>());
     }
 
 }

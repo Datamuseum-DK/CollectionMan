@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -59,10 +60,10 @@ public class CMOidcUserService implements OAuth2UserService<OidcUserRequest, Oid
 
         String subject = oidcUser.getSubject();
         if (subject == null) {
-            log.error("Not Google");
-            //subject =
-            email = "xx@gmail.com";
+            log.error("No Subject for {}", oidcUser);
             provider = "unknown";
+            subject = "unknown";
+            email = "unknown@gmail.com";
         } else {
             provider = "google";
             email = oidcUser.getEmail();
@@ -74,11 +75,17 @@ public class CMOidcUserService implements OAuth2UserService<OidcUserRequest, Oid
         addRolesFromDB(user, mappedAuthorities);
         addPermissions(user, mappedAuthorities);
 
+        String prefAttribute;
+        if (oidcUser.getPreferredUsername() != null) {
+            prefAttribute = "preferred_username";
+        } else {
+            prefAttribute = "email";
+        }
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(),
-                oidcUser.getUserInfo(), "email");
+                oidcUser.getUserInfo(), prefAttribute);
     }
 
-    /**
+    /*
      * Find or create user in the database.
      * Look the subject up in the identity table. If not found, then create it.
      */
@@ -90,28 +97,35 @@ public class CMOidcUserService implements OAuth2UserService<OidcUserRequest, Oid
                 .orElseGet(() -> createUser(oidcUser, provider, subject, email));
     }
 
-    /**
+    /*
      * Create account in both User and Identity tables.
      */
     private User createUser(OidcUser oidcUser, String provider, String subject,
                 String email) {
 
-        User user = userRepository.findByEmail(email)
-            .orElseGet(() -> {
-                User newUser = new User();
+        String userName = generateUsername(email);
+        User user;
+        Optional<User> optUserByEmail = userRepository.findByEmail(email);
+        if (optUserByEmail.isPresent()) {
+            user = optUserByEmail.get();
+        } else {
+            user = userRepository.findByUsername(userName)
+                .orElseGet(() -> {
+                    User newUser = new User();
 
-                newUser.setEmail(email);
-                newUser.setPassword("dummy");
-                newUser.setUsername(generateUsername(email));
-                newUser.setFirstName(oidcUser.getGivenName());
-                newUser.setLastName(oidcUser.getFamilyName());
-                newUser.setActive(true);
-                newUser.setDateJoined(LocalDateTime.now());
-                newUser.setRoles(new ArrayList<Role>());
-                newUser.setPermissions(new ArrayList<Permission>());
+                    newUser.setEmail(email);
+                    newUser.setPassword("dummy");
+                    newUser.setUsername(userName);
+                    newUser.setFirstName(oidcUser.getGivenName());
+                    newUser.setLastName(oidcUser.getFamilyName());
+                    newUser.setActive(true);
+                    newUser.setDateJoined(LocalDateTime.now());
+                    newUser.setRoles(new ArrayList<Role>());
+                    newUser.setPermissions(new ArrayList<Permission>());
 
-                return userRepository.save(newUser);
-            });
+                    return userRepository.save(newUser);
+                });
+        }
         createIdentity(user, provider, subject);
         return user;
     }
