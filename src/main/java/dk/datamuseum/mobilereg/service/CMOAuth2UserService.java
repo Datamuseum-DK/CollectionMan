@@ -52,22 +52,18 @@ public class CMOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oauthUser = super.loadUser(request);
         log.info("OAuth2 User: {}", oauthUser);
 
-        String provider;
-        String email;
-
         String subject = oauthUser.getAttribute("login");
         if (subject == null) {
-            log.error("Not GitHub");
-            email = "xx@gmail.com";
-            provider = "google";
-        } else {
-            provider = "github";
-            email = oauthUser.getAttribute("email");
+            log.error("No login attribute for {}", oauthUser);
+            throw new OAuth2AuthenticationException("Only GitHub is supported");
         }
+        String provider = "github";
+        String email = oauthUser.getAttribute("email");
 
         User user = findOrCreateUser(provider, subject, email);
 
         Set <SimpleGrantedAuthority> mappedAuthorities = new HashSet<>();
+        mappedAuthorities.add(new SimpleGrantedAuthority("OAUTH_USER"));
         addRolesFromDB(user, mappedAuthorities);
         addPermissions(user, mappedAuthorities);
 

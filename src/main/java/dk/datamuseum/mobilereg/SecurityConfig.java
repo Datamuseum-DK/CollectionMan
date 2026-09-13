@@ -106,28 +106,12 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // @Bean
-    // @Profile("oauth")
-    // public SecurityFilterChain filterChainOAUTH(HttpSecurity http) throws Exception {
-    //     http.authorizeHttpRequests(authorize -> authorize
-    //         .requestMatchers("/", "/css/**", "/js/**", "/favicon.svg", "/login").permitAll()
-    //         .requestMatchers("/userprofile").authenticated()
-    //         .anyRequest().hasAuthority("ROLE_VIEWER")
-    //         )
-    //         .oauth2Login((oauth2Login) -> oauth2Login
-    //             .userInfoEndpoint((userInfo) -> userInfo
-    //                 .userAuthoritiesMapper(grantedAuthoritiesMapper())
-    //             )
-    //         );
-    //     return http.build();
-    // }
-
     /**
      * Add login method as an authority for tracing.
-     * Can be used to block change of password, as this should happen at the Identity Provider.
+     * UNUSED.
      */
     private GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
-        log.info("In grantedAuthoritiesMapper");
+        log.debug("In grantedAuthoritiesMapper");
         return (authorities) -> {
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 
@@ -137,12 +121,12 @@ public class SecurityConfig {
                 if (authority instanceof OidcUserAuthority) {
                     OidcUserAuthority userAuthority = (OidcUserAuthority) authority;
                     mappedAuthority = new OidcUserAuthority(
-                            "OIDC_USERx", userAuthority.getIdToken(), userAuthority.getUserInfo());
+                            "OIDC_USER", userAuthority.getIdToken(), userAuthority.getUserInfo());
                 } else if (authority instanceof OAuth2UserAuthority) {
                     OAuth2UserAuthority userAuthority = (OAuth2UserAuthority) authority;
                     log.info("Username: {}", userAuthority.getUserNameAttributeName());
                     mappedAuthority = new OAuth2UserAuthority(
-                            "OAUTH2_USERx", userAuthority.getAttributes());
+                            "OAUTH2_USER", userAuthority.getAttributes());
                 } else {
                     log.info("Authority: {}", authority.toString());
                     mappedAuthority = authority;

@@ -22,17 +22,14 @@
           <span th:text="${val}" th:remove="tag">SCOPE_read:user</span>
         </li>
       </ol>
-      <!--
+      <!--/*/ <th:block sec:authorize="${hasAuthority('OIDC_USER') or hasAuthority('OAUTH_USER')}"> /*/-->
       <h3>Attributter</h3>
       <ul>
         <li th:each="val : ${#authentication.principal.attributes}">
           <span th:text="${val}" th:remove="tag">location=Copenhagen</span>
         </li>
       </ul>
-<p th:text="${#authentication.principal}">
-Bruger profile her
-</p>
--->
+      <!--/*/ </th:block> /*/-->
     </main>
     <footer th:replace="~{layout :: footerFragment}">
     Footer

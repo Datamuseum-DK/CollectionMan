@@ -55,23 +55,18 @@ public class CMOidcUserService implements OAuth2UserService<OidcUserRequest, Oid
         OidcUser oidcUser = delegate.loadUser(request);
         log.info("OIDC User: {}", oidcUser);
 
-        String provider;
-        String email;
-
         String subject = oidcUser.getSubject();
         if (subject == null) {
-            log.error("No Subject for {}", oidcUser);
-            provider = "unknown";
-            subject = "unknown";
-            email = "unknown@gmail.com";
-        } else {
-            provider = "google";
-            email = oidcUser.getEmail();
+            log.error("No subject attribute for {}", oidcUser);
+            throw new OAuth2AuthenticationException("Only Google is supported");
         }
+        String provider = "google";
+        String email = oidcUser.getEmail();
 
         User user = findOrCreateUser(oidcUser, provider, subject, email);
 
         Set <SimpleGrantedAuthority> mappedAuthorities = new HashSet<>();
+        mappedAuthorities.add(new SimpleGrantedAuthority("OIDC_USER"));
         addRolesFromDB(user, mappedAuthorities);
         addPermissions(user, mappedAuthorities);
 
