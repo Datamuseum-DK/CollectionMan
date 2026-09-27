@@ -16,7 +16,7 @@
         <button id="changepassword" type="submit" formaction="changepassword.html" th:formaction="@{/changepassword}">Skift kodeord</button>
       </form>
       <h2>Min profil: <em th:text="${#authentication.name}">login</em></h2>
-      <h3>Autoriteter</h3>
+      <h3>Rettigheder</h3>
       <ol>
         <li th:each="val : ${#authentication.authorities}">
           <span th:text="${val}" th:remove="tag">SCOPE_read:user</span>

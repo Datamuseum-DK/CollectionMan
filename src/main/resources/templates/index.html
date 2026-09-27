@@ -36,8 +36,8 @@
         <li sec:authorize="hasAuthority('VIEW_PRODUCERS')">
           <a href="producers.html" th:href="@{producers}">Producenter</a>
         </li>
-        <li sec:authorize="hasAuthority('VIEW_STED')">
-          <a href="places.html" th:href="@{places}">Brugssteder</a>
+        <li sec:authorize="hasAuthority('VIEW_LOCALITIES')">
+          <a href="localities.html" th:href="@{localities}">Brugssteder</a>
         </li>
         <li sec:authorize="isAuthenticated()">
           <a href="administration.html" th:href="@{administration}">Specialsider</a>

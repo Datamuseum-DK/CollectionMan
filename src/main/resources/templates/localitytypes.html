@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <head th:insert="~{layout :: headerFragment (webtitle='Brugssteder')}">
+  <head th:insert="~{layout :: headerFragment (webtitle='Lokalitetstyper')}">
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
   </head>
@@ -11,27 +11,27 @@
         <a href="index.html">DDHF mobilregistrering</a>
       </h1>
     </header>
-    <main>
-      <form id="actions" method="get" action="places-add.html" th:action="@{/places/addform}" sec:authorize="hasAuthority('ADD_STED')">
-        <button type="submit">Nyt sted</button>
+    <section id="content">
+      <form id="actions" method="get" action="localitytype-add.html" th:action="@{/localitytypes/addform}" sec:authorize="hasAuthority('ADD_LOCALITIES')">
+        <button type="submit">Ny klasse</button>
       </form>
-      <div th:switch="${places}">
-        <h2 th:case="null">Ingen brugssteder</h2>
+      <div th:switch="${localitytypes}">
+        <h2 th:case="null">Ingen klasser</h2>
         <div th:case="*">
-          <h2>Brugssteder</h2>
+          <h2>Lokalitetsklasser</h2>
           <ul th:remove="all-but-first">
-            <li th:each="place : ${places}">
-              <div><a href="places-view.html" th:href="@{/places/view/{id}(id=${place.id})}" th:text="${place.stednavn}">Guldborgsund Kommune</a>
+            <li th:each="place : ${localitytypes}">
+              <div><a href="localitytype-view.html" th:href="@{/localitytypes/view/{id}(id=${place.id})}" th:text="${place.title}">Arbejdspladser</a>
                     (<span th:text="${place.totalItems}">4</span>)
               </div>
             </li>
             <li>
-              <div><a href="places-view.html">Præstø Kommune</a> (<span>12</span>)</div>
+              <div><a href="localitytype-view.html">Kommuner (2007-)</a> (<span>98</span>)</div>
             </li>
           </ul>
         </div>
       </div>
-    </main>
+    </section>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
     </footer>

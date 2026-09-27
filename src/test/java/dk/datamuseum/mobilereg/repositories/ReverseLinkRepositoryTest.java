@@ -55,19 +55,20 @@ class ReverseLinkRepositoryTest {
     /**
      * Block link from non-existant item.
      */
-     @Test
-     void blockLinkFromNonItem() {
+    @Test
+    void blockLinkFromNonItem() {
         ReverseLink reverseLink = new ReverseLink();
         reverseLink.setItemidfrom(10999999);
         reverseLink.setItemidto(11000937);
         assertThatExceptionOfType(DataIntegrityViolationException.class)
              .isThrownBy(() -> reverseLinkRepositoryTest.save(reverseLink));
-     }
+    }
+
     /**
      * Test that links are not deleted when the item pointed to is deleted.
      */
-     @Test
-     void deleteTargetedItem() {
+    @Test
+    void deleteTargetedItem() {
 
         ItemStatus itemStatus = itemStatusRepository.findById(1).orElseThrow(()
                 -> new IllegalArgumentException("ItemStatus id not find"));
@@ -91,5 +92,11 @@ class ReverseLinkRepositoryTest {
         List<ReverseLink> retrievedReverseLinks = reverseLinkRepositoryTest.findByItemidto(savedItemId);
         assertThat(retrievedReverseLinks.size()).isEqualTo(1);
         assertThat(retrievedReverseLinks.get(0).getItemidfrom()).isEqualTo(10000001);
+     }
+
+     /**
+      * Test that an edit saves links correctly.
+      */
+     void editLinks() {
      }
 }

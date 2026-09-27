@@ -40,8 +40,9 @@ import dk.datamuseum.mobilereg.entities.ItemStatus;
 import dk.datamuseum.mobilereg.entities.Picture;
 import dk.datamuseum.mobilereg.entities.Producer;
 import dk.datamuseum.mobilereg.entities.ReverseLink;
-import dk.datamuseum.mobilereg.entities.Sted;
 import dk.datamuseum.mobilereg.entities.Subject;
+import dk.datamuseum.mobilereg.entities.Locality;
+import dk.datamuseum.mobilereg.entities.LocalityType;
 
 import dk.datamuseum.mobilereg.repositories.FileRepository;
 import dk.datamuseum.mobilereg.repositories.DonorRepository;
@@ -51,7 +52,8 @@ import dk.datamuseum.mobilereg.repositories.ItemStatusRepository;
 import dk.datamuseum.mobilereg.repositories.PictureRepository;
 import dk.datamuseum.mobilereg.repositories.ProducerRepository;
 import dk.datamuseum.mobilereg.repositories.ReverseLinkRepository;
-import dk.datamuseum.mobilereg.repositories.StedRepository;
+import dk.datamuseum.mobilereg.repositories.LocalityRepository;
+import dk.datamuseum.mobilereg.repositories.LocalityTypeRepository;
 import dk.datamuseum.mobilereg.repositories.SubjectRepository;
 
 import dk.datamuseum.mobilereg.service.ChangelogService;
@@ -83,7 +85,9 @@ public class ItemController {
 
     private final ProducerRepository producerRepository;
 
-    private final StedRepository stedRepository;
+    private final LocalityRepository localityRepository;
+
+    private final LocalityTypeRepository localityTypeRepository;
 
     private final SubjectRepository subjectRepository;
 
@@ -108,7 +112,8 @@ public class ItemController {
             PictureService pictureService,
             ProducerRepository producerRepository,
             ReverseLinkRepository reverseLinkRepository,
-            StedRepository stedRepository,
+            LocalityRepository localityRepository,
+            LocalityTypeRepository localityTypeRepository,
             SubjectRepository subjectRepository,
             Utilities utilities,
 //            ItemValidator itemValidator,
@@ -122,7 +127,8 @@ public class ItemController {
         this.pictureService = pictureService;
         this.producerRepository = producerRepository;
         this.reverseLinkRepository = reverseLinkRepository;
-        this.stedRepository = stedRepository;
+        this.localityRepository = localityRepository;
+        this.localityTypeRepository = localityTypeRepository;
         this.subjectRepository = subjectRepository;
         this.utilities = utilities;
 //        this.itemValidator = itemValidator;
@@ -208,9 +214,9 @@ public class ItemController {
     /**
      * List all locations.
      */
-    @ModelAttribute("steder")
-    public Iterable<Sted> steder() {
-        return stedRepository.findByOrderByStednavn();
+    @ModelAttribute("localitytypes")
+    public Iterable<LocalityType> localitytypes() {
+        return localityTypeRepository.findByOrderByTitle();
     }
 
     /**
@@ -298,8 +304,7 @@ public class ItemController {
         if (createHeadlineIfEmpty(item)) {
             itemRepository.save(item);
         }
-        TreeSet<Integer> references = new TreeSet<Integer>();
-        references = extractReferences(item, references);
+        extractReferences(item);
 
         log.info("Added item Id {} to {}", item.getId(), item.getPlacementid());
         return String.format("redirect:/items/view/%d", item.getId());
@@ -557,8 +562,7 @@ public class ItemController {
                     itemInDB.getItemStatus().getName(),
                     item.getItemStatus().getName()));
         }
-        TreeSet<Integer> references = new TreeSet<Integer>();
-        references = extractReferences(item, references);
+        extractReferences(item);
         itemRepository.save(item);
         return String.format("redirect:/items/view/%d", id);
     }
@@ -718,23 +722,36 @@ public class ItemController {
     /*
      * Update the reverse links in the database.
      */
-    private TreeSet<Integer> extractReferences(Item item, TreeSet<Integer> references) {
+    private void extractReferences(Item item) {
+        TreeSet<Integer> references = new TreeSet<Integer>();
+
         extractRefs(item.getDescription(), references);
         extractRefs(item.getItemextrainfo(), references);
         extractRefs(item.getItemreferences(), references);
         extractRefs(item.getItemrestoration(), references);
         extractRefs(item.getItemremarks(), references);
         extractRefs(item.getItemusedby(), references);
-        reverseLinkRepository.deleteByItemidfrom(item.getId());
 
-        ReverseLink linkObj = new ReverseLink();
-        linkObj.setItemidfrom(item.getId());
+        // List<ReverseLink> itemlinks = new ArrayList<ReverseLink>();
+        // int itemId = item.getId();
+        // for (Integer refTo : references) {
+        //     ReverseLink linkObj = new ReverseLink();
+        //     linkObj.setItemidfrom(itemId);
+        //     linkObj.setItemidto(refTo);
+        //     itemlinks.add(linkObj);
+        //     log.debug("Link from Id {} to {}", item.getId(), refTo);
+        // }
+        // item.setItemlinks(itemlinks);
+
+        int itemId = item.getId();
+        reverseLinkRepository.deleteByItemidfrom(itemId);
         for (Integer refTo : references) {
+            ReverseLink linkObj = new ReverseLink();
+            linkObj.setItemidfrom(itemId);
             linkObj.setItemidto(refTo);
-            log.debug("Link from Id {} to {}", item.getId(), refTo);
+            log.debug("Link from Id {} to {}", itemId, refTo);
             reverseLinkRepository.save(linkObj);
         }
-        return references;
     }
 
     /**
@@ -771,6 +788,10 @@ public class ItemController {
         model.addAttribute("parents", itemRepository.findParentContainers(id));
         var revLinks = reverseLinkRepository.findByItemidto(id);
         model.addAttribute("revlinks", revLinks);
+        if (item.getItemusedwhereid() != null)
+            model.addAttribute("locality", localityRepository.findById(item.getItemusedwhereid()));
+        else
+            model.addAttribute("locality",  Optional.empty());
 
         List<Item> children = new ArrayList<Item>();
         Pageable paging = PageRequest.of(page - 1, size);

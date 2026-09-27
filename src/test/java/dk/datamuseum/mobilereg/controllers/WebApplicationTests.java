@@ -43,7 +43,7 @@ class WebApplicationTests {
     @WithMockUser(username = "reg")
     void userProfileAuth() throws Exception {
         this.mockMvc.perform(get("/userprofile")).andExpect(status().isOk())
-            .andExpect(content().string(containsString("<h3>Autoriteter</h3>")));
+            .andExpect(content().string(containsString("<h3>Rettigheder</h3>")));
     }
 
 }

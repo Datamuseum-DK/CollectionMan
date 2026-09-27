@@ -4,7 +4,7 @@ The purpose of this application is to manage the inventory of a small museum's c
 
 ## Development
 
-This is a Spring Boot project built in Maven. You check it out from GitHub and then do `mvn install`. This will produce a mobilereg-jar-with-dependencies.jar, which can be run directly with Java 25.
+This is a Spring Boot project built in Maven. You check it out from GitHub and then do `mvn install`. This will produce a mobilereg-jar-with-dependencies.jar, which can be run directly with Java.
 
 - [Database structure](docs/DATABASE.md)
 - [Release procedure](docs/RELEASING.md)
@@ -25,6 +25,14 @@ You can then connect with your webbrowser to `http://localhost:8080/`. There are
 * **su** - the superuser has all permissions.
 
 They all have the same password: _testkode_.
+
+## Dependencies
+
+* Java 25
+* Apache Maven 3.9.11
+* [NIMIQ QR Scanner](https://github.com/nimiq/qr-scanner)
+* Spring Boot 4
+* Any database available for JPA
 
 ## API
 

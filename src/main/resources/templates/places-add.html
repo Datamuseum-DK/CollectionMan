@@ -11,7 +11,7 @@
         <a href="index.html">DDHF mobilregistrering</a>
       </h1>
     </header>
-    <section id="content">
+    <main>
       <form id="editfactsheet" method="post" action="places-view.html" th:object="${sted}" th:action="@{addplace}">
         <h2>Opret sted</h2>
         <div>
@@ -21,7 +21,7 @@
         </div>
         <input type="submit" value="Opret"/>
       </form>
-    </section>
+    </main>
     <footer th:replace="~{layout :: footerFragment}">
     Footer
     </footer>

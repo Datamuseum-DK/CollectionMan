@@ -56,6 +56,14 @@ entity auth_user_groups {
 * group_id: integer <<FK>>
 }
 
+entity auth_user_identity {
+* id : integer
+--
+* userid : integer
+* provider : string
+* subject : string
+}
+auth_user_identity }o.right.o| auth_user : link
 auth_group ||..o{ auth_user_groups
 auth_user ||..o{ auth_user_groups
 auth_user ||..o{ auth_user_user_permissions

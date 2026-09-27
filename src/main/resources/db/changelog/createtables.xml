@@ -130,6 +130,12 @@
        referencedTableName="auth_user" referencedColumnNames="id"
        onUpdate="RESTRICT" onDelete="RESTRICT"/>
 
+    <addForeignKeyConstraint
+      constraintName="auth_group_permissio_permission_id_84c5c92e_fk_auth_perm"
+      baseTableName="auth_group_permissions"
+      baseColumnNames="permission_id"
+      referencedTableName="auth_permission" referencedColumnNames="id"
+      onUpdate="RESTRICT" onDelete="RESTRICT"/>
   </changeSet>
 
   <changeSet author="roug" id="ddl01" context="createdjangodb">

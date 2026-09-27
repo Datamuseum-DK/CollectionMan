@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{layout :: headerFragment}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="editfactsheet" method="post" action="locality-view.html" th:object="${locality}" th:action="@{/localities/update/{id}(id=${locality.id})}">
+        <h2>Redigere lokalitet <span th:text="*{id}">11</span></h2>
+        <div>
+          <label class="leader required">Navn</label>
+          <input type="text" th:field="*{name}" value="Hillerød" class="fullwidth"/>
+          <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fielderror">Field is mandatory</span>
+        </div>
+        <div>
+          <label class="head">Beskrivelse</label>
+          <textarea th:field="*{description}" rows="5" placeholder="Beskrivelse af lokaliteten.">En nærmere beskrivelse af
+          hvad lokaliteten er.</textarea>
+          <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Error</span>
+        </div>
+        <div>
+        <input type="submit" value="Gem"/>
+        </div>
+      </form>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

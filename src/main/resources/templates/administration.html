@@ -22,6 +22,9 @@
         <li sec:authorize="hasAuthority('VIEW_ITEMS')">
           <a href="noproducers.html" th:href="@{noproducers}">Artefakter uden producenter</a>
         </li>
+        <li sec:authorize="hasAuthority('VIEW_LOCALITIES')">
+          <a href="localitytypes.html" th:href="@{localitytypes}">Lokalitetsklasser</a>
+        </li>
       </menu>
       <h3>Kontohåndtering</h3>
       <menu>

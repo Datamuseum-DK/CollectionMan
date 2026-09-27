@@ -201,19 +201,19 @@ public class Item {
     @Column
     private Integer qrcode;
 
-    @OneToMany(mappedBy = "itemidfrom", orphanRemoval = true)
-    private List<ReverseLink> itemlinks;
+    // @OneToMany(mappedBy = "itemidfrom", orphanRemoval = true)
+    // private List<ReverseLink> itemlinks;
 
-    @OneToMany(mappedBy = "itemidto")
-    private List<ReverseLink> revlinks;
+    // @OneToMany(mappedBy = "itemidto")
+    // private List<ReverseLink> revlinks;
 
     /**
      * Constructor.
      *
      */
     public Item() {
-        setHeadline("item");
-        setDescription("item");
+        setHeadline("");
+        setDescription("");
         setItemsize("");
         setItemweight("");
         setItemmodeltype("");
@@ -225,8 +225,8 @@ public class Item {
         setItemrestoration("");
         setItemreferences("");
         setItemremarks("");
-        setItemlinks(new ArrayList<ReverseLink>());
-        setRevlinks(new ArrayList<ReverseLink>());
+        // setItemlinks(new ArrayList<ReverseLink>());
+        // setRevlinks(new ArrayList<ReverseLink>());
         setPictures(new ArrayList<Picture>());
         setSubjects(new ArrayList<Subject>());
     }

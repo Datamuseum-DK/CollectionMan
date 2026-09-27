@@ -161,8 +161,9 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dt class="multiline" title="Beskrivelse af hvem, hvad, hvor">Proviniens/brugsbeskrivelse</dt>
           <dd class="multiline" th:utext="${item.itemusedby}">Brugsen</dd>
           <dt>Område</dt>
-          <dd>
-            <span th:each="s : ${steder}" th:if="${s.id == item.itemusedwhereid}" th:text="${s.stednavn}">København</span>
+          <dd th:if="${locality.isPresent()}">
+            <a href="locality-view.html"
+             th:href="@{/localities/view/{id}(id=${locality.get().getId()})}" th:text="${locality.get().getName()}">København</a>
           </dd>
           <dt class="multiline" title="Særlige oplysninger om genstandens proveniens">Særlige oplysninger</dt>
           <dd class="multiline" th:utext="${item.itemextrainfo}">Tekst her</dd>

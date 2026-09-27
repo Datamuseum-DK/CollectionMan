@@ -50,19 +50,6 @@
             <label class="leader required" for="id_itemstatus">Status:</label>
             <select th:field="*{itemStatus}" name="itemstatus" id="id_itemstatus">
               <option value="0" th:value="${status.id}" th:text="${status.name}" th:each="status: ${statuses}">Offentlig</option>
-              <!--
-              <optgroup label="Publiseret">
-                <option value="0" th:selected="true" selected="selected">Kladde</option>
-              </optgroup>
-              <optgroup label="Redaktion">
-                <option value="1">klar</option>
-                <option value="2">kladde</option>
-              </optgroup>
-              <optgroup label="Offline">
-                <option value="3">udgået</option>
-                <option value="4">intern</option>
-              </optgroup>
-              -->
             </select>
             <span th:if="${#fields.hasErrors('itemStatus')}" th:errors="*{itemStatus}" class="fielderror">Error</span>
           </div>
@@ -174,11 +161,13 @@ Hvordan er genstanden anskaffet? Kun for artefakter.
           <label class="head" for="itemusedby">Proviniens/brugsbeskrivelse:</label>
           <textarea id="itemusedby" cols="40" rows="5" th:field="*{itemusedby}" placeholder="Brugt af hvem, til hvad, hvor?">Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.</textarea>
           <div>
-            <label class="leader" for="itemusedwhereid">Geografisk område:</label>
+            <label class="leader" for="itemusedwhereid">Brugslokalitet:</label>
             <select id="itemusedwhereid" th:field="*{itemusedwhereid}">
               <option value="">-------</option>
-              <option value="9" th:each="s : ${steder}" th:value="${s.id}" th:text="${s.stednavn}" th:selected="${s.id == itemusedwhereid}">København</option>
-              <option value="10" th:remove="all">Odense</option>
+              <optgroup th:each="loctype : ${localitytypes}" th:label="${loctype.title}" label="Arbejdspladser">
+                <option value="10" th:remove="all">Ballerup</option>
+                <option value="9" th:each="s : ${loctype.localities}" th:value="${s.id}" th:text="${s.name}" th:selected="${s.id == itemusedwhereid}">København</option>
+              </optgroup>
             </select>
           </div>
           <label class="head" for="itemextrainfo">Særlige oplysninger:</label>

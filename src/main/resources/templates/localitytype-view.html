@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head th:insert="~{layout :: headerFragment (webtitle=${localitytype.title})}">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/localstyles.css" th:href="@{/css/localstyles.css}"/>
+  </head>
+  <body>
+    <header th:insert="~{layout :: bannerFragment}">
+      <h1>
+        <a href="index.html">DDHF mobilregistrering</a>
+      </h1>
+    </header>
+    <section id="content">
+      <form id="actions">
+        <button id="search" type="submit" form="actions" formaction="localitytypes.html" th:formaction="@{/localitytypes}">Liste</button>
+        <button id="rediger" type="submit" form="actions" formaction="localitytype-edit.html" th:formaction="@{/localitytypes/edit/{id}(id=${localitytype.id})}" sec:authorize="hasAuthority('CHANGE_LOCALITIES')">Rediger</button>
+        <button id="add" type="submit" form="actions" formaction="locality-add.html"
+          th:formaction="@{/localitytypes/{id}/addform(id=${localitytype.id})}"
+          sec:authorize="hasAuthority('ADD_LOCALITIES')">Ny lokalitet</button>
+        <button id="delete" sec:authorize="hasAuthority('DELETE_LOCALITIES')"
+        onclick="return confirm('Er du sikker?')"
+        th:if="${localitytype.totalItems} == 0" type="submit" form="actions" formaction="localitytypes.html" th:formaction="@{/localitytypes/delete/{id}(id=${localitytype.id})}">Slet</button>
+      </form>
+      <h2 th:text="${localitytype.title}">Kommuner (2007-)</h2>
+      <dl class="factsheet">
+        <dt>Post nr.</dt>
+        <dd th:text="${localitytype.id}">1</dd>
+        <dt>Navn</dt>
+        <dd th:text="${localitytype.title}">Kommuner (2007-)</dd>
+        <dt>Beskrivelse</dt>
+        <dd th:text="${localitytype.description}">De 98 kommuner efter kommunereformen i 2007.</dd>
+      </dl>
+      <h3>Lokaliteter</h3>
+      <ol th:remove="all-but-first">
+        <li th:each="loc : ${localitytype.localities}">
+          <a href="locality-view.html" th:href="@{/localities/view/{id}(id=${loc.id})}" th:text="${loc.name}">Guldborgsund Kommune</a>
+        </li>
+        <li>
+          <a href="locality-view.html">Høje Taastrup Kommune</a>
+        </li>
+      </ol>
+    </section>
+    <footer th:replace="~{layout :: footerFragment}">
+    Footer
+    </footer>
+  </body>
+</html>

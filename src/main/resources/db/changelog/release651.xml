@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <!-- Version 6.5.1 -->
+  <!-- New localities tables. -->
+  <changeSet author="roug" id="v6.5.1">
+    <!--<addUniqueConstraint constraintName="uk_reverselinks" columnNames="itemidfrom,itemidto" tableName="reverse_links"/> -->
+
+    <createTable tableName="locality_types" remarks="Locality types">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="title" type="VARCHAR(100)" defaultValue="">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="TEXT"/>
+    </createTable>
+
+    <createTable tableName="localities" remarks="Localities">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="name" type="VARCHAR(100)" defaultValue="">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="TEXT"/>
+      <column name="typeid" type="INT">
+        <constraints nullable="false" foreignKeyName="localitytype_constraint" referencedTableName="locality_types" referencedColumnNames="id" deleteCascade="false"/>
+      </column>
+    </createTable>
+
+    <dropForeignKeyConstraint constraintName="items_itemusedwhereid_dc456417_fk_sted_id" baseTableName="items"/>
+
+    <modifyDataType tableName="items" columnName="itemusedwhereid" newDataType="int"/>
+
+    <insert tableName="locality_types">
+      <column name="id" valueNumeric="1"/>
+      <column name="title" value="Legacy localities"/>
+      <column name="description" value="Legacy localities"/>
+    </insert>
+    <sql>
+      INSERT INTO localities (id, name, description, typeid) SELECT id, stednavn AS name, '' AS description, 1 AS typeid FROM sted
+    </sql>
+
+    <addForeignKeyConstraint constraintName="items_restrict_localities"
+            baseTableName="items" baseColumnNames="itemusedwhereid"
+            referencedTableName="localities" referencedColumnNames="id"
+            onUpdate="SET NULL" onDelete="SET NULL"/>
+
+    <dropTable tableName="django_admin_log"/>
+
+    <dropForeignKeyConstraint constraintName="auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm"
+            baseTableName="auth_user_user_permissions"/>
+    <addForeignKeyConstraint constraintName="cascade_auth_user_permissions"
+            baseTableName="auth_user_user_permissions"
+            baseColumnNames="permission_id"
+            referencedTableName="auth_permission"
+            referencedColumnNames="id" onUpdate="RESTRICT" onDelete="CASCADE"/>
+
+    <dropForeignKeyConstraint constraintName="auth_group_permissio_permission_id_84c5c92e_fk_auth_perm"
+                              baseTableName="auth_group_permissions"/>
+    <addForeignKeyConstraint constraintName="cascade_auth_group_permissions"
+                             baseTableName="auth_group_permissions" baseColumnNames="permission_id"
+                             referencedTableName="auth_permission" referencedColumnNames="id"
+                             onUpdate="RESTRICT" onDelete="CASCADE"/>
+
+    <delete tableName="auth_permission">
+      <where>content_type_id IN (1,9)</where>
+    </delete>
+    <delete tableName="django_content_type">
+      <where>id IN (1,9)</where>
+    </delete>
+    <insert tableName="django_content_type">
+      <column name="id" valueNumeric="14"/>
+      <column name="app_label" value="ddhf_data"/>
+      <column name="model" value="localities"/>
+    </insert>
+    <insert tableName="auth_permission">
+      <column name="name" value="Oprette lokaliteter"/>
+      <column name="content_type_id" valueNumeric="14"/>
+      <column name="codename" value="add_localities"/>
+    </insert>
+    <insert tableName="auth_permission">
+      <column name="name" value="Ændre lokaliteter"/>
+      <column name="content_type_id" valueNumeric="14"/>
+      <column name="codename" value="change_localities"/>
+    </insert>
+    <insert tableName="auth_permission">
+      <column name="name" value="Slette lokaliteter"/>
+      <column name="content_type_id" valueNumeric="14"/>
+      <column name="codename" value="delete_localities"/>
+    </insert>
+    <insert tableName="auth_permission">
+      <column name="name" value="Se lokaliteter"/>
+      <column name="content_type_id" valueNumeric="14"/>
+      <column name="codename" value="view_localities"/>
+    </insert>
+  </changeSet>
+</databaseChangeLog>

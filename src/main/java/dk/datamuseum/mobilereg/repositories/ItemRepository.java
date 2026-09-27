@@ -27,9 +27,12 @@ public interface ItemRepository extends ListCrudRepository<Item, Integer> {
      * @param pageable - information about which page the user wants returned.
      * @return a page of hits.
      */
-    @Query("SELECT i FROM Item i WHERE i.headline LIKE %?1%"
-            + " OR i.description LIKE %?1%"
-            + " OR i.itemserialno LIKE %?1% ORDER BY i.headline")
+    @Query("""
+       SELECT i FROM Item i WHERE i.headline LIKE %?1%
+        OR i.description LIKE %?1%
+        OR i.itemremarks LIKE %?1%
+        OR i.itemserialno LIKE %?1%
+        ORDER BY i.headline""")
     Page<Item> findByFulltextContaining(String query, Pageable pageable);
 
     /**
