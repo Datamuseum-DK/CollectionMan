@@ -30,6 +30,13 @@
       </column>
     </createTable>
 
+    <addForeignKeyConstraint
+      constraintName="auth_group_permissions_group_id_b120cbf9_fk_auth_group_id"
+      baseTableName="auth_group_permissions"
+      baseColumnNames="group_id"
+      referencedTableName="auth_group" referencedColumnNames="id"
+      onUpdate="RESTRICT" onDelete="RESTRICT"/>
+
     <createTable tableName="auth_permission">
       <column autoIncrement="true" name="id" type="INT">
         <constraints nullable="false" primaryKey="true"/>
@@ -44,6 +51,7 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
+
     <createTable tableName="auth_user">
       <column autoIncrement="true" name="id" type="INT">
         <constraints nullable="false" primaryKey="true"/>

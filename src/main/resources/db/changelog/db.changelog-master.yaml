@@ -21,3 +21,6 @@ databaseChangeLog:
   - include:
       file: release651.xml
       relativeToChangelogFile: true
+  - include:
+      file: release660.xml
+      relativeToChangelogFile: true

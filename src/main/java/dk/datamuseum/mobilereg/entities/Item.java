@@ -153,12 +153,9 @@ public class Item {
     @ColumnDefault("")
     private String itemusedby;
 
-    // itemusedwhereid     = models.ForeignKey(Sted, null=True, blank=True,
-    //  db_column='itemusedwhereid', verbose_name="brugt i geografisk område",
-    //  on_delete=models.CASCADE)
     //@ManyToOne
     //@JoinColumn(name="itemusedwhereid", nullable=true)
-    //private Sted usedwhere;
+    //private Locality usedwhere;
     private Integer itemusedwhereid;
 
     @Column(length=65535)

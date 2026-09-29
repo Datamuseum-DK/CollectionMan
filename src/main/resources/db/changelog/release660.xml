@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <!-- Version 6.6.0 -->
+  <changeSet author="roug" id="v6.6.0">
+    <!--<addUniqueConstraint constraintName="uk_reverselinks" columnNames="itemidfrom,itemidto" tableName="reverse_links"/> -->
+    <dropTable tableName="sted"/>
+  </changeSet>
+
+  <changeSet author="roug" id="v6.6.0t"  context="test">
+    <insert  tableName="auth_group_permissions">
+      <column name="group_id" valueNumeric="1"/>
+      <column name="permission_id" valueNumeric="53"/>
+    </insert>
+    <insert  tableName="auth_group_permissions">
+      <column name="group_id" valueNumeric="1"/>
+      <column name="permission_id" valueNumeric="54"/>
+    </insert>
+    <insert  tableName="auth_group_permissions">
+      <column name="group_id" valueNumeric="1"/>
+      <column name="permission_id" valueNumeric="55"/>
+    </insert>
+    <insert  tableName="auth_group_permissions">
+      <column name="group_id" valueNumeric="1"/>
+      <column name="permission_id" valueNumeric="56"/>
+    </insert>
+  </changeSet>
+
+</databaseChangeLog>
