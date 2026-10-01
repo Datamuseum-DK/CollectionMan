@@ -80,10 +80,18 @@ entity ActivityTypes {
 placeholder: text
 }
 
-entity Sted {
+entity LocalityTypes {
 * id: integer
 --
-* stednavn: string
+* title: string
+description: string
+}
+entity Localities {
+* id: integer
+--
+* typeid: integer
+* name: string
+description: string
 }
 
 entity Donators {
@@ -117,6 +125,7 @@ subjectdescription: text
 entity Pictures {
 * pictureid: integer
 --
+* itemid: integer <<FK>>
 picturetext: text
 pictureregisteredby: string
 pictureregistered: datetime
@@ -124,7 +133,6 @@ lastmodified: datetime
 pictureoriginal: string
 picturemedium: string
 picturelow: string
-itemid: integer <<FK>>
 }
 
 entity Producers {
@@ -143,9 +151,10 @@ entity ReverseLink {
 }
 
 ItemClass ||..|{ Items
+LocalityTypes ||..o{ Localities
 Files ||..o{ Items
 ItemStatuses ||..|{ Items
-Items }o..o| Sted
+Items }o..o| Localities : used at
 Items |o..o{ Pictures
 Items |o..o{ ItemsSubject
 Subjects |o..o{ ItemsSubject
@@ -155,5 +164,5 @@ Items }o--o| Donators
 Items ||..o{ Activities
 Items |o.left.o{ ReverseLink : from
 Items |o..o{ ReverseLink : to
-ActivityTypes ||--|{ Activities
+ActivityTypes ||--o{ Activities
 @enduml

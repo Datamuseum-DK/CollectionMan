@@ -97,7 +97,7 @@ public class LocalityTypeController {
             return "locality-add";
         }
         localityRepository.save(locality);
-        return "redirect:/localities";
+        return String.format("redirect:/localitytypes/view/%d", typeid);
     }
 
     /**

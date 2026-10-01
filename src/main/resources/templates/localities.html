@@ -16,7 +16,7 @@
         <h2 th:case="null">Ingen lokaliteter</h2>
         <div th:case="*">
         <div th:each="loctype : ${localitytypes}">
-          <h2 th:text="${loctype.title}">Arbejdspladser</h2>
+          <h2 th:text="${loctype.title}" th:title="${loctype.description}">Arbejdspladser</h2>
           <ul th:remove="all-but-first">
             <li th:each="locality : ${loctype.localities}">
               <div><a href="locality-view.html"

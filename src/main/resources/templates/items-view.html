@@ -160,7 +160,7 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
         <dl class="factsheet">
           <dt class="multiline" title="Beskrivelse af hvem, hvad, hvor">Proviniens/brugsbeskrivelse</dt>
           <dd class="multiline" th:utext="${item.itemusedby}">Brugsen</dd>
-          <dt>Område</dt>
+          <dt>Brugslokalitet</dt>
           <dd th:if="${locality.isPresent()}">
             <a href="locality-view.html"
              th:href="@{/localities/view/{id}(id=${locality.get().getId()})}" th:text="${locality.get().getName()}">København</a>

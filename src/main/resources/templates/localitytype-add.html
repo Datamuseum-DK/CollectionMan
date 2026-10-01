@@ -13,7 +13,7 @@
     </header>
     <section id="content">
       <form id="editfactsheet" method="post" action="localitytype-view.html" th:object="${localitytype}" th:action="@{add}">
-        <h2>Opret lokalitetsklasse</h2>
+        <h2>Opret lokalitetsautoritet</h2>
         <div>
           <label class="head required">Navn</label>
           <input type="text" th:field="*{title}" value="Arbejdspladser (store)" class="fullwidth"/>
@@ -21,7 +21,7 @@
         </div>
         <div>
           <label class="head">Beskrivelse</label>
-          <textarea th:field="*{description}" rows="5" placeholder="Hvad dækker denne klasse?">Større arbejdspladser, hvor den samme type arbejde foregår. Det kan f.eks. være produktion, konsulentarbejde, m.m. Store virksomheder kan have flere lokaliteter hvis genstandene ikke flyttes mellem dem.</textarea>
+          <textarea th:field="*{description}" rows="5" placeholder="Hvad dækker denne autoritet?">Større arbejdspladser, hvor den samme type arbejde foregår. Det kan f.eks. være produktion, konsulentarbejde, m.m. Store virksomheder kan have flere lokaliteter hvis genstandene ikke flyttes mellem dem.</textarea>
           <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="fielderror">Error</span>
         </div>
         <input type="submit" value="Opret"/>

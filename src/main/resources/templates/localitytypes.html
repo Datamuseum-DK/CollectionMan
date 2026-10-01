@@ -13,20 +13,22 @@
     </header>
     <section id="content">
       <form id="actions" method="get" action="localitytype-add.html" th:action="@{/localitytypes/addform}" sec:authorize="hasAuthority('ADD_LOCALITIES')">
-        <button type="submit">Ny klasse</button>
+        <button type="submit">Ny autoritet</button>
       </form>
       <div th:switch="${localitytypes}">
-        <h2 th:case="null">Ingen klasser</h2>
+        <h2 th:case="null">Ingen autoriteter</h2>
         <div th:case="*">
-          <h2>Lokalitetsklasser</h2>
+          <h2>Lokalitetsautoriteter</h2>
           <ul th:remove="all-but-first">
             <li th:each="place : ${localitytypes}">
               <div><a href="localitytype-view.html" th:href="@{/localitytypes/view/{id}(id=${place.id})}" th:text="${place.title}">Arbejdspladser</a>
                     (<span th:text="${place.totalItems}">4</span>)
               </div>
+              <div th:text="${place.description}">Virksomheder eller divisioner i virksomheder som foretager den samme type arbejde, f.eks. udvikling, service eller hardwareproduktion.</div>
             </li>
             <li>
               <div><a href="localitytype-view.html">Kommuner (2007-)</a> (<span>98</span>)</div>
+              <div>Kommunelokaliteter er primært til privatpersoner og små virksomheder i liberale erhverv.</div>
             </li>
           </ul>
         </div>
