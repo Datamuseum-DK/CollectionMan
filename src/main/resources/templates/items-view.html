@@ -151,8 +151,6 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd th:text="${#temporals.format(item.itemdepositeduntil,'yyyy-MM-dd')}">2032-09-16</dd>
           <dt>Lånt indtil</dt>
           <dd th:text="${#temporals.format(item.itemborroweduntil,'yyyy-MM-dd')}">2027-10-16</dd>
-          <dt title="Registrerings dato">Registreret</dt>
-          <dd><span th:remove="tag" th:text="${#temporals.format(item.itemregistered,'yyyy-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemregisteredby}">fvn</span></dd>
         </dl>
       </fieldset>
       <fieldset id="Notater" class="tabcontent">
@@ -178,6 +176,9 @@ Særlige oplysninger: Stammer fra Christian Rovsing A/S. Anlægsaktiv 00092100.<
           <dd class="multiline" th:utext="${item.itemrestoration}">Tekst her</dd>
           <dt class="multiline">Bemærkninger</dt>
           <dd class="multiline" th:utext="${item.itemremarks}">Kommentarer</dd>
+          <dt>Registrering</dt>
+          <dd><span th:remove="tag" th:text="${#temporals.format(item.itemregistered,'yyyy-MM-dd')}">2012-05-06</span> af <span th:remove="tag" th:text="${item.itemregisteredby}">fvn</span></dd>
+
           <!--/*/ <th:block th:each="a : ${activities}"> /*/-->
           <dt th:class="${not a.activityType.systemact}? 'multiline'" th:text="${a.activityType.name}">Flytning</dt>
           <dd th:class="${not a.activityType.systemact}? 'multiline'"><span th:text="${#temporals.format(a.created,'yyyy-MM-dd HH:mm')} + ' af ' + ${a.creator} + ': '">2025-06-09 15:46 af sr: </span><span th:utext="${a.note}">Fra Ukendt til Palle 461.</span></dd>
